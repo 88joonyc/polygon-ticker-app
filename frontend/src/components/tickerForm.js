@@ -1,8 +1,9 @@
 import React, { useState } from "react"
+import TickerCharts from "./tickerCharts";
 
 export default function TickerForm () {
 
-    const [ticker, setTicker] = useState('');
+    const [ticker, setTicker] = useState('NNOX');
     const [multiplier, setMultiplier] = useState('');
     const [timespan, setTimespan] = useState('');
     const [start, setStart] = useState('');
@@ -12,35 +13,75 @@ export default function TickerForm () {
     const [adjusted, setAdjusted] = useState('');
 
     const [data, setData] = useState({})
+    const [meta, setMeta] = useState({})
+    const [image, setImage] = useState('')
     
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const payload = {
-            ticker,
-            multiplier,
-            timespan,
-            start,
-            end,
-            limit,
-            sort,
-            adjusted
+            ticker : 'NNOX',
+            multiplier : 2,
+            timespan : 'minute',
+            start : '2023-02-04',
+            end : '2023-02-14',
+            limit: 300,
+            sort: 'asc',
+            adjusted: true
         }
 
-        const data = await fetch('http://localhost:5314/api/search', {
-            method:"POST",
-            headers: {"Content-Type": 'application/json'},
-            body: JSON.stringify(payload)
-        })
+        // const payload = {
+        //     ticker,
+        //     multiplier,
+        //     timespan,
+        //     start,
+        //     end,
+        //     limit,
+        //     sort,
+        //     adjusted
+        // }
 
-        if (data.ok) setData(await data.json())
+        // const data = await fetch('http://localhost:5314/api/search', {
+        //     method:"POST",
+        //     headers: {"Content-Type": 'application/json'},
+        //     body: JSON.stringify(payload)
+        // })
+        
+        // const metaData = await fetch(`http://localhost:5314/api/ticker/details/${ticker}`)
+        
 
+
+        await Promise.all([
+            fetch('http://localhost:5314/api/search', {
+                method:"POST",
+                headers: {"Content-Type": 'application/json'},
+                body: JSON.stringify(payload)
+            }).then(async res => setData(await res.json())),
+            fetch(`http://localhost:5314/api/ticker/details/${ticker}`)
+            .then(async res => await res.json())
+            .then(async returndata => {
+                console.log('datas', returndata)
+                setMeta(returndata);
+                console.log('setdata', data)
+                const imageData = returndata.results.branding.logo_url;
+                return await fetch(`http://localhost:5314/api/ticker/details/image`, {
+                    method: "POST",
+                    headers:  {"Content-Type": 'application/json'},
+                    body: JSON.stringify({
+                        image: imageData,
+                    })
+                })
+            })
+            .then(async res => setImage(await res.json()))
+        ]);
+
+        // if (data.ok) setData(await data.json())
+        // if (meta.ok) setMeta(await meta.json())
     }
 
-    console.log(data)
-
     return (
-        <>
+        <>  
+            {data.results&&meta &&<TickerCharts data={data.results} meta={meta}/>}
             <div className='border mt-4 text-3xl max-w-[1440px] m-auto'>
                 <form className='flex flex-col border p-10' onSubmit={handleSubmit}>
                     <label for='ticker'> Stock ticker
@@ -84,16 +125,6 @@ export default function TickerForm () {
                     <button>submit</button>
                 </form>
             </div>
-
-            {data.results&&<div>
-                    {data?.results.map(ele=> (
-                        <>
-                            <div>
-                                {ele.v}
-                            </div>
-                        </>
-                    ))}
-                </div>}
         </>
     )
 }
