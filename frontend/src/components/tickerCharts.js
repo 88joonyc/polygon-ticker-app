@@ -5,7 +5,7 @@ import React, { useState } from "react"
 import { LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
 
 
-export default function TickerCharts ({data, meta}) {
+export default function TickerCharts ({data, meta, logoimage}) {
 
     // const width = 500;
     // const height = 500;
@@ -37,7 +37,7 @@ export default function TickerCharts ({data, meta}) {
 
     const metaData = meta.results;
 
-    console.log(metaData)
+    console.log(logoimage)
 
     return (
         // <svg width={width} height={height}>
@@ -67,7 +67,7 @@ export default function TickerCharts ({data, meta}) {
             </LineChart>
             <div className="border p-10">
                 <h2 className="text-2xl">logo</h2>
-                <img src={metaData.branding.logo_url} width={300} height={300} alt="brand logo"/>
+                {/* <img src={`data:image/svg+xml;base64,${btoa(logoimage)}`} width={300} height={300} alt="brand logo"/> */}
                 <h2 className="text-2xl">description</h2>
                 <p className="text-1xl">{metaData.description}</p>
                 <h2 className="text-2xl">Total employees</h2>

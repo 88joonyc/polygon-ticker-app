@@ -22,7 +22,39 @@ app.get('/api/ticker', (req, res) => {
   fetch(`${process.env.APIENDPOINT}/v3/reference/tickers`, headerOptions)
     .then( response => response.json())
     .then( json => res.send(json))
+    .catch(err => console.log(err))
 });
+
+app.get('/api/ticker/details/:ticker', (req, res) => {
+    fetch(`${process.env.APIENDPOINT}/v3/reference/tickers/${req.params.ticker.toUpperCase()}`, headerOptions)
+    .then(response => response.json())
+    .then(json => res.send(json))
+    .catch(err => console.log(err))
+})
+
+app.get('/api/ticker/news/:ticker', async (req, res) => {
+  try {
+    const news = await fetch(`https://api.polygon.io/v2/reference/news?ticker=${req.params.ticker.toUpperCase()}`, headerOptions)
+    if (news.ok) {
+      const json = await news.json()
+      console.log(json)
+      res.send(json)
+    }
+
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+// app.post('/api/ticker/details/image', jsonParser, (req, res) => {
+
+//   const { image } = req.body
+//   const url = image.replace(/(^\w+:|^)\/\//, '')
+  
+//   fetch(`http://${url}`, headerOptions)
+//   .then(response => res.send(response.text()))
+// })
+
 
 // search specific ticker
 app.post('/api/search', jsonParser, (req, res) => {
@@ -37,9 +69,11 @@ app.post('/api/search', jsonParser, (req, res) => {
     limit,
   } = req.body
 
-  fetch(`${process.env.APIENDPOINT}/v2/aggs/ticker/${ticker}/range/${multiplier}/${timespan}/${start}/${end}?adjusted=${adjusted}&sort=${sort}}&limit=${limit}`, headerOptions)
+  fetch(`${process.env.APIENDPOINT}/v2/aggs/ticker/${ticker.toUpperCase()}/range/${multiplier}/${timespan}/${start}/${end}?adjusted=${adjusted}&sort=${sort}}&limit=${limit}`, headerOptions)
     .then(response => response.json())
     .then(json => res.send(json))
+    .catch(err => console.log(err))
+
 });
 
 const PORT = process.env.PORT || 5000

@@ -1,9 +1,10 @@
+
 import React, { useState } from "react"
 import TickerCharts from "./tickerCharts";
 
 export default function TickerForm () {
 
-    const [ticker, setTicker] = useState('NNOX');
+    const [ticker, setTicker] = useState('');
     const [multiplier, setMultiplier] = useState('');
     const [timespan, setTimespan] = useState('');
     const [start, setStart] = useState('');
@@ -19,27 +20,27 @@ export default function TickerForm () {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const payload = {
-            ticker : 'NNOX',
-            multiplier : 2,
-            timespan : 'minute',
-            start : '2023-02-04',
-            end : '2023-02-14',
-            limit: 300,
-            sort: 'asc',
-            adjusted: true
-        }
-
         // const payload = {
-        //     ticker,
-        //     multiplier,
-        //     timespan,
-        //     start,
-        //     end,
-        //     limit,
-        //     sort,
-        //     adjusted
+        //     ticker : 'AAPL',
+        //     multiplier : 2,
+        //     timespan : 'minute',
+        //     start : '2023-02-04',
+        //     end : '2023-02-14',
+        //     limit: 300,
+        //     sort: 'asc',
+        //     adjusted: true
         // }
+
+        const payload = {
+            ticker,
+            multiplier,
+            timespan,
+            start,
+            end,
+            limit,
+            sort,
+            adjusted
+        }
 
         // const data = await fetch('http://localhost:5314/api/search', {
         //     method:"POST",
@@ -49,6 +50,12 @@ export default function TickerForm () {
         
         // const metaData = await fetch(`http://localhost:5314/api/ticker/details/${ticker}`)
         
+        const headerOptions = {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer `
+            }
+        }
 
 
         await Promise.all([
@@ -56,23 +63,28 @@ export default function TickerForm () {
                 method:"POST",
                 headers: {"Content-Type": 'application/json'},
                 body: JSON.stringify(payload)
-            }).then(async res => setData(await res.json())),
+            }).then(async res => setData(await res.json()))
+              .catch(err => console.log(err)),
             fetch(`http://localhost:5314/api/ticker/details/${ticker}`)
             .then(async res => await res.json())
             .then(async returndata => {
-                console.log('datas', returndata)
                 setMeta(returndata);
-                console.log('setdata', data)
                 const imageData = returndata.results.branding.logo_url;
-                return await fetch(`http://localhost:5314/api/ticker/details/image`, {
-                    method: "POST",
-                    headers:  {"Content-Type": 'application/json'},
-                    body: JSON.stringify({
-                        image: imageData,
-                    })
-                })
+                if (imageData) {
+                    return fetch(imageData, headerOptions, {
+                        // method: "POST",
+                        // headers:  {
+                        //     "Content-Type": 'application/json',
+                        //     'Accept': 'image/svg+xml'
+                        // },
+                        // body: JSON.stringify({
+                        //     image: imageData,
+                        // })
+                    }).then(async res => setImage(await res.text())).catch(err => console.log(err))
+                    
+                }
             })
-            .then(async res => setImage(await res.json()))
+            .catch(err => console.log(err))
         ]);
 
         // if (data.ok) setData(await data.json())
@@ -81,7 +93,7 @@ export default function TickerForm () {
 
     return (
         <>  
-            {data.results&&meta &&<TickerCharts data={data.results} meta={meta}/>}
+            {data.results&&meta &&<TickerCharts data={data.results} meta={meta} logoimage={image}/>}
             <div className='border mt-4 text-3xl max-w-[1440px] m-auto'>
                 <form className='flex flex-col border p-10' onSubmit={handleSubmit}>
                     <label for='ticker'> Stock ticker
