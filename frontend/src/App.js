@@ -5,7 +5,7 @@ import SearchBar from './components/searchBar';
 
 function App() {
   return (
-    <div className="App">
+    <div className="max-w-[1440px] mx-auto px-20">
       <header className="text-4xl">
         <p>
           this will be the headerdf nav
