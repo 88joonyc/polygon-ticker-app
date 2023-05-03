@@ -1,0 +1,152 @@
+import React, { useEffect, useState } from "react";
+import { useLocation, useParams } from 'react-router-dom'
+import { LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
+import { VictoryChart, VictoryArea, VictoryAxis } from 'victory';
+
+export default function Ticker () {
+    var today = new Date();
+    var todaysDate = today.getFullYear() + '-' + today.getMonth() + '-' + today.getDay();
+    var dayBefore =  new Date(today.setDate(today.getDate()-2)).toISOString().split('T')[0]
+    
+    var dayCounter = function(days) {
+        return new Date(today.setDate(today.getDate()-days)).toISOString().split('T')[0]
+    }
+
+
+    const { ticker } = useParams();
+
+    const [multiplier, setMultiplier] = useState(1);
+    const [timespan, setTimespan] = useState('day');
+    const [start, setStart] = useState(dayCounter(3));
+    const [end, setEnd] = useState(dayBefore);
+    const [limit, setLimit] = useState(2000);
+    const [sort, setSort] = useState('asc');
+    const [adjusted, setAdjusted] = useState(false);
+
+    const [dataPoints, setDataPoints] = useState([])
+
+    const [data, setData] = useState({});
+    const [meta, setMeta] = useState({});
+    const [image, setImage] = useState('');
+    const [news, setNews] = useState('');
+    
+    const headerOptions = {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${process.env.REACT_APP_POLYGONAPISECRETEKEY}`
+        }
+    }
+
+    const payload = {
+        ticker,
+        multiplier,
+        timespan,
+        start,
+        end,
+        limit,
+        sort,
+        adjusted
+    }
+
+    useEffect(() => {
+        async function runme() {
+            let data
+            try {
+                data = await fetch('http://localhost:5314/api/search', {
+                    method: 'POST',
+                    headers: {"Content-Type": 'application/json'},
+                    body: JSON.stringify(payload)
+                })
+            } catch (err) {
+                console.log(err)
+            }
+            const response = await data.json();
+            if (response.status == 'OK') {
+                console.log('setup error handling;', response)
+                setDataPoints(response.results)
+            }
+        }
+
+        async function findmeta() {
+            await Promise.all([
+                fetch('http://localhost:5314/api/search', {
+                    method:"POST",
+                    headers: {"Content-Type": 'application/json'},
+                    body: JSON.stringify(payload)
+                }).then(async res => setData(await res.json()))
+                  .catch(err => console.log(err)),
+                fetch(`http://localhost:5314/api/ticker/details/${ticker}`)
+                .then(async res => await res.json())
+                .then(async returndata => {
+                    setMeta(returndata);
+                    const imageData = returndata.results.branding.logo_url;
+                    if (imageData) {
+                        return fetch(imageData, headerOptions, {
+                        }).then(async res => setImage(await res.text())).catch(err => console.log(err))
+                        
+                    }
+                })
+                .catch(err => console.log(err)),
+                fetch(`http://localhost:5314/api/ticker/news/${ticker}`)
+                .then(async res => await res.json())
+                .then(data => setNews(data))
+                .catch(err => console.log(err))
+            ]);
+        } 
+
+        // runme()
+        // findmeta()
+
+    }, [ticker])
+
+
+    console.log('herresults', news)
+
+    return (
+        <>
+        <div className="max-w-[1440px] mx-auto">
+            <div>
+                <h1 className="text-4xl mb-4 mt-8">{meta.results.name}</h1>
+                <h2 className="text-5xl">${data.results[data.results.length-1].c}</h2>
+                <div>${data.results[data.results.length-1].o - data.results[data.results.length-1].c} Past </div>
+            </div>
+            <VictoryChart >
+                <VictoryArea data={dataPoints} style={{ data: {fill: "#280137"   }}} y="c" x="time"/>
+                <VictoryAxis/>
+            </VictoryChart>
+            <div>
+                <h2 className="text-4xl border-b pb-8 font-bold">About</h2>
+                <h3 className="pt-4 pb-4 text-xl">{meta.results.description}</h3>
+                <div className="flex justify-between mb-8">
+                    <div className="text-xl">
+                        <h2 className="font-bold mb-2 font-bold">Employees</h2>
+                        <h3>{meta.results.total_employees}</h3>
+                    </div>
+                    <div className="text-xl">
+                        <h2 className="font-bold mb-2 font-bold">Headquarters</h2>
+                        <h3>{meta.results.address.city}, {meta.results.address.state}</h3>
+                    </div>
+                    <div className="text-xl">
+                        <h2 className="font-bold mb-2">List Date</h2>
+                        <h3>{meta.results.list_date}</h3>
+                    </div>
+                </div>
+
+                {/* news - create separate components*/}
+                <div>
+                    <h2 className="text-4xl border-b pb-8 font-bold">News</h2>
+                </div>
+
+            </div>
+        </div>
+            {/* <LineChart className=" m-5" width={1000} height={800} data={dataPoints}>
+                <Line type="monotone" dataKey="c" stroke="#8884d8" />
+                <CartesianGrid stroke="#ccc" />
+                <XAxis dataKey="name" />
+                <YAxis />
+            </LineChart> */}
+         
+
+        </>
+    )
+};

@@ -96,51 +96,53 @@ export default function TickerForm () {
     }
 
     return (
-        <div className="grid grid-cols-[1fr,4fr]">  
-            <div className='border h-[1550px] mt-20 m-auto'>
-                <form className='flex flex-col border p-10' onSubmit={handleSubmit}>
-                    <label for='ticker'> Stock ticker
-                        <input className="p-2 border mb-4 mt-1 " name='ticker' onChange={e => setTicker(e.target.value)} type='text'required/>
-                    </label>
-                    <label for='multiplier'> multiplier
-                        <input className="p-2 border mb-4 mt-1" name='multiplier' onChange={e => setMultiplier(e.target.value)} type='number'required/>
-                    </label>
-                    <label className="flex flex-col mb-4" for='timespan'> timespan
-                        <select className="p-2 mt-1" name='timespan' onChange={e => setTimespan(e.target.value)} >
-                            <option value='' >--please select--</option>
-                            <option value='minute' >minute</option>
-                            <option value='hour' >hour</option>
-                            <option value='day' >day</option>
-                            <option value='week' >week</option>
-                            <option value='month' >month</option>
-                            <option value='quarter' >quarter</option>
-                            <option value='year' >year</option>
-                        </select>
-                    </label>
-                    <label className="flex flex-col mb-4" for='start'> from start
-                        <input className="p-2 mt-1 border" name='start' type='date' onChange={e => setStart(e.target.value)} required/>
-                    </label>
-                    <label className="flex flex-col mb-4" for='end'> to end
-                        <input className="p-2 mt-1 border" name='end' type='date' onChange={e => setEnd(e.target.value)} required/>
-                    </label>
-                    <label className="flex justify-between" for='limit'> adjusted
-                        <input className="p-2 mt-1 border" name='limit' type='checkbox' value='true' onChange={e => setAdjusted(e.target.value)} />
-                    </label>
-                    <div className="flex flex-col mb-4 mt-8" onChange={e =>setSort(e.target.value)} >
-                        <label className="flex justify-between"> forwards
-                            <input name="sort" type="radio" value="asc" />
+        <div className="max-w-[1440px] mx-auto">
+            <div className="grid grid-cols-[1fr,4fr]">  
+                <div className='border h-[1550px] mt-20 m-auto'>
+                    <form className='flex flex-col border p-10' onSubmit={handleSubmit}>
+                        <label for='ticker'> Stock ticker
+                            <input className="p-2 border mb-4 mt-1 " name='ticker' onChange={e => setTicker(e.target.value)} type='text'required/>
                         </label>
-                        <label className="flex justify-between"> reverse
-                            <input name="sort" type="radio" value="dsc" />
+                        <label for='multiplier'> multiplier
+                            <input className="p-2 border mb-4 mt-1" name='multiplier' onChange={e => setMultiplier(e.target.value)} type='number'required/>
                         </label>
-                    </div>
-                    <label className="flex flex-col mb-4" for='limit'> limit
-                        <input className="p-2" name='limit' type='range' min={0} max={5000} onChange={e => setLimit(e.target.value)} required/>
-                    </label>
-                    <button className="mt-8 border p-3 rounded bg-blue-300 text-white hover:shadow-lg shadow-grey-400">submit</button>
-                </form>
+                        <label className="flex flex-col mb-4" for='timespan'> timespan
+                            <select className="p-2 mt-1" name='timespan' onChange={e => setTimespan(e.target.value)} >
+                                <option value='' >--please select--</option>
+                                <option value='minute' >minute</option>
+                                <option value='hour' >hour</option>
+                                <option value='day' >day</option>
+                                <option value='week' >week</option>
+                                <option value='month' >month</option>
+                                <option value='quarter' >quarter</option>
+                                <option value='year' >year</option>
+                            </select>
+                        </label>
+                        <label className="flex flex-col mb-4" for='start'> from start
+                            <input className="p-2 mt-1 border" name='start' type='date' onChange={e => setStart(e.target.value)} required/>
+                        </label>
+                        <label className="flex flex-col mb-4" for='end'> to end
+                            <input className="p-2 mt-1 border" name='end' type='date' onChange={e => setEnd(e.target.value)} required/>
+                        </label>
+                        <label className="flex justify-between" for='limit'> adjusted
+                            <input className="p-2 mt-1 border" name='limit' type='checkbox' value='true' onChange={e => setAdjusted(e.target.value)} />
+                        </label>
+                        <div className="flex flex-col mb-4 mt-8" onChange={e =>setSort(e.target.value)} >
+                            <label className="flex justify-between"> forwards
+                                <input name="sort" type="radio" value="asc" />
+                            </label>
+                            <label className="flex justify-between"> reverse
+                                <input name="sort" type="radio" value="dsc" />
+                            </label>
+                        </div>
+                        <label className="flex flex-col mb-4" for='limit'> limit
+                            <input className="p-2" name='limit' type='range' min={0} max={5000} onChange={e => setLimit(e.target.value)} required/>
+                        </label>
+                        <button className="mt-8 border p-3 rounded bg-blue-300 text-white hover:shadow-lg shadow-grey-400">submit</button>
+                    </form>
+                </div>
+                {data.results&&meta &&<TickerCharts data={data.results} meta={meta} logoimage={image} news={news}/>}
             </div>
-            {data.results&&meta &&<TickerCharts data={data.results} meta={meta} logoimage={image} news={news}/>}
         </div>
     )
 }

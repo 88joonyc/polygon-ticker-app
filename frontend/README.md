@@ -1,3 +1,10 @@
+# Project: Robinhood clone 
+
+## API endpoints
+
+https://polygon.io/docs/stocks/getting-started
+https://www.alphavantage.co/documentation/
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
