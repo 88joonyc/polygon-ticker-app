@@ -31,8 +31,6 @@ export default function Ticker () {
     const [meta, setMeta] = useState({});
     const [image, setImage] = useState('');
     const [news, setNews] = useState('');
-
-    const [error, setError] = useState();
     
     const headerOptions = {
         method: 'GET',
@@ -79,7 +77,7 @@ export default function Ticker () {
                     headers: {"Content-Type": 'application/json'},
                     body: JSON.stringify(payload)
                 }).then(async res => setData(await res.json()))
-                  .catch(err => setError([...error, err.message])),
+                  .catch(err => console.log(err)),
                 fetch(`http://localhost:5314/api/ticker/details/${ticker}`)
                 .then(async res => await res.json())
                 .then(async returndata => {
@@ -101,7 +99,7 @@ export default function Ticker () {
 
         // console.log(start)
         // runme()
-        // findmeta()
+        findmeta()
 
     }, [ticker, start])
 
@@ -111,7 +109,7 @@ export default function Ticker () {
     }
 
 
-    console.log('herresults', data, meta)
+    console.log('herresults', data, news)
 
     return (
         <>
@@ -161,9 +159,9 @@ export default function Ticker () {
                                 {idx < 3 && <>
                                 <div className="flex justify-between hover:border pt-4 pb-4">
                                     <div className="pt-4 pb-4">
-                                        <div className="text-xl">{report.author}</div> 
-                                        <div className="text-xl font-bold">{report.title}</div>
-                                        <div className="text-lg">{report.description.substring(0, 60) + '...'}</div>
+                                        <div className="text-xl">{report?.author}</div> 
+                                        <div className="text-xl font-bold">{report?.title}</div>
+                                        <div className="text-lg">{report?.description != undefined&&report?.description?.substring(0, 60) + '...'}</div>
                                     </div>
                                     <img className="h-[200px] w-[200px]" src={report.image_url} />
                                 </div>

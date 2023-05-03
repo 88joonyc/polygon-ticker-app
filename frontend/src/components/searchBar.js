@@ -27,8 +27,6 @@ export default function SearchBar() {
         }, 500)
     }, [searchQuery])
 
-    console.log(bestMatches)
-
     return (
         <div className="bg-slate-400 mx-auto relative">
             <div className="max-w-[1440px] mx-auto p-4 relative flex justify-center">
@@ -36,7 +34,7 @@ export default function SearchBar() {
             </div>
 
             <div className="relative flex justify-center">
-                {searchQuery&&<div className="absolute">
+                {searchQuery&&<div className="absolute z-40">
                     <div className="top-20 w-[600px] bg-slate-100 opacity-85">
                         {bestMatches.map((matches, idx) => (
                             <Link to={`/ticker/${matches['1. symbol']}`} key={`${matches['1. symbol']} -- ${idx}`} onClick={() => setKeyword('')}>
