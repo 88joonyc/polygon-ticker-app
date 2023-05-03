@@ -31,6 +31,8 @@ export default function Ticker () {
     const [meta, setMeta] = useState({});
     const [image, setImage] = useState('');
     const [news, setNews] = useState('');
+
+    const [error, setError] = useState();
     
     const headerOptions = {
         method: 'GET',
@@ -77,12 +79,12 @@ export default function Ticker () {
                     headers: {"Content-Type": 'application/json'},
                     body: JSON.stringify(payload)
                 }).then(async res => setData(await res.json()))
-                  .catch(err => console.log(err)),
+                  .catch(err => setError([...error, err.message])),
                 fetch(`http://localhost:5314/api/ticker/details/${ticker}`)
                 .then(async res => await res.json())
                 .then(async returndata => {
                     setMeta(returndata);
-                    const imageData = returndata.results.branding.logo_url;
+                    const imageData = returndata?.results?.branding?.logo_url;
                     if (imageData) {
                         return fetch(imageData, headerOptions, {
                         }).then(async res => setImage(await res.text())).catch(err => console.log(err))
@@ -99,7 +101,7 @@ export default function Ticker () {
 
         // console.log(start)
         // runme()
-        findmeta()
+        // findmeta()
 
     }, [ticker, start])
 
@@ -109,7 +111,7 @@ export default function Ticker () {
     }
 
 
-    console.log('herresults', data)
+    console.log('herresults', data, meta)
 
     return (
         <>
