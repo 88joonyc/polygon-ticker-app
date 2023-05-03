@@ -14,7 +14,7 @@ export default function Ticker () {
 
 
     const { ticker } = useParams();
-
+    
     const [multiplier, setMultiplier] = useState(1);
     const [timespan, setTimespan] = useState('day');
     const [start, setStart] = useState(dayCounter(3));
@@ -24,6 +24,8 @@ export default function Ticker () {
     const [adjusted, setAdjusted] = useState(false);
 
     const [dataPoints, setDataPoints] = useState([])
+
+    const [day, setDay] = useState(2)
 
     const [data, setData] = useState({});
     const [meta, setMeta] = useState({});
@@ -68,6 +70,7 @@ export default function Ticker () {
         }
 
         async function findmeta() {
+            console.log('thisishuitting')
             await Promise.all([
                 fetch('http://localhost:5314/api/search', {
                     method:"POST",
@@ -94,47 +97,78 @@ export default function Ticker () {
             ]);
         } 
 
+        // console.log(start)
         // runme()
-        // findmeta()
+        findmeta()
 
-    }, [ticker])
+    }, [ticker, start])
+
+    const handleChange = function (num) {
+        setDay(num)
+        setStart(dayCounter(num))
+    }
 
 
-    console.log('herresults', news)
+    console.log('herresults', data)
 
     return (
         <>
         <div className="max-w-[1440px] mx-auto">
             <div>
-                <h1 className="text-4xl mb-4 mt-8">{meta.results.name}</h1>
-                <h2 className="text-5xl">${data.results[data.results.length-1].c}</h2>
-                <div>${data.results[data.results.length-1].o - data.results[data.results.length-1].c} Past </div>
+                <h1 className="text-4xl mb-4 mt-8">{meta.results?.name}</h1>
+                {/* <h2 className="text-5xl">${data.results[data.results.length-1].c}</h2> */}
+                {/* <div>${data.results[data.results.length-1].o - data.results[data.results.length-1].c} Past </div> */}
             </div>
             <VictoryChart >
-                <VictoryArea data={dataPoints} style={{ data: {fill: "#280137"   }}} y="c" x="time"/>
+                <VictoryArea data={data.results} style={{ data: {fill: "#280137" }}} y="c" x="time"/>
                 <VictoryAxis/>
             </VictoryChart>
+
+            <div className="flex text-2xl mb-8 gap-10">
+                <div type="radio" className={`cursor-pointer ${day == 2 ? 'font-bold text-[#280137] border-b-4 border-[#280137] pb-4 ' : 'text-black'} hover:font-bold hover:text-[#280137]`} onClick={() => handleChange(2)} value={2}>1D</div>
+                <div type="radio" className={`cursor-pointer ${day == 8 ? 'font-bold text-[#280137] border-b-4 border-[#280137] pb-4 ' : 'text-black'} hover:font-bold hover:text-[#280137]`} onClick={() => handleChange(8)} value={8}>1W</div>
+                <div type="radio" className={`cursor-pointer ${day == 31 ? 'font-bold text-[#280137] border-b-4 border-[#280137] pb-4 ' : 'text-black'} hover:font-bold hover:text-[#280137]`} onClick={() => handleChange(31)} value={31}>1M</div>
+                <div type="radio" className={`cursor-pointer ${day == 91 ? 'font-bold text-[#280137] border-b-4 border-[#280137] pb-4 ' : 'text-black'} hover:font-bold hover:text-[#280137]`} onClick={() => handleChange(91)} value={91}>3M</div>
+                <div type="radio" className={`cursor-pointer ${day == 366 ? `font-bold text-[#280137] border-b-4 border-[#280137] pb-4 ` : 'text-black'}`} onClick={() => handleChange(366)} value={366}>1Y</div>
+            </div>
+
             <div>
                 <h2 className="text-4xl border-b pb-8 font-bold">About</h2>
-                <h3 className="pt-4 pb-4 text-xl">{meta.results.description}</h3>
+                <h3 className="pt-4 pb-4 text-xl">{meta.results?.description}</h3>
                 <div className="flex justify-between mb-8">
                     <div className="text-xl">
                         <h2 className="font-bold mb-2 font-bold">Employees</h2>
-                        <h3>{meta.results.total_employees}</h3>
+                        <h3>{meta.results?.total_employees}</h3>
                     </div>
                     <div className="text-xl">
                         <h2 className="font-bold mb-2 font-bold">Headquarters</h2>
-                        <h3>{meta.results.address.city}, {meta.results.address.state}</h3>
+                        <h3>{meta.results?.address?.city}, {meta.results?.address?.state}</h3>
                     </div>
                     <div className="text-xl">
                         <h2 className="font-bold mb-2">List Date</h2>
-                        <h3>{meta.results.list_date}</h3>
+                        <h3>{meta.results?.list_date}</h3>
                     </div>
                 </div>
 
                 {/* news - create separate components*/}
                 <div>
-                    <h2 className="text-4xl border-b pb-8 font-bold">News</h2>
+                    <h2 className="border-b pb-8  mb-8 flex justify-between align-bottom"><span className="text-4xl font-bold">News</span><span className="">show more</span></h2>
+                    <div>
+                        {news.results?.map((report, idx) => (
+                            <>
+                                {idx < 3 && <>
+                                <div className="flex justify-between hover:border pt-4 pb-4">
+                                    <div className="pt-4 pb-4">
+                                        <div className="text-xl">{report.author}</div> 
+                                        <div className="text-xl font-bold">{report.title}</div>
+                                        <div className="text-lg">{report.description.substring(0, 60) + '...'}</div>
+                                    </div>
+                                    <img className="h-[200px] w-[200px]" src={report.image_url} />
+                                </div>
+                                </>} 
+                            </>
+                        ))}
+                    </div>
                 </div>
 
             </div>
