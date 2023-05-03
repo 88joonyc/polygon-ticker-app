@@ -4,10 +4,11 @@ module.exports = {
     "./src/**/*.{js,jsx}"
   ],
   theme: {
+    colors: {
+      'white': '#ffffff',
+      'midnightPurple': '#280137'
+    },
     extend: {
-      colors: {
-        'midnightPurple': '#280137'
-      }
     },
   },
   plugins: [],

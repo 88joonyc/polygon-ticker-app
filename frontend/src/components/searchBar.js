@@ -28,17 +28,17 @@ export default function SearchBar() {
     }, [searchQuery])
 
     return (
-        <div className="bg-slate-400 mx-auto relative">
+        <div className="bg-slate-400 mx-auto sticky top-0 right-0 z-40">
             <div className="max-w-[1440px] mx-auto p-4 relative flex justify-center">
-                <input className="p-2 text-2xl border w-[600px] rounded-md border-grey-100" onChange={e => setKeyword(e.target.value)}/>
+                <input className="p-2 pl-8s text-2xl border w-[600px] rounded-md border-grey-100" placeholder="search" onChange={e => setKeyword(e.target.value)}/>
             </div>
 
             <div className="relative flex justify-center">
-                {searchQuery&&<div className="absolute z-40">
-                    <div className="top-20 w-[600px] bg-slate-100 opacity-85">
+                {searchQuery&&<div className="absolute ">
+                    <div className="top-20 w-[600px] bg-white opacity-85">
                         {bestMatches.map((matches, idx) => (
                             <Link to={`/ticker/${matches['1. symbol']}`} key={`${matches['1. symbol']} -- ${idx}`} onClick={() => setKeyword('')}>
-                                <div className="border p-3 text-md flex justify-between hover:bg-slate-300">
+                                <div className="border p-3 text-md flex justify-between hover:text-white hover:bg-midnightPurple">
                                     <div >{matches['1. symbol']}</div>
                                     <div >{matches['2. name']}</div>
                                 </div>
