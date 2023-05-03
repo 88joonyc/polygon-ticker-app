@@ -1,19 +1,20 @@
 import logo from './logo.svg';
+import { BrowserRouter, Route, Switch, Routes  } from 'react-router-dom'
 
 import TickerForm from './components/tickerForm';
 import SearchBar from './components/searchBar';
 
 function App() {
   return (
-    <div className="max-w-[1440px] mx-auto px-20">
-      <header className="text-4xl">
-        <p>
-          this will be the headerdf nav
-        </p>
-      </header>
+
+    <BrowserRouter>
       <SearchBar />
-      <TickerForm />
-    </div>
+      <Routes>
+        <Route path='/' element={<> <TickerForm /></>} />
+        <Route path='/ticker/:ticker' element={<TickerForm/> } />
+      </Routes>
+    </BrowserRouter>
+
   );
 }
 

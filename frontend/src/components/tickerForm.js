@@ -54,7 +54,7 @@ export default function TickerForm () {
         const headerOptions = {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer `
+                'Authorization': `Bearer ${process.env.REACT_APP_POLYGONAPISECRETEKEY}`
             }
         }
 

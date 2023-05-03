@@ -76,6 +76,27 @@ app.post('/api/search', jsonParser, (req, res) => {
 
 });
 
+
+
+
+
+
+
+
+
+
+// to alphavantage.io - uses polygoin (which is a paid service but free on alpah)
+app.get('/api/search/by/:keyword', (req, res) => {
+  fetch(`${process.env.ALPHAAPIENDPOINT}/query?function=SYMBOL_SEARCH&keywords=${req.params.keyword}&apikey=${process.env.ALPHASECRETKEY}`)
+   .then(response => response.json())
+   .then(data => res.send(data))
+   .catch(err => console.log(err))
+});
+
+
+
+// port & start server
+
 const PORT = process.env.PORT || 5000
 
 app.listen(PORT, () => console.log(`listening on port:${PORT}`))

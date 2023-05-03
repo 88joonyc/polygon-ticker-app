@@ -43,7 +43,7 @@ export default function TickerCharts ({data, meta, logoimage, news}) {
 
     // console.log(btoa(unescape(encodeURIComponent( logoimage ))));
 
-    console.log(news);
+    // console.log(news);
 
     return (
         // <svg width={width} height={height}>
