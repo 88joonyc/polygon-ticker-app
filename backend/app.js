@@ -26,6 +26,7 @@ app.use(helmet({
     contentSecurityPolicy: false
 }));
 
+// may need to remove due to error from mapping numbers
 // app.use(
 //     csurf({
 //         cookie: {
