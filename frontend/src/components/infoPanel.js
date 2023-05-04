@@ -59,7 +59,7 @@ export default function InfoPanel({ticker}) {
         async function runme() {
             let data
             try {
-                data = await fetch('http://localhost:5314/api/search', {
+                data = await fetch('http://localhost:5314/api/ticker/search', {
                     method: 'POST',
                     headers: {"Content-Type": 'application/json'},
                     body: JSON.stringify(payload)
@@ -77,7 +77,7 @@ export default function InfoPanel({ticker}) {
         async function findmeta() {
             console.log('thisishuitting')
             await Promise.all([
-                fetch('http://localhost:5314/api/search', {
+                fetch('http://localhost:5314/api/ticker/search', {
                     method:"POST",
                     headers: {"Content-Type": 'application/json'},
                     body: JSON.stringify(payload)
