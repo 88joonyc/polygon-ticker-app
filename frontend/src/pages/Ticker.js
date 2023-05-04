@@ -13,7 +13,7 @@ export default function Ticker () {
     return (
         <>
             <div className="max-w-[1440px] mx-auto">
-                <div className="">
+                <div className="relative">
                      <div className="grid grid-cols-[3fr,1fr] gap-20">
                         <div>
                             <InfoPanel ticker={ticker} />

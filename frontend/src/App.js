@@ -2,14 +2,14 @@ import logo from './logo.svg';
 import { BrowserRouter, Route, Switch, Routes  } from 'react-router-dom'
 
 import TickerForm from './components/tickerForm';
-import SearchBar from './components/searchBar';
+import NavBar from './components/navBar';
 import Ticker from './pages/Ticker';
 
 function App() {
   return (
 
     <BrowserRouter>
-      <SearchBar />
+      <NavBar />
       <Routes>
         <Route path='/' element={<> <TickerForm /></>} />
         <Route path='/ticker/:ticker' element={<Ticker /> } />
