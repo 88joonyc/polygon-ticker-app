@@ -1,14 +1,8 @@
 const express = require('express')
 const router = express.Router();
-const asyncHandler = require('express-async-handler');
-
-
-// require('dotenv').config();
-// const express = require('express');
-// const cors = require('cors');
-// const fetch = require('node-fetch')
+const yahooFinance = require('yahoo-finance');
 const bodyParser = require('body-parser');
-
+const { error } = require('console');
 
 // const app = express();
 const jsonParser = bodyParser.json();
@@ -50,16 +44,6 @@ router.get('/news/:ticker', async (req, res) => {
   }
 })
 
-// router.post('/ticker/details/image', jsonParser, (req, res) => {
-
-//   const { image } = req.body
-//   const url = image.replace(/(^\w+:|^)\/\//, '')
-  
-//   fetch(`http://${url}`, headerOptions)
-//   .then(response => res.send(response.text()))
-// })
-
-
 // search specific ticker
 router.post('/search', jsonParser, (req, res) => {
   const {
@@ -80,12 +64,6 @@ router.post('/search', jsonParser, (req, res) => {
 
 });
 
-
-
-
-
-
-
 // to alphavantage.io - uses polygoin (which is a paid service but free on alpah)
 router.get('/search/by/:keyword', (req, res) => {
   fetch(`${process.env.ALPHAAPIENDPOINT}/query?function=SYMBOL_SEARCH&keywords=${req.params.keyword}&apikey=${process.env.ALPHASECRETKEY}`)
@@ -93,6 +71,26 @@ router.get('/search/by/:keyword', (req, res) => {
    .then(data => res.send(data))
    .catch(err => console.log(err))
 });
+
+// yahoo finance - fetches multiple stocks for user homepage
+router.get('/search/multiple', async (req, res) => {
+  
+  var SYMBOLS = [
+    'AAPL',
+    'AMZN',
+    'GOOGL',
+    'YHOO'
+  ];
+
+
+  yahooFinance.historical({
+    symbols: SYMBOLS,
+    from: '2012-01-01',
+    to: '2012-12-31',
+    period: 'd'
+  }).then(data => res.send(data))
+});
+
 
 
 module.exports = router;
