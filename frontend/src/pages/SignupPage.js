@@ -1,24 +1,24 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import * as sessionActions from "../store/session";
 
 function SignupPage() {
   const dispatch = useDispatch();
   const sessionUser = useSelector((state) => state.session.user);
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
+  const [fname, setFname] = useState("");
+  const [lname, setLname] = useState("");
+  const [email, setEmail] = useState(""); 
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState([]);
 
   if (sessionUser) return <Navigate to="/" />;
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (password === confirmPassword) {
+    if (password === password) {
       setErrors([]);
-      return dispatch(sessionActions.signup({ email, username, password }))
+      return dispatch(sessionActions.signup({ fullName: `${fname} ${lname}`, email, password }))
         .catch(async (res) => {
           const data = await res.json();
           if (data && data.errors) setErrors(data.errors);
@@ -57,8 +57,8 @@ function SignupPage() {
                             placeholder="First name"
                             className="border p-4 w-full text-lg mt-8" 
                             type="text"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            value={fname}
+                            onChange={(e) => setFname(e.target.value)}
                             required
                             />
                     
@@ -66,8 +66,8 @@ function SignupPage() {
                             placeholder="Last name"
                             className="border p-4 w-full text-lg mt-8" 
                             type="text"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            value={lname}
+                            onChange={(e) => setLname(e.target.value)}
                             required
                             />
                         </div>
@@ -75,9 +75,9 @@ function SignupPage() {
                         <input
                         placeholder="Email address"
                         className="border p-4 w-full text-lg mt-8" 
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         required
                         />
                 
@@ -85,17 +85,20 @@ function SignupPage() {
                         placeholder="Password (min. 10 characters)"
                         className="border p-4 w-full text-lg mt-8" 
                         type="password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                         required
                         />
                     </div>
-        
-                </form>
+                    <div className="mt-16">
+                        <div>Already started?</div>
+                        <Link className="underline underline-offset-4 hover:text-gray-600" to='/login'>Log in to complete your application</Link>
+                    </div>
                 <div className="absolute bottom-20 right-0 h-200px w-full border-t-2 border-black">
                     <button className="py-4 bg-black text-white font-bold rounded-full px-16 float-right mr-10 mt-20 hover:bg-gray-600" type="submit">Continue</button>
 
                 </div>
+                </form>
 
             </div>
         </div>

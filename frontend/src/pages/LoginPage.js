@@ -79,6 +79,3 @@ function LoginPage() {
 
 export default LoginPage;
 
-
-
-// https://w0.peakpx.com/wallpaper/905/425/HD-wallpaper-im-batman-929-amoled-bat-black-dark-hero-logo-man-marvel-minimal-minimalist-night-simple-super-vector-white.jpg
