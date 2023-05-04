@@ -82,7 +82,6 @@ router.get('/search/multiple', async (req, res) => {
     'YHOO'
   ];
 
-
   yahooFinance.historical({
     symbols: SYMBOLS,
     from: '2012-01-01',

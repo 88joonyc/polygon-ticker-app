@@ -1,13 +1,36 @@
 import React, {useState, useEffect} from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { useDebounce } from "use-debounce";
 
 import logo from './batmanlogo.png'
+import * as sessionActions from '../store/session'
 
 export default function NavBar() {
+    const dispatch = useDispatch();
+
     const [ keyword, setKeyword ] = useState();
     const [ searchQuery ] = useDebounce(keyword, 500);
     const [ bestMatches, setBestMatches ] = useState([])
+    const [showMenu, setShowMenu] = useState(false);
+
+  
+    const openMenu = () => {
+      if (showMenu) return;
+      setShowMenu(true);
+    };
+    
+    useEffect(() => {
+      if (!showMenu) return;
+  
+      const closeMenu = () => {
+        setShowMenu(false);
+      };
+  
+      document.addEventListener('click', closeMenu);
+    
+      return () => document.removeEventListener("click", closeMenu);
+    }, [showMenu]);
 
     useEffect(() => {
         const delayDebounceSearch = setTimeout(async () => {
@@ -24,12 +47,16 @@ export default function NavBar() {
                     console.log(err)
                 }
             }
-
             return () => clearTimeout(delayDebounceSearch)
         }, 500)
     }, [searchQuery])
 
     console.log(bestMatches)
+
+    const logout = (e) => {
+        e.preventDefault();
+        dispatch(sessionActions.logout());
+      };
 
     return (
         <div className="mx-auto sticky  z-40 bg-white">
@@ -60,6 +87,18 @@ export default function NavBar() {
                 <div className="flex gap-8 text-lg font-bold">
                     <Link to='/login' className="hover:text-midnightPurple hover:cursor-pointer">Log In</Link>
                     <Link to='/signup' className="hover:text-midnightPurple hover:cursor-pointer">Sign Up</Link>
+                    <div onClick={openMenu}>Account</div>
+                    <div>
+                    {showMenu && (
+                            <ul className="absolute border top-20 right-20">
+                            {/* <li>{user.username}</li> */}
+                            {/* <li>{user.email}</li> */}
+                            <li>
+                                <button onClick={logout}>Log Out</button>
+                            </li>
+                            </ul>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>
