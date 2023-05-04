@@ -40,7 +40,7 @@ router.post(
         user,
       });
     }),
-  );
+);
 
 router.get(
     '/',
