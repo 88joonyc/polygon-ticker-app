@@ -3,6 +3,7 @@
 ## API endpoints
 
 https://polygon.io/docs/stocks/getting-started
+
 https://www.alphavantage.co/documentation/
 
 # Getting Started with Create React App

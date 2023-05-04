@@ -32,7 +32,7 @@ export default function NavBar() {
     console.log(bestMatches)
 
     return (
-        <div className="mx-auto sticky top-0 right-0 z-40 bg-white">
+        <div className="mx-auto sticky  z-40 bg-white">
             <div className="max-w-[1440px] flex mx-auto items-center">
                 <Link to='/' className="">
                     <img className="w-[120px] h-[20px] object-contain" src={logo} />
