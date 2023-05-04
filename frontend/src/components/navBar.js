@@ -2,6 +2,8 @@ import React, {useState, useEffect} from "react";
 import { Link } from "react-router-dom";
 import { useDebounce } from "use-debounce";
 
+import logo from './batmanlogo.png'
+
 export default function NavBar() {
     const [ keyword, setKeyword ] = useState();
     const [ searchQuery ] = useDebounce(keyword, 500);
@@ -32,9 +34,9 @@ export default function NavBar() {
     return (
         <div className="mx-auto sticky top-0 right-0 z-40 bg-white">
             <div className="max-w-[1440px] flex mx-auto items-center">
-                <div className="">
-                    Logo
-                </div>
+                <Link to='/' className="">
+                    <img className="w-[120px] h-[20px] object-contain" src={logo} />
+                </Link>
 
                 <div className="mx-auto p-4 relative flex justify-center">
                     <input className="p-2 pl-8s text-2xl border w-[600px] rounded-md border-grey-100" placeholder="search" onChange={e => setKeyword(e.target.value)}/>
@@ -56,7 +58,7 @@ export default function NavBar() {
                 </div>
 
                 <div className="flex gap-8 text-lg font-bold">
-                    <div className="hover:text-midnightPurple hover:cursor-pointer">Log In</div>
+                    <Link to='/login' className="hover:text-midnightPurple hover:cursor-pointer">Log In</Link>
                     <div className="hover:text-midnightPurple hover:cursor-pointer">Sign Up</div>
                 </div>
             </div>
