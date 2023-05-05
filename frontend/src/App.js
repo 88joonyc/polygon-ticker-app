@@ -1,26 +1,44 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { BrowserRouter, Route, Switch, Routes  } from 'react-router-dom'
+import react, {useState, useSelector, useEffect} from 'react';
+import { BrowserRouter, Route, Switch, Routes, Navigate, useLocation  } from 'react-router-dom'
+import { useDispatch } from 'react-redux';
 
-import * as sessionActions from "./store/session";
-import LoginPage from './pages/LoginPage';
-import SignupPage from './pages/SignupPage';
+import * as sessionActions from './store/session'
+
+import TickerForm from './components/tickerForm';
+import NavBar from './components/navBar';
+import Ticker from './pages/Ticker';
+import Home from './pages/Home';
+import LoginPage from './pages/LoginPage'
+import SignupPage from './pages/SignupPage'
 import MainRoutes from './components/mainRoutes';
 
 function App() {
   const dispatch = useDispatch();
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [ isLoaded, setLoaded ] = useState(false)
+  // const location = useLocation();
+
   useEffect(() => {
-    dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
-  }, [dispatch]);
+    dispatch(sessionActions.restoreUser()).then(() => setLoaded(true))
+  }, [dispatch])
+
+  if (isLoaded === false) {
+    <Navigate to="/login" />
+  }
+    
+
+  
 
   return (
 
     <BrowserRouter>
+  
       <Routes>
+        
         <Route path='/' element={ <MainRoutes /> } />
         <Route path='/signup' element={<SignupPage />} />
-        <Route path='/login' element={<LoginPage />} />
+        <Route path='/login' element={<LoginPage />} />  
+        {/* <Route  path='/' element={<> <Home /></>} /> */}
+        <Route  path='/ticker/:ticker' element={ <><NavBar /> <Ticker /> </> } />
       </Routes>
     </BrowserRouter>
 

@@ -3,6 +3,7 @@ import react from 'react';
 import { VictoryChart, VictoryArea, VictoryAxis, VictoryLine, VictoryGroup, VictoryScatter } from 'victory';
 import ControlPanel from '../components/controlPanel';
 import Wallet from '../components/wallet';
+import Ticker from './Ticker';
 
 
 export default function Home () {

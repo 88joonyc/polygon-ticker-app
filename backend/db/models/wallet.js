@@ -16,9 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   Wallet.make = async function ({userId, amount: buyingPower, accountType}) {
-
-
-
+    
     const found = await Wallet.findOne({
       where: {
         userId,
@@ -28,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
 
     if (found) {
       const json = await found.update(
-        {'buyingPower': found.buyingPower+ parseInt(buyingPower) },
+        {'buyingPower': found.buyingPower + parseInt(buyingPower) },
         { where: { "id": found.id } }
       );
 

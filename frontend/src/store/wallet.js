@@ -25,10 +25,12 @@ const updateWallet = (wallet) => {
     }
 };
 
+export const wallets = (wallet) => async (dispatch) => {
+    const response = await csrfFetch('/')
+};
+ 
 export const create = (wallet) => async (dispatch) => {
     const { amount, userId, accountType } = wallet;
-
-    console.log(wallet)
 
     const response = await csrfFetch('/api/wallet', {
         method: 'POST',

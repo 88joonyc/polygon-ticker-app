@@ -80,7 +80,7 @@ export default function Wallet () {
                                         </select>
                                     </label>
                                     <label> amount
-                                        <input onChange={e => setAmount(e.target.value)} type="number" className="w-full  border p-2 " required/>
+                                        <input onChange={e => setAmount(e.target.value)} min={0} max={100000} type="number" className="w-full  border p-2 " required/>
                                     </label>
                                     <div className="text-center mt-10">
                                         <div className="text-gray-400">Daily deposit limit: $100,000</div>
