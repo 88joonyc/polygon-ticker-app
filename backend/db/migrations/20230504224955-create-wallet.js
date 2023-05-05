@@ -15,7 +15,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         references: {model: 'Users'}
       },
-      externalAccount: {
+      accountType: {
         type: Sequelize.STRING
       },
       createdAt: {

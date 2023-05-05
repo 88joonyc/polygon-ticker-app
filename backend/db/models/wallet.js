@@ -1,6 +1,6 @@
 'use strict';
-const db = require('./models');
-db.sequelize.init();
+// const db = require('./models');
+// db.sequelize.init();
 
 module.exports = (sequelize, DataTypes) => {
   var Wallet = sequelize.define('Wallet', {
@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     accountType: DataTypes.STRING
   }, {});
   Wallet.associate = function(models) {
-    Wallet.belongsTo(models,User, { foreignKey: "userId" })
+    Wallet.belongsTo(models.User, { foreignKey: "userId" })
   };
 
   Wallet.make = async function ({userId, buyingPower, accountType}) {
@@ -22,6 +22,23 @@ module.exports = (sequelize, DataTypes) => {
       accountType
     });
     return await Wallet.findByPk(wallet.id)
+  };
+
+  Wallet.updateWallet = async function({userId, accountType, amount}) {
+    
+    const wallet = await Wallet.findOne({
+      where: {
+        userId,
+        accountType
+      }
+    });
+    
+    const json = await wallet.update(
+        {'buyingPower': amount },
+        { where: { "id": wallet.id } }
+      );
+
+    return wallet
   };
 
   return Wallet;
