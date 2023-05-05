@@ -3,10 +3,13 @@ import thunk from 'redux-thunk';
 
 import sessionReducer from './session';
 import walletReducer from './wallet';
+import stockReducer from './stock';
 
 const rootReducer = combineReducers({
     session: sessionReducer,
-    wallet: walletReducer
+    wallet: walletReducer,
+    stock: sessionReducer,
+
 });
 
 let enhancer;

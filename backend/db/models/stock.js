@@ -26,6 +26,16 @@ module.exports = (sequelize, DataTypes) => {
     Stock.belongsTo(models.User, { foreignKey: 'userId' })
   };
 
+  Stock.all = async function ({ id }) {
+    const stocks = await Stock.findAll({
+      where: {
+        userId: id
+      }
+    })
+    
+    return await stocks
+  };
+
   Stock.purchase = async function ({ ticker, originalPrice, qty, userId }) {
     const stock = await Stock.create({
       ticker,
