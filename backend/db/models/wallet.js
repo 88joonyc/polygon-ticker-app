@@ -1,26 +1,25 @@
 'use strict';
+const db = require('./models');
+db.sequelize.init();
+
 module.exports = (sequelize, DataTypes) => {
-  const Wallet = sequelize.define('Wallet', {
+  var Wallet = sequelize.define('Wallet', {
     buyingPower: DataTypes.INTEGER,
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: {
-          tableName: 'Users'
-        }
-      }
     },
-    externalAccount: DataTypes.STRING
+    accountType: DataTypes.STRING
   }, {});
   Wallet.associate = function(models) {
-    Wallet.belongsTo(models,User, {foreignKey: "userId"})
+    Wallet.belongsTo(models,User, { foreignKey: "userId" })
   };
 
-  Wallet.make = async function ({userId, buyingPower}) {
+  Wallet.make = async function ({userId, buyingPower, accountType}) {
     const wallet = await Wallet.create({
       buyingPower,
-      userId
+      userId,
+      accountType
     });
     return await Wallet.findByPk(wallet.id)
   };

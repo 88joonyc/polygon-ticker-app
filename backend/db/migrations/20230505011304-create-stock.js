@@ -1,22 +1,28 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Wallets', {
+    return queryInterface.createTable('Stocks', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      buyingPower: {
-        type: Sequelize.INTEGER
+      ticker: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      purchasePrice: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      qty: {
+        type: Sequelize.INTEGER,
+        allowNull: false
       },
       userId: {
         type: Sequelize.INTEGER,
         references: {model: 'Users'}
-      },
-      externalAccount: {
-        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -31,6 +37,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Wallets');
+    return queryInterface.dropTable('Stocks');
   }
 };
