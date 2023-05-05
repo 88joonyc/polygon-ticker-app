@@ -34,11 +34,11 @@ module.exports = (sequelize, DataTypes) => {
     });
     
     const json = await wallet.update(
-        {'buyingPower': amount },
+        {'buyingPower': wallet.buyingPower - amount },
         { where: { "id": wallet.id } }
       );
 
-    return wallet
+    return await Wallet.findByPk(wallet.id)
   };
 
   return Wallet;

@@ -12,7 +12,11 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      purchasePrice: {
+      originalPrice: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      lastPrice: {
         type: Sequelize.INTEGER,
         allowNull: false
       },
