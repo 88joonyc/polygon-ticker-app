@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Switch, Routes, Navigate, useLocation  } from 're
 import { useDispatch } from 'react-redux';
 
 import * as sessionActions from './store/session'
+import { wallets } from './store/wallet';
 
 import TickerForm from './components/tickerForm';
 import NavBar from './components/navBar';
@@ -17,8 +18,10 @@ function App() {
   const [ isLoaded, setLoaded ] = useState(false)
   // const location = useLocation();
 
+
   useEffect(() => {
     dispatch(sessionActions.restoreUser()).then(() => setLoaded(true))
+    dispatch(wallets(1))
   }, [dispatch])
 
   if (isLoaded === false) {

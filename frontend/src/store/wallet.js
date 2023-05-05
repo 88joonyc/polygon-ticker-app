@@ -4,10 +4,10 @@ const LOAD = 'wallet/load'
 const CREATE_WALLET = 'wallet/createWallet';
 const UPDATE_WALLET = 'wallet/updateWallet';
 
-const load = (wallet) => {
+const load = (wallets) => {
     return {
-        type: load,
-        payload: wallet
+        type: LOAD,
+        payload: wallets
     }
 };
 
@@ -25,8 +25,14 @@ const updateWallet = (wallet) => {
     }
 };
 
-export const wallets = (wallet) => async (dispatch) => {
-    const response = await csrfFetch('/')
+export const wallets = (id) => async (dispatch) => {
+    const response = await csrfFetch(`/api/wallet/${id}`)
+
+    
+    const data = await response.json();
+    dispatch(load(data.wallets))
+    
+    return response
 };
  
 export const create = (wallet) => async (dispatch) => {
@@ -65,7 +71,7 @@ export const update = (wallet) => async (dispatch) => {
 };
 
 
-const initialState = { user: null };
+const initialState = { wallet: null };
 
 
 const walletReducer = (state = initialState, action) => {
@@ -73,7 +79,7 @@ const walletReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOAD: 
             newState = Object.assign({}, state);
-            newState.wallet = action.payload;
+            newState = [...action.payload];
             return newState;
         case CREATE_WALLET:
         case UPDATE_WALLET:
