@@ -8,7 +8,7 @@ import stockReducer from './stock';
 const rootReducer = combineReducers({
     session: sessionReducer,
     wallet: walletReducer,
-    stock: sessionReducer,
+    stock: stockReducer,
 
 });
 

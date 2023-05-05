@@ -1,12 +1,19 @@
-const LOAD = 'stock/LOAD'
+import { csrfFetch } from "./csrf";
+
+const LOAD = 'stock/load'
 
 const load = stocks => ({
     type: LOAD,
     payload: stocks
 });
 
-const all = function () {
+export const stocks = id => async dispatch => {
+    const response = await csrfFetch(`/api/stock/${id}`)
+    const data = await response.json();
 
+    dispatch(load(data.stocks))
+
+    return response
 }
 
 const initialState = { stock: null };
@@ -17,6 +24,7 @@ const stockReducer = (state = initialState, action) => {
         case LOAD:
             newState = Object.assign({}, state);
             newState = [...action.payload];
+            return newState
         default:
             return state
     }

@@ -12,6 +12,7 @@ import Home from './pages/Home';
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import MainRoutes from './components/mainRoutes';
+import { stocks } from './store/stock';
 
 function App() {
   const dispatch = useDispatch();
@@ -22,6 +23,7 @@ function App() {
   useEffect(() => {
     dispatch(sessionActions.restoreUser()).then(() => setLoaded(true))
     dispatch(wallets(1))
+    dispatch(stocks(1))
   }, [dispatch])
 
   if (isLoaded === false) {
