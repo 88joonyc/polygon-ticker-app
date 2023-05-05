@@ -15,13 +15,32 @@ module.exports = (sequelize, DataTypes) => {
     Wallet.belongsTo(models.User, { foreignKey: "userId" })
   };
 
-  Wallet.make = async function ({userId, buyingPower, accountType}) {
-    const wallet = await Wallet.create({
-      buyingPower,
-      userId,
-      accountType
+  Wallet.make = async function ({userId, amount: buyingPower, accountType}) {
+
+
+
+    const found = await Wallet.findOne({
+      where: {
+        userId,
+        accountType
+      }
     });
-    return await Wallet.findByPk(wallet.id)
+
+    if (found) {
+      const json = await found.update(
+        {'buyingPower': found.buyingPower+ parseInt(buyingPower) },
+        { where: { "id": found.id } }
+      );
+
+      return await Wallet.findByPk(found.id)
+    } else {
+      const wallet = await Wallet.create({
+        buyingPower,
+        userId,
+        accountType
+      });
+      return await Wallet.findByPk(wallet.id)
+    }
   };
 
   Wallet.updateWallet = async function({userId, accountType, amount}) {
@@ -34,7 +53,7 @@ module.exports = (sequelize, DataTypes) => {
     });
     
     const json = await wallet.update(
-        {'buyingPower': wallet.buyingPower - amount },
+        {'buyingPower': found.buyingPower - parseInt(amount) },
         { where: { "id": wallet.id } }
       );
 

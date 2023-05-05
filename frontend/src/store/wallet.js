@@ -1,7 +1,15 @@
 import { csrfFetch } from './csrf';
 
+const LOAD = 'wallet/load'
 const CREATE_WALLET = 'wallet/createWallet';
-const UPDATE_WALLET = '/wallet/updateWallet';
+const UPDATE_WALLET = 'wallet/updateWallet';
+
+const load = (wallet) => {
+    return {
+        type: load,
+        payload: wallet
+    }
+};
 
 const createWallet = (wallet) => {
     return {
@@ -18,26 +26,28 @@ const updateWallet = (wallet) => {
 };
 
 export const create = (wallet) => async (dispatch) => {
-    const { buyingPower, userId, accountType } = wallet;
+    const { amount, userId, accountType } = wallet;
 
-    const wallet = await csrfFetch('/api/wallet', {
+    console.log(wallet)
+
+    const response = await csrfFetch('/api/wallet', {
         method: 'POST',
         body: JSON.stringify({
-            buyingPower,
+            amount,
             userId,
             accountType,
         }),
     });
-    const data = await wallet.json();
+    const data = await response.json();
     dispatch(createWallet(data.wallet));
-    return wallet;
+    return response;
 
 };
 
 export const update = (wallet) => async (dispatch) => {
     const { userId, accountType, amount } = wallet;
 
-    const wallet = await csrfFetch('/api/wallet/update', {
+    const response = await csrfFetch('/api/wallet/update', {
         method: 'POST',
         body: JSON.stringify({
             userId,
@@ -46,18 +56,29 @@ export const update = (wallet) => async (dispatch) => {
         }),
     });
 
-    const data = await wallet.json();
+    const data = await response.json();
     dispatch(updateWallet(data.wallet));
-    return wallet
+    return response
 
 };
+
+
+const initialState = { user: null };
+
 
 const walletReducer = (state = initialState, action) => {
     let newState;
     switch (action.type) {
+        case LOAD: 
+            newState = Object.assign({}, state);
+            newState.wallet = action.payload;
+            return newState;
         case CREATE_WALLET:
-            newState = Object.assign({}, state)
         case UPDATE_WALLET:
+            return {
+                ...state,
+                [action.wallet.id]: action.wallet,
+            }
 
         default:
             return state

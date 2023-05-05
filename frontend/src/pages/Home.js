@@ -22,7 +22,6 @@ export default function Home () {
                         </VictoryChart>
                      </div>
                         <Wallet />
-                        <ControlPanel />
               
                     </div>
                     <ControlPanel />
