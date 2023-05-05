@@ -22,7 +22,15 @@ function LoginPage() {
         const data = await res.json();
         if (data && data.errors) setErrors(data.errors);
       });
-  }
+  };
+
+  const handleDemo = function (e) {
+    e.preventDefault();
+    return dispatch(sessionActions.login({ credential:'demo@demo.io', password: 'password' }))
+      .catch(async (res) => {
+        const data = await res.json();
+      });
+  };
 
   return (
     <>
@@ -66,7 +74,7 @@ function LoginPage() {
                     <span class="bg-white px-4 text-sm text-gray-500">or</span>
                 </div>
                 </div>
-                <button className='ml-20 mt-10 rounded-full py-4 px-14 bg-midnightPurple font-bold text-white' type="submit">Log in with demo</button>
+                <button onClick={handleDemo} className='ml-20 mt-10 rounded-full py-4 px-14 bg-midnightPurple font-bold text-white' type="submit">Log in with demo</button>
                 <div className='ml-20 mt-10  '>
                     Not in Batman's Hood? <Link to='/signup' className='text-midnightPurple underline font-bold underline-offset-4 hover:text-purple-800 '>Create an account</Link>
                 </div>

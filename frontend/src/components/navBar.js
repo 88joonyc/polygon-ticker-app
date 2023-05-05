@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useDebounce } from "use-debounce";
 
@@ -12,8 +12,11 @@ export default function NavBar() {
     const [ keyword, setKeyword ] = useState();
     const [ searchQuery ] = useDebounce(keyword, 500);
     const [ bestMatches, setBestMatches ] = useState([])
-    const [showMenu, setShowMenu] = useState(false);
+    const [ showMenu, setShowMenu ] = useState(false);
 
+    const session = useSelector(state => state.session.user)
+
+    
   
     const openMenu = () => {
       if (showMenu) return;
@@ -85,20 +88,25 @@ export default function NavBar() {
                 </div>
 
                 <div className="flex gap-8 text-lg font-bold">
-                    <Link to='/login' className="hover:text-midnightPurple hover:cursor-pointer">Log In</Link>
-                    <Link to='/signup' className="hover:text-midnightPurple hover:cursor-pointer">Sign Up</Link>
-                    <div onClick={openMenu}>Account</div>
-                    <div>
-                    {showMenu && (
+                    {!session&&<>
+                        <Link to='/login' className="hover:text-midnightPurple hover:cursor-pointer">Log In</Link>
+                        <Link to='/signup' className="hover:text-midnightPurple hover:cursor-pointer">Sign Up</Link>
+                    </>}
+                    {session&&<>
+                        <div className="hover:cursor-pointer" onClick={openMenu}>Account</div>
+                        <div>
+                        {showMenu && (
                             <ul className="absolute border top-20 right-20">
-                            {/* <li>{user.username}</li> */}
-                            {/* <li>{user.email}</li> */}
-                            <li>
-                                <button onClick={logout}>Log Out</button>
-                            </li>
-                            </ul>
-                        )}
-                    </div>
+                                {/* <li>{user.username}</li> */}
+                                {/* <li>{user.email}</li> */}
+                                <li>
+                                    <div>{session?.fullName}</div>
+                                    <button onClick={logout}>Log Out</button>
+                                </li>
+                                </ul>
+                            )}
+                        </div>
+                    </>}
                 </div>
             </div>
         </div>
