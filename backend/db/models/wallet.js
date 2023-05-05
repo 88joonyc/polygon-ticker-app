@@ -15,8 +15,18 @@ module.exports = (sequelize, DataTypes) => {
     Wallet.belongsTo(models.User, { foreignKey: "userId" })
   };
 
+  Wallet.all = async function ({ id }) {
+    const wallet = await Wallet.findAll({
+      where: {
+        userId: id,
+      }
+    });
+
+    return await wallet
+  }
+
   Wallet.make = async function ({userId, amount: buyingPower, accountType}) {
-    
+
     const found = await Wallet.findOne({
       where: {
         userId,

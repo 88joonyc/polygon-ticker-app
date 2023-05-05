@@ -4,6 +4,16 @@ const asyncHandler = require('express-async-handler');
 
 const { Wallet } = require('../../db/models');
 
+router.get('/:id', asyncHandler(async (req,res) => {
+        const { id } = req.params;
+        const wallets = await Wallet.all({ id });
+
+        return res.json({
+            wallets,
+        })
+    })
+);
+
 router.post('/', asyncHandler(async (req, res) => {
         const {   userId, accountType, amount } = req.body;
         const wallet = await Wallet.make({   userId, accountType, amount });
