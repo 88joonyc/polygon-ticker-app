@@ -4,6 +4,7 @@ import { VictoryChart, VictoryArea, VictoryAxis, VictoryLine, VictoryGroup, Vict
 import ControlPanel from '../components/controlPanel';
 import Wallet from '../components/wallet';
 import Ticker from './Ticker';
+import SidePanel from '../components/sidePanel';
 
 
 export default function Home () {
@@ -25,7 +26,7 @@ export default function Home () {
                         <Wallet />
               
                     </div>
-                    <ControlPanel />
+                    <SidePanel />
                 </div>
             </div>
         </>

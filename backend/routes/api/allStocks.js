@@ -73,23 +73,35 @@ router.get('/search/by/:keyword', (req, res) => {
 });
 
 // yahoo finance - fetches multiple stocks for user homepage
-router.get('/search/multiple', async (req, res) => {
-  
-  var SYMBOLS = [
-    'AAPL',
-    'AMZN',
-    'GOOGL',
-    'YHOO'
-  ];
+router.post('/search/multiple', async (req, res) => {
 
+  var { symbols, from, to } = req.body
+  
   yahooFinance.historical({
-    symbols: SYMBOLS,
-    from: '2012-01-01',
-    to: '2012-12-31',
+    symbols,
+    from,
+    to,
     period: 'd'
   }).then(data => res.send(data))
 });
 
+
+// router.get('/search/multiple', async (req, res) => {
+  
+//   var SYMBOLS = [
+//     'AAPL',
+//     'AMZN',
+//     'GOOGL',
+//     'YHOO'
+//   ];
+
+//   yahooFinance.historical({
+//     symbols: SYMBOLS,
+//     from: '2012-01-01',
+//     to: '2012-12-31',
+//     period: 'd'
+//   }).then(data => res.send(data))
+// });
 
 
 module.exports = router;
