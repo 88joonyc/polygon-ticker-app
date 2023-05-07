@@ -16,14 +16,14 @@ export const stocks = id => async dispatch => {
     return response
 }
 
-const initialState = { stock: null };
+const initialState = { stock: [] };
 
 const stockReducer = (state = initialState, action) => {
     let newState;
     switch(action.type) {
         case LOAD:
             newState = Object.assign({}, state);
-            newState = [...action.payload];
+            newState.stock = [...action.payload];
             return newState
         default:
             return state

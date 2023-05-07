@@ -71,7 +71,7 @@ export const update = (wallet) => async (dispatch) => {
 };
 
 
-const initialState = { wallet: null };
+const initialState = { wallet: [] };
 
 
 const walletReducer = (state = initialState, action) => {
@@ -79,7 +79,7 @@ const walletReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOAD: 
             newState = Object.assign({}, state);
-            newState = [...action.payload];
+            newState.wallet = [...action.payload];
             return newState;
         case CREATE_WALLET:
         case UPDATE_WALLET:

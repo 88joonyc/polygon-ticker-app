@@ -15,14 +15,13 @@ export default function Wallet () {
     const dispatch = useDispatch(); 
 
     const session = useSelector(state => state.session.user);
+    const wallet = useSelector(state => state.wallet.wallet)
 
     const [toggle, setToggle] = useState(false);
     const [openWallet, setOpenWallet] = useState(false);
 
     const [accountType, setAccountType] = useState()
     const [amount, setAmount] = useState()
-
-    const wallet = useSelector(state => state.wallet)
 
     const deposit = async function (e) {
         e.preventDefault();
@@ -39,20 +38,31 @@ export default function Wallet () {
         <>
             <div className={`transition-[height]  linear duration-[.2s] ${toggle ? "h-[330px]" : " h-[130px]"} relative`}>
                 <div className="relative ">
-                    <div onClick={() =>  setToggle(!toggle)} className={`w-full h-20 py-16 border-none ${toggle ? 'text-white bg-midnightPurple ' : 'text-black bg-white'} hover:bg-midnightPurple  hover:text-white hover:cursor-pointer flex flex-col justify-center border-b`}>
+                    <div onClick={() =>  setToggle(!toggle)} className={`w-full h-20 py-16 border-t border-b ${toggle ? 'text-white bg-midnightPurple ' : 'text-black bg-white'} hover:bg-midnightPurple  hover:text-white hover:cursor-pointer flex flex-col justify-center border-b`}>
                         <div className='flex mx-8 flex-col justify-between relative '>
-                            <div>
+                            <div className="flex justify-between">
+
                                 <span className=''>{ wallet ? 'Buying Power' : 'Add Wallet'}</span>
-                                {wallet&&<span className=''>xxx</span>}
+                                {wallet.length > 0&&<span className='font-bold'>{wallet?.reduce((acc , curr) => acc.buyingPower + curr.buyingPower)}</span>}
                             </div>
                         </div>
                     </div>
                     <>
-                        <div className={`w-full mx-auto border absolute top-[130px] border-none hover:text-black transition-[height]  linear duration-[.2s] ${toggle ? 'bg-midnightPurple   h-[200px] ' : '  h-0 ' }`}>
-                            <div className={`${toggle ? 'block' : 'hidden'}`}>
-                                <button onClick={() => setOpenWallet(!openWallet)} className="px-16 py-4 bg-white rounded-full ml-16 ">Deposit Funds</button>
+                        <div className={`w-full mx-auto border absolute top-[130px] border-t hover:text-black transition-[height]  linear duration-[.2s] ${toggle ? 'bg-midnightPurple   h-[250px] ' : '  h-0 ' }`}>
+                            <div className={`grid grid-cols-[1fr,1fr] mx-8 mt-8  ${toggle ? 'block' : 'hidden'}`}>
                                 <div class="space-y-2">
-
+                                    {wallet && wallet?.map(funds => (
+                                        <>
+                                            <div className="border-b text-white flex justify-between mb-8">
+                                                <div className="">{funds.accountType} </div>
+                                                <div>{funds.buyingPower} </div>
+                                            </div>
+                                        </>
+                                    ))}
+                                    <button onClick={() => setOpenWallet(!openWallet)} className="px-16 py-4 bg-white w-full rounded-full ">Deposit Funds</button>
+                                </div>
+                                <div className="text-white mx-8">
+                                Buying power represents the total value of assets you can purchase.
                                 </div>
 
                             </div>
