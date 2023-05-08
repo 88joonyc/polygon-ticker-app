@@ -48,7 +48,7 @@ export default function SidePanel ({data, list}) {
 
     return (
         <>
-            <div className='border h-[90vh]' >
+            <div className='border h-[90vh] overflow-y-scroll no-scrollbar' >
                 <div className='w-full border-b p-4 '>
                     <div className='w-full '>Stocks</div>
                 </div>

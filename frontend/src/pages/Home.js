@@ -92,8 +92,8 @@ export default function Home () {
     return (
         <>
             <div className='max-w-[1440px] mx-auto'> 
-                <div className='grid grid-cols-[3fr,1fr] px-4'>
-                     <div className='mx-10'> {/* // may change */}
+                <div className='grid grid-cols-[3fr,1fr] px-6'>
+                     <div className='mr-4'> {/* // may change */}
                      <h1 className={`text-4xl `}>
                         ${(list[0] )?.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                      </h1>
@@ -102,7 +102,7 @@ export default function Home () {
                      </div>
                      <div>
 
-                        <VictoryChart padding={{ top: 50, bottom: 50, right: 0, left: 0 }}>
+                        <VictoryChart padding={{ top: 50, bottom: 50, right: -50, left: -50 }}>
                             {/* <VictoryArea data={data.AMZN} style={{ data: {fill: "#280137" }}} y="close" /> */}
                             {/* <VictoryLine data={list}  style={{ data: {stroke: "#280137" }}} y="close" /> */}
                             {/* <VictoryLine data={data.AAPL}  style={{ data: {stroke: "#280137" }}} y="close" /> */}
