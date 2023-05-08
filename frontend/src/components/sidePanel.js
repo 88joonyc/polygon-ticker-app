@@ -47,7 +47,7 @@ export default function SidePanel ({data, list}) {
 
     return (
         <>
-            <div className='border h-fit' >
+            <div className='border h-[90vh]' >
                 <div className='w-full border-b p-4 '>
                     <div className='w-full '>Stocks</div>
                 </div>
@@ -67,7 +67,7 @@ export default function SidePanel ({data, list}) {
                                     {/* <VictoryLine data={data.AAPL}  style={{ data: {stroke: "#280137" }}} y="close" /> */}
                                     <VictoryGroup     >
                                         <VictoryLine data={data?.[stock?.ticker]} y="close"  />
-                                        <VictoryAxis  style={{ axis: {stroke: "none"} }} invertAxis offsetY={150} />
+                                        <VictoryAxis  style={{ ticks: {stroke: "grey"} }} invertAxis offsetY={150} tickFormat={() => ''} />
                                         {/* <VictoryScatter /> */}
                                     </VictoryGroup>
                                 </VictoryChart>
