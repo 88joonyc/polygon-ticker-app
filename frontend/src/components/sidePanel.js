@@ -1,52 +1,81 @@
-import react, { useEffect } from 'react';
+import react, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { csrfFetch } from '../store/csrf';
+import { VictoryChart, VictoryArea, VictoryAxis, VictoryLine, VictoryGroup, VictoryScatter } from 'victory';
 
-export default function SidePanel () {
+export default function SidePanel ({data}) {
+
+    // const [data, setData] = useState({});
 
     const stocks = useSelector(state => state.stock.stock)
+    // const today = new Date();
+    // var todaysDate = today.getFullYear() + '-' + today.getMonth() + '-' + today.getDay();
+    // var dayBefore =  new Date(today.setDate(today.getDate()-2)).toISOString().split('T')[0]
+    
+    // var dayCounter = function(days) {
+    //     return new Date(today.setDate(today.getDate()-days)).toISOString().split('T')[0]
+    // }
 
-    useEffect(() => {
-        async function run() {
-            const response = await csrfFetch('http://localhost:5314/api/ticker/search/multiple', {
-                method: 'POST',
-                'Content-type': 'application/JSON',
-                body: JSON.stringify({
-                    symbols: [
-                        stocks.map(stock => stock.ticker)
-                    ]
-                })
-            })
+    // useEffect(() => {
+    //     async function run() {
+    //         let response
+    //         try{
+    //             response = await csrfFetch('http://localhost:5314/api/ticker/search/multiple', {
+    //                 method: 'POST',
+    //                 'Content-type': 'application/JSON',
+    //                 body: JSON.stringify({
+    //                     symbols: stocks?.map(stock => stock.ticker),
+    //                     to: dayBefore,
+    //                     from: dayCounter(1),
+    //                 })
+    //             })
+    //         } catch(err) {
+    //             console.log(err)
+    //         }
+            
+    //         const data = await response.json()
+    //         setData(data)
 
-            const data = await response.json()
-
-            console.log('mrmesadas-----------------------',data)
-
-        }
-
-        // async function plot() {
-        //     const response = await csrfFetch('/api/ticker/search/multiple', {
-        //         method: 'POST',
-        //         'Content-type': 'application/JSON',
-        //     }) 
-        // }
-        // run()
-    }, [stocks])
+            
+    //     }
+        
+    //     if (stocks.length > 0) {
+    //         run()
+    //     }
+    // }, [stocks])
     
 
     return (
         <>
-            <div className='border' >
-                <div className='w-full border-b p-4 h-[50px]'>
+            <div className='border h-fit' >
+                <div className='w-full border-b p-4 '>
                     <div className='w-full '>Stocks</div>
                 </div>
                 <div>
-                    {stocks&&stocks.map(stock => (
+                    {stocks&&data&&stocks?.map(stock => (
                         <>
-                            <div className='p-6 flex justify-between'>
-                                <span>{stock.ticker}</span>
-                                <span>{stock.qty}</span>
-                                <span>{stock.originalPrice}</span>
+                            <div className={`p-4 flex justify-between ${data?.[stock?.ticker]?.[0]?.close > stock.originalPrice ? 'text-green-500' : 'text-red-500' }`}>
+                                <div className='flex flex-col'>
+                                    <span>{stock.ticker}</span>
+                                    <span>{stock.qty}</span>
+                                </div>
+                                <div className='h-16'>
+                                <VictoryChart >
+                                    {/* <VictoryArea data={data.AMZN} style={{ data: {fill: "#280137" }}} y="close" /> */}
+                                    {/* <VictoryLine data={list}  style={{ data: {stroke: "#280137" }}} y="close" /> */}
+                                    {/* <VictoryLine data={data.AAPL}  style={{ data: {stroke: "#280137" }}} y="close" /> */}
+                                    <VictoryGroup    y="close" >
+                                        <VictoryLine   />
+                                        <VictoryAxis style={{ axis: {stroke: "none"} }} />
+                                        {/* <VictoryScatter /> */}
+                                    </VictoryGroup>
+                                </VictoryChart>
+
+                                </div>
+                                <div>
+                                    <span>{}</span>
+                                    <span>{((data?.[stock?.ticker]?.[0]?.close - stock.originalPrice)*stock.qty).toFixed(2)}</span>
+                                </div>
                             </div>
                         </>
                     ))}

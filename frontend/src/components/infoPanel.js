@@ -9,6 +9,8 @@ export default function InfoPanel({ticker}) {
     var todaysDate = today.getFullYear() + '-' + today.getMonth() + '-' + today.getDay();
     var dayBefore =  new Date(today.setDate(today.getDate()-2)).toISOString().split('T')[0]
     
+
+    // export this fropm a tool
     var dayCounter = function(days) {
         return new Date(today.setDate(today.getDate()-days)).toISOString().split('T')[0]
     }

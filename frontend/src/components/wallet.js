@@ -38,7 +38,7 @@ export default function Wallet () {
         <>
             <div className={`transition-[height]  linear duration-[.2s] ${toggle ? "h-[330px]" : " h-[130px]"} relative`}>
                 <div className="relative ">
-                    <div onClick={() =>  setToggle(!toggle)} className={`w-full h-20 py-16 border-t border-b ${toggle ? 'text-white bg-midnightPurple ' : 'text-black bg-white'} hover:bg-midnightPurple  hover:text-white hover:cursor-pointer flex flex-col justify-center border-b`}>
+                    <div onClick={() =>  setToggle(!toggle)} className={`w-full h-20 py-16 border-t border-b ${toggle ? 'text-white bg-midnightPurple rounded-t-xl ' : 'text-black bg-white'} hover:bg-midnightPurple  hover:text-white hover:cursor-pointer flex flex-col justify-center border-b`}>
                         <div className='flex mx-8 flex-col justify-between relative '>
                             <div className="flex justify-between">
 
@@ -48,7 +48,7 @@ export default function Wallet () {
                         </div>
                     </div>
                     <>
-                        <div className={`w-full mx-auto border absolute top-[130px] border-t hover:text-black transition-[height]  linear duration-[.2s] ${toggle ? 'bg-midnightPurple   h-[250px] ' : '  h-0 ' }`}>
+                        <div className={`w-full mx-auto border absolute top-[130px] border-t hover:text-black transition-[height] rounded-b-xl linear duration-[.2s] ${toggle ? 'bg-midnightPurple   h-[250px] ' : '  h-0 ' }`}>
                             <div className={`grid grid-cols-[1fr,1fr] mx-8 mt-8  ${toggle ? 'block' : 'hidden'}`}>
                                 <div class="space-y-2">
                                     {wallet && wallet?.map(funds => (
