@@ -60,7 +60,7 @@ export default function SidePanel ({data, list}) {
                                     <span>{stock.qty}</span>
                                 </div>
                                 <div className='h-16'>
-                                    {console.log(list)}
+                     
                                 <VictoryChart >
                                     {/* <VictoryArea data={data.AMZN} style={{ data: {fill: "#280137" }}} y="close" /> */}
                                     {/* <VictoryLine data={list}  style={{ data: {stroke: "#280137" }}} y="close" /> */}
@@ -75,7 +75,7 @@ export default function SidePanel ({data, list}) {
                                 </div>
                                 <div>
                                     <span>{}</span>
-                                    <span>{((data?.[stock?.ticker]?.[0]?.close - stock.originalPrice)*stock.qty).toFixed(2)}</span>
+                                    <span>{((data?.[stock?.ticker]?.[0]?.close - stock.originalPrice)*stock.qty).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
                                 </div>
                             </div>
                         </>

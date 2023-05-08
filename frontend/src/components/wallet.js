@@ -17,8 +17,8 @@ export default function Wallet () {
     const session = useSelector(state => state.session.user);
     const wallet = useSelector(state => state.wallet.wallet)
 
-    const [toggle, setToggle] = useState(false);
-    const [openWallet, setOpenWallet] = useState(false);
+    const [toggle, setToggle] = useState(true);// temporary alwayus open
+    const [openWallet, setOpenWallet] = useState(false); 
 
     const [accountType, setAccountType] = useState()
     const [amount, setAmount] = useState()
@@ -38,7 +38,7 @@ export default function Wallet () {
         <>
             <div className={`transition-[height]  linear duration-[.2s] ${toggle ? "h-[330px]" : " h-[130px]"} relative`}>
                 <div className="relative ">
-                    <div onClick={() =>  setToggle(!toggle)} className={`w-full h-20 py-16 border-t border-b ${toggle ? 'bg- rounded-t-xl ' : 'text-black bg-white'} hover:bg-   hover:cursor-pointer flex flex-col justify-center border-b`}>
+                    <div onClick={() =>  setToggle(toggle)} className={`w-full h-20 py-16 border-t border-b ${toggle ? 'bg- rounded-t-xl border' : 'text-black bg-white'} hover:bg-   hover:cursor- flex flex-col justify-center border-b`}>
                         <div className='flex mx-8 flex-col justify-between relative '>
                             <div className="flex justify-between">
 

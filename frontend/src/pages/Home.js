@@ -46,7 +46,7 @@ export default function Home () {
             }
             const data = await response.json()
             setData(data)
-       
+            console.log(data)
             return data
         }
 
@@ -57,7 +57,6 @@ export default function Home () {
                 for (let j = 0; j < val.length; j++) {
                     
                     if (list?.length == val?.length) {
-                        console.log('here',entries.obj)
                         list[j] = (list[j]+(val[j]?.close * entries.obj[key]?.qty  ))
                     } else {
                         list.push(val[j]?.close)
@@ -95,8 +94,8 @@ export default function Home () {
             <div className='max-w-[1440px] mx-auto'> 
                 <div className='grid grid-cols-[3fr,1fr]'>
                      <div className='mx-10'> {/* // may change */}
-                     <h1 className={`text-3xl ${list[0] > avg ? 'text-green-500' : 'text-red-500'}`}>
-                        ${(list[0] - avg).toFixed(2)}
+                     <h1 className={`text-4xl ${list[0] > avg ? 'text-green-500' : 'text-red-500'}`}>
+                        ${(list[0] - avg).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                      </h1>
                      <div>
 
