@@ -104,7 +104,7 @@ export default function Home () {
                             {/* <VictoryArea data={data.AMZN} style={{ data: {fill: "#280137" }}} y="close" /> */}
                             {/* <VictoryLine data={list}  style={{ data: {stroke: "#280137" }}} y="close" /> */}
                             {/* <VictoryLine data={data.AAPL}  style={{ data: {stroke: "#280137" }}} y="close" /> */}
-                             <VictoryGroup  data={list}  y="close" >
+                             <VictoryGroup  data={list}  y="close" x="none" >
                                 <VictoryLine style={{ data: {stroke: `${list[0] > avg ? "#22c55e" : "#ef4444"}  ` }}}  />
                                 <VictoryAxis style={{ axis: {stroke: "none"} }} />
                                 {/* <VictoryScatter /> */}

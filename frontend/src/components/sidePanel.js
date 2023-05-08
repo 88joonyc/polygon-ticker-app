@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { csrfFetch } from '../store/csrf';
 import { VictoryChart, VictoryArea, VictoryAxis, VictoryLine, VictoryGroup, VictoryScatter } from 'victory';
 
-export default function SidePanel ({data}) {
+export default function SidePanel ({data, list}) {
 
     // const [data, setData] = useState({});
 
@@ -60,13 +60,14 @@ export default function SidePanel ({data}) {
                                     <span>{stock.qty}</span>
                                 </div>
                                 <div className='h-16'>
+                                    {console.log(list)}
                                 <VictoryChart >
                                     {/* <VictoryArea data={data.AMZN} style={{ data: {fill: "#280137" }}} y="close" /> */}
                                     {/* <VictoryLine data={list}  style={{ data: {stroke: "#280137" }}} y="close" /> */}
                                     {/* <VictoryLine data={data.AAPL}  style={{ data: {stroke: "#280137" }}} y="close" /> */}
-                                    <VictoryGroup    y="close" >
-                                        <VictoryLine   />
-                                        <VictoryAxis style={{ axis: {stroke: "none"} }} />
+                                    <VictoryGroup     >
+                                        <VictoryLine data={data?.[stock?.ticker]} y="close"  />
+                                        <VictoryAxis  style={{ axis: {stroke: "none"} }} invertAxis offsetY={150} />
                                         {/* <VictoryScatter /> */}
                                     </VictoryGroup>
                                 </VictoryChart>
