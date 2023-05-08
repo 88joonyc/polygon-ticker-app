@@ -50,7 +50,7 @@ export default function Wallet () {
                     <>
                         <div className={`w-full mx-auto border absolute top-[130px] border-t hover:text-black transition-[height] rounded-b-xl linear duration-[.2s] ${toggle ? 'bg- drop-shadow-xl  h-[250px] ' : '  h-0 ' }`}>
                             <div className={`grid grid-cols-[1fr,1fr] mx-8 mt-8  ${toggle ? 'block' : 'hidden'}`}>
-                                <div class="space-y-2">
+                                <div class="">
                                     {wallet && wallet?.map(funds => (
                                         <>
                                             <div className="border-b text-black flex justify-between mb-8">

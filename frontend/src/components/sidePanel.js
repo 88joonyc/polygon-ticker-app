@@ -2,6 +2,7 @@ import react, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { csrfFetch } from '../store/csrf';
 import { VictoryChart, VictoryArea, VictoryAxis, VictoryLine, VictoryGroup, VictoryScatter } from 'victory';
+import { Link } from 'react-router-dom';
 
 export default function SidePanel ({data, list}) {
 
@@ -54,30 +55,32 @@ export default function SidePanel ({data, list}) {
                 <div>
                     {stocks&&data&&stocks?.map(stock => (
                         <>
-                            <div className={`p-4 flex justify-between ${data?.[stock?.ticker]?.[0]?.close > stock.originalPrice ? 'text-green-500' : 'text-red-500' }`}>
-                                <div className='flex flex-col'>
-                                    <span>{stock.ticker}</span>
-                                    <span>{stock.qty}</span>
-                                </div>
-                                <div className='h-16'>
-                     
-                                <VictoryChart >
-                                    {/* <VictoryArea data={data.AMZN} style={{ data: {fill: "#280137" }}} y="close" /> */}
-                                    {/* <VictoryLine data={list}  style={{ data: {stroke: "#280137" }}} y="close" /> */}
-                                    {/* <VictoryLine data={data.AAPL}  style={{ data: {stroke: "#280137" }}} y="close" /> */}
-                                    <VictoryGroup     >
-                                        <VictoryLine data={data?.[stock?.ticker]} y="close"  />
-                                        <VictoryAxis  style={{ ticks: {stroke: "grey"} }} invertAxis offsetY={150} tickFormat={() => ''} />
-                                        {/* <VictoryScatter /> */}
-                                    </VictoryGroup>
-                                </VictoryChart>
+                            <Link to={`/ticker/${stock.ticker}`}>
+                                <div className={`p-4 flex justify-between hover:bg-gray-100 ${data?.[stock?.ticker]?.[0]?.close > stock.originalPrice ? 'text-green-500' : 'text-red-500' }`}>
+                                    <div className='flex flex-col'>
+                                        <span>{stock.ticker}</span>
+                                        <span>{stock.qty}</span>
+                                    </div>
+                                    <div className='h-16'>
+                        
+                                    <VictoryChart >
+                                        {/* <VictoryArea data={data.AMZN} style={{ data: {fill: "#280137" }}} y="close" /> */}
+                                        {/* <VictoryLine data={list}  style={{ data: {stroke: "#280137" }}} y="close" /> */}
+                                        {/* <VictoryLine data={data.AAPL}  style={{ data: {stroke: "#280137" }}} y="close" /> */}
+                                        <VictoryGroup     >
+                                            <VictoryLine data={data?.[stock?.ticker]} y="close"  />
+                                            <VictoryAxis  style={{ ticks: {stroke: "grey"} }} invertAxis offsetY={150} tickFormat={() => ''} />
+                                            {/* <VictoryScatter /> */}
+                                        </VictoryGroup>
+                                    </VictoryChart>
 
+                                    </div>
+                                    <div>
+                                        <span>{}</span>
+                                        <span>{((data?.[stock?.ticker]?.[0]?.close - stock.originalPrice)*stock.qty).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+                                    </div>
                                 </div>
-                                <div>
-                                    <span>{}</span>
-                                    <span>{((data?.[stock?.ticker]?.[0]?.close - stock.originalPrice)*stock.qty).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
-                                </div>
-                            </div>
+                            </Link>
                         </>
                     ))}
                 </div>
