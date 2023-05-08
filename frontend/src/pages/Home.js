@@ -102,7 +102,7 @@ export default function Home () {
                      </div>
                      <div>
 
-                        <VictoryChart  padding={{ top: 50, bottom: 50, right: 0, left: 0 }}>
+                        <VictoryChart padding={{ top: 50, bottom: 50, right: 0, left: 0 }}>
                             {/* <VictoryArea data={data.AMZN} style={{ data: {fill: "#280137" }}} y="close" /> */}
                             {/* <VictoryLine data={list}  style={{ data: {stroke: "#280137" }}} y="close" /> */}
                             {/* <VictoryLine data={data.AAPL}  style={{ data: {stroke: "#280137" }}} y="close" /> */}

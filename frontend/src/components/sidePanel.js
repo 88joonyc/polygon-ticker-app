@@ -56,7 +56,7 @@ export default function SidePanel ({data, list}) {
                     {stocks&&data&&stocks?.map(stock => (
                         <>
                             <Link to={`/ticker/${stock.ticker}`}>
-                                <div className={`p-4 flex justify-between hover:bg-gray-100 ${data?.[stock?.ticker]?.[0]?.close > stock.originalPrice ? 'text-green-500' : 'text-red-500' }`}>
+                                <div className={`p-2 flex justify-between hover:bg-gray-100 ${data?.[stock?.ticker]?.[0]?.close > stock.originalPrice ? 'text-green-500' : 'text-red-500' }`}>
                                     <div className='flex flex-col'>
                                         <span>{stock.ticker}</span>
                                         <span>{stock.qty}</span>
