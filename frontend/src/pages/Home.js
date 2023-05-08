@@ -92,14 +92,17 @@ export default function Home () {
     return (
         <>
             <div className='max-w-[1440px] mx-auto'> 
-                <div className='grid grid-cols-[3fr,1fr]'>
+                <div className='grid grid-cols-[3fr,1fr] px-4'>
                      <div className='mx-10'> {/* // may change */}
-                     <h1 className={`text-4xl ${list[0] > avg ? 'text-green-500' : 'text-red-500'}`}>
-                        ${(list[0] - avg).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                     <h1 className={`text-4xl `}>
+                        ${(list[0] ).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                      </h1>
+                     <div className={`text-xl ${list[0] > avg ? 'text-green-500' : 'text-red-500'}`}>
+                        ${(list[0] - avg).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                     </div>
                      <div>
 
-                        <VictoryChart >
+                        <VictoryChart  padding={{ top: 50, bottom: 50, right: 0, left: 0 }}>
                             {/* <VictoryArea data={data.AMZN} style={{ data: {fill: "#280137" }}} y="close" /> */}
                             {/* <VictoryLine data={list}  style={{ data: {stroke: "#280137" }}} y="close" /> */}
                             {/* <VictoryLine data={data.AAPL}  style={{ data: {stroke: "#280137" }}} y="close" /> */}

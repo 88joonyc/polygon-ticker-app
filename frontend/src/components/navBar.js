@@ -54,7 +54,7 @@ export default function NavBar() {
         }, 500)
     }, [searchQuery])
 
-    console.log(bestMatches)
+    // console.log(bestMatches)
 
     const logout = (e) => {
         e.preventDefault();
@@ -63,7 +63,7 @@ export default function NavBar() {
 
     return (
         <div className="mx-auto sticky  z-40 bg-white">
-            <div className="max-w-[1440px] flex mx-auto items-center">
+            <div className="max-w-[1440px] flex mx-auto items-center px-4">
                 <Link to='/' className="">
                     <img className="w-[120px] h-[20px] object-contain" src={logo} />
                 </Link>
