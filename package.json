@@ -1,0 +1,28 @@
+{
+  "name": "polygon-ticker-app",
+  "version": "1.0.0",
+  "description": "## API endpoints",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"npm run frontend\" \"npm run backend\"",
+    "frontend": "npm start --prefix frontend",
+    "backend": "npm start per-env --prefix backend",
+    "server-dev": "concurrently \"npm install --prefix backend \" \"npm start --prefix backend\"",
+    "client-dev": "concurrently \"npm install --prefix frontend \" \"npm start --prefix frontend\"",
+    "dev": "concurrently \"npm run server-dev\" \"npm run client-dev\"",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/88joonyc/polygon-ticker-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/88joonyc/polygon-ticker-app/issues"
+  },
+  "homepage": "https://github.com/88joonyc/polygon-ticker-app#readme",
+  "devDependencies": {
+    "concurrently": "^8.0.1"
+  }
+}

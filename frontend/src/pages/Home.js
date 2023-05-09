@@ -38,7 +38,7 @@ export default function Home () {
                     body: JSON.stringify({
                         symbols: stocks?.map(stock => stock?.ticker),
                         to: dayBefore,
-                        from: dayCounter(20),
+                        from: dayCounter(350),
                     })
                 })
             } catch(err) {
@@ -108,7 +108,7 @@ export default function Home () {
                             {/* <VictoryLine data={data.AAPL}  style={{ data: {stroke: "#280137" }}} y="close" /> */}
                              <VictoryGroup  data={list}  y="close" x="none"  >
                                 <VictoryLine style={{ data: {stroke: `${list[0] > avg ? "#22c55e" : "#ef4444"}  ` }}}  />
-                                <VictoryAxis style={{ axis: {stroke: "none"} }} offsetY={150} tickFormat={() => ''} />
+                                <VictoryAxis  offsetY={150} tickFormat={() => ''} />
                                 {/* <VictoryScatter /> */}
                             </VictoryGroup>
                         </VictoryChart>
