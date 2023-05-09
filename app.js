@@ -79,5 +79,10 @@ app.get("*", function (_, res) {
   );
 });
 
+const PORT = process.env.PORT || 5000
+
+app.listen(PORT, () => console.log(`listening on port:${PORT}`))
+
+
 
 module.exports = app;
