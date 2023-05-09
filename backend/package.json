@@ -6,11 +6,10 @@
   "scripts": {
     "sequelize": "sequelize",
     "sequelize-cli": "sequelize-cli",
-    "start": "node app.js",
-    "server": "nodemon app.js",
+    "start": "per-env",
     "start-test": "concurrently \"npm run backend \" \" npm run frontend  \"",
     "start:development": "nodemon -r dotenv/config ./bin/www",
-    "start:production": "node ./bin/www", 
+    "start:production": "node ./bin/www",
     "frontend": "npm start --prefix frontend",
     "backend": "npm run start",
     "server-dev": "npm run start per-env",
