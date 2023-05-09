@@ -24,6 +24,7 @@
   "homepage": "https://github.com/88joonyc/polygon-ticker-app#readme",
   "devDependencies": {},
   "dependencies": {
-    "concurrently": "^8.0.1"
+    "concurrently": "^8.0.1",
+    "node": "^20.1.0"
   }
 }
