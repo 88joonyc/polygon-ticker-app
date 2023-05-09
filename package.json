@@ -8,7 +8,7 @@
     "frontend": "npm start --prefix frontend",
     "backend": "npm start per-env --prefix backend",
     "server-dev": "concurrently \"npm install --prefix backend \" \"npm start --prefix backend\"",
-    "client-dev": "concurrently \"npm install --prefix frontend \" \"npm start --prefix frontend\"",
+    "client-dev": "concurrently \"npm install --prefix frontend \" \"npm run build --prefix frontend\"",
     "start": "concurrently \"npm run server-dev\" \"npm run client-dev\"",
     "lint": "eslint ."
   },
