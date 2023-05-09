@@ -7,9 +7,9 @@
     "start-test": "concurrently \"npm run frontend\" \"npm run backend\"",
     "frontend": "npm start --prefix frontend",
     "backend": "npm start per-env --prefix backend",
-    "server-dev": "concurrently \"npm install --prefix backend \" \"npm start --prefix backend\"",
-    "client-dev": "concurrently \"npm install --prefix frontend \" \"npm run build --prefix frontend\"",
-    "start": "concurrently \"npm run server-dev\" \"npm run client-dev\"",
+    "server-dev": " npm install --prefix backend  && npm start --prefix backend",
+    "client-dev": "npm install --prefix frontend && npm run build --prefix frontend",
+    "start": "npm run server-dev && npm run client-dev",
     "lint": "eslint ."
   },
   "repository": {
