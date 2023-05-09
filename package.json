@@ -7,9 +7,9 @@
     "start-test": "concurrently \"npm run frontend\" \"npm run backend\"",
     "frontend": "npm start --prefix frontend",
     "backend": "npm start per-env --prefix backend",
-    "server-dev": " npm install --prefix backend  && npm start --prefix backend",
-    "client-dev": "npm install --prefix frontend && npm run build --prefix frontend",
-    "start": "npm run server-dev && npm run client-dev",
+    "server-dev": "npm run concurrently \"npm install --prefix backend \" \"npm start --prefix backend\"",
+    "client-dev": "npm run concurrently \"npm install --prefix frontend \" \"npm start --prefix frontend\"",
+    "start": "npm run concurrently \"npm run server-dev\" \"npm run client-dev\"",
     "lint": "eslint ."
   },
   "repository": {
@@ -24,7 +24,6 @@
   "homepage": "https://github.com/88joonyc/polygon-ticker-app#readme",
   "devDependencies": {},
   "dependencies": {
-    "concurrently": "^8.0.1",
-    "node": "^20.1.0"
+    "concurrently": "^8.0.1"
   }
 }
