@@ -6,7 +6,7 @@
   "scripts": {
     "sequelize": "sequelize",
     "sequelize-cli": "sequelize-cli",
-    "start": "node app.js",
+    "start": "per-env",
     "server": "nodemon app.js",
     "start-test": "concurrently \"npm run backend \" \" npm run frontend  \"",
     "start:development": "nodemon -r dotenv/config ./bin/www",
@@ -20,7 +20,6 @@
   "author": "Paul Chang",
   "license": "ISC",
   "dependencies": {
-
     "concurrently": "^8.0.1",
     "cors": "^2.8.5",
     "csurf": "^1.11.0",
