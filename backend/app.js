@@ -4,6 +4,7 @@ const cors = require('cors');
 const csurf = require('csurf');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
+const path = require("path");
 
 const { environment } = require('./config');
 const { ValidationError } = require('sequelize');
@@ -39,6 +40,16 @@ app.use(helmet({
 
 app.use(routes); 
 
+app.use(express.static(path.join(__dirname, "../frontend/build")));
+app.get("*", function (_, res) {
+  res.sendFile(
+    path.join(__dirname, "../frontend/build/index.html"),
+    function (err) {
+      res.status(500).send(err);
+    }
+  );
+});
+
 app.use((_req, _res, next) => {
     const err = new Error("The requested resource couldn't be found.");
     err.title = "Resource Not Found";
@@ -65,5 +76,8 @@ app.use((err, _req, res, _next) => {
       stack: isProduction ? null : err.stack,
     });
 });
+
+
+
 
 module.exports = app;
