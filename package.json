@@ -6,7 +6,7 @@
   "scripts": {
     "sequelize": "sequelize",
     "sequelize-cli": "sequelize-cli",
-    "start": "concurrently \"npm run server-dev\" \"npm run client-dev\"",
+    "start": "nodemon app.js",
     "start-test": "concurrently \"npm run backend \" \" npm run frontend  \"",
     "start:development": "nodemon -r dotenv/config ./bin/www",
     "start:production": "node ./bin/www", 
