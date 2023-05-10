@@ -40,8 +40,6 @@ app.use(helmet({
 // app.use(csurf())
 app.use(routes); 
 
-
-
 app.use((_req, _res, next) => {
     const err = new Error("The requested resource couldn't be found.");
     err.title = "Resource Not Found";
@@ -78,12 +76,6 @@ app.get("*", function (_, res) {
     }
   );
 });
-
-
-app.get('/', function(req, res) {
-    res.render('index.html', { REACT_APP_API_URL });
-});
-
 
 const PORT = process.env.PORT || 5000
 
