@@ -10,7 +10,8 @@ node_modules/
 
 # production
 # build
-frontend/
+# frontend/
+build/
 
 # misc
 .env

@@ -6,7 +6,7 @@
   "scripts": {
     "sequelize": "sequelize",
     "sequelize-cli": "sequelize-cli",
-    "start": "per-env",
+    "start": "nodemon app.js",
     "start-test": "concurrently \"npm run backend \" \" npm run frontend  \"",
     "start:development": "nodemon -r dotenv/config ./bin/www",
     "start:production": "node ./bin/www",
@@ -14,7 +14,7 @@
     "backend": "npm run start",
     "server-dev": "npm run start per-env",
     "client-dev": "concurrently \"npm install --prefix frontend \" \"npm start --prefix frontend\"",
-    "dev": ""
+    "dev": "per-env"
   },
   "author": "Paul Chang",
   "license": "ISC",
