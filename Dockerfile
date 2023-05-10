@@ -23,7 +23,7 @@ EXPOSE 8080
 
 WORKDIR /var/www
 COPY . .
-COPY --from=build-stage /react-app/build/* app/static/
+COPY --from=build-stage /frontend/build/* app/static/
 
 
 
