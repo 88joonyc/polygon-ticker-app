@@ -1,30 +1,47 @@
 {
-  "name": "polygon-ticker-app",
+  "name": "backend",
   "version": "1.0.0",
-  "description": "## API endpoints",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "start-test": "concurrently \"npm run frontend\" \"npm run backend\"",
-    "start": "concurrently \"npm run server-dev\" \"npm run client-dev\"",
+    "sequelize": "sequelize",
+    "sequelize-cli": "sequelize-cli",
+    "start": "per-env",
+    "start-test": "concurrently \"npm run backend \" \" npm run frontend  \"",
+    "start:development": "nodemon -r dotenv/config ./bin/www",
+    "start:production": "node ./bin/www",
     "frontend": "npm start --prefix frontend",
-    "backend": "npm start per-env --prefix backend",
-    "server-dev": "concurrently \"npm install --prefix backend \" \"npm start --prefix backend\"",
+    "backend": "npm run start",
+    "server-dev": "npm run start per-env",
     "client-dev": "concurrently \"npm install --prefix frontend \" \"npm start --prefix frontend\"",
-    "dev": "cd backend && node app.js",
-    "lint": "eslint ."
+    "dev": ""
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/88joonyc/polygon-ticker-app.git"
-  },
-  "author": "",
+  "author": "Paul Chang",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/88joonyc/polygon-ticker-app/issues"
-  },
-  "homepage": "https://github.com/88joonyc/polygon-ticker-app#readme",
-  "devDependencies": {},
   "dependencies": {
-    "concurrently": "^8.0.1"
+    "concurrently": "^8.0.1",
+    "cors": "^2.8.5",
+    "csurf": "^1.11.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-async-handler": "^1.2.0",
+    "express-validator": "^7.0.1",
+    "morgan": "^1.10.0",
+    "per-env": "^1.0.2",
+    "nodemon": "^2.0.22",
+    "cookie-parser": "^1.4.6",
+    "dotenv-cli": "^7.2.1",
+    "pg": "^8.10.0",
+    "sequelize": "^5.22.5",
+    "sequelize-cli": "^5.5.1",
+    "helmet": "^6.1.5",
+    "jsonwebtoken": "^9.0.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "yahoo-finance": "^0.3.8"
+  },
+  "devDependencies": {
+    "node": "^19.8.1",
+    "node-fetch": "^2.6.9"
   }
 }
