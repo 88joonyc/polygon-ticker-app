@@ -79,11 +79,11 @@ app.get("*", function (_, res) {
   );
 });
 
-if (isProduction) {
-    app.get('/', function(req, res) {
-        res.render('index.html', { REACT_APP_API_URL });
-    });
-};
+
+app.get('/', function(req, res) {
+    res.render('index.html', { REACT_APP_API_URL });
+});
+
 
 const PORT = process.env.PORT || 5000
 
