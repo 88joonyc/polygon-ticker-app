@@ -2,6 +2,9 @@ const express = require('express')
 const router = express.Router();
 const asyncHandler = require('express-async-handler');
 const { check } = require('express-validator');
+const csurf = require('csurf');
+const { environment } = require('../../config');
+const isProduction = environment === 'production';
 
 const { handleValidationErrors } = require('../../utils/validation');
 const { setTokenCookie, restoreUser } = require('../../utils/auth');
@@ -18,6 +21,17 @@ const validateLogin = [
     handleValidationErrors,
 ];
 // log user in
+
+router.use(
+  csurf({
+      cookie: {
+      secure: isProduction,
+      sameSite: isProduction && "Lax",
+      httpOnly: false,
+      },
+  })
+);
+
 router.post(
     '/',
     validateLogin,

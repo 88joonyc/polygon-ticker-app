@@ -33,11 +33,11 @@ app.use(helmet({
 //         cookie: {
 //         secure: isProduction,
 //         sameSite: isProduction && "Lax",
-//         httpOnly: true,
+//         httpOnly: false,
 //         },
 //     })
 // );
-
+// app.use(csurf())
 app.use(routes); 
 
 
