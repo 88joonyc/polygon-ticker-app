@@ -16,8 +16,8 @@ const app = express();
 
 app.use(morgan('dev'));
 
-app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 app.use(express.json());
 
 if (!isProduction) {
@@ -37,7 +37,11 @@ app.use(helmet({
 //         },
 //     })
 // );
-// app.use(csurf())
+app.use(csurf({
+  cookie: true
+}))
+
+
 app.use(routes); 
 
 app.use((_req, _res, next) => {
@@ -67,18 +71,18 @@ app.use((err, _req, res, _next) => {
     });
 });
 
-app.use(express.static(path.join(__dirname, "client/build")));
-app.get("*", function (_, res) {
-  res.sendFile(
-    path.join(__dirname, "client/build, 'index.html"),
-    function (err) {
-      res.status(500).send(err);
-    }
-  );
-});
+// app.use(express.static(path.join(__dirname, "client/build")));
+// app.get("*", function (_, res) {
+//   res.sendFile(
+//     path.join(__dirname, "client/build, 'index.html"),
+//     function (err) {
+//       res.status(500).send(err);
+//     }
+//   );
+// });
 
-const PORT = process.env.PORT || 5000
+// const PORT = process.env.PORT || 5000
 
-app.listen(PORT, () => console.log(`listening on port:${PORT}`))
+// app.listen(PORT, () => console.log(`listening on port:${PORT}`))
 
 module.exports = app;

@@ -22,15 +22,15 @@ const validateLogin = [
 ];
 // log user in
 
-router.use(
-  csurf({
-      cookie: {
-      secure: isProduction,
-      sameSite: isProduction && "Lax",
-      httpOnly: false,
-      },
-  })
-);
+// router.use(
+//   csurf({
+//       cookie: {
+//       secure: isProduction,
+//       sameSite: isProduction && "Lax",
+//       httpOnly: false,
+//       },
+//   })
+// );
 
 router.post(
     '/',
@@ -48,10 +48,11 @@ router.post(
         return next(err);
       }
   
-      await setTokenCookie(res, user);
+      const token = await setTokenCookie(res, user);
   
       return res.json({
         user,
+        token
       });
     }),
 );
