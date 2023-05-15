@@ -1,15 +1,20 @@
 import react, { useState, useEffect } from 'react';
 
-import { VictoryChart, VictoryArea, VictoryAxis, VictoryLine, VictoryGroup, VictoryScatter } from 'victory';
+import { VictoryChart, VictoryAxis, VictoryLine, VictoryGroup } from 'victory';
 import ControlPanel from '../components/controlPanel';
 import Wallet from '../components/wallet';
 import Ticker from './Ticker';
 import SidePanel from '../components/sidePanel';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import { csrfFetch } from '../store/csrf';
+
+import { wallets } from '../store/wallet'
+import { stocks } from '../store/stock'
 
 
 export default function Home () {
+    const dispatch = useDispatch();
+    const session = useSelector(state => state?.session?.user)
 
     const [data, setData] = useState({})
 
@@ -18,7 +23,7 @@ export default function Home () {
     const [once, setOnce] = useState(true)
     const [avg, setAvg] = useState(0)
 
-    const stocks = useSelector(state => state?.stock?.stock)
+    const stocksData = useSelector(state => state?.stock?.stock)
     const today = new Date();
     var todaysDate = today.getFullYear() + '-' + today.getMonth() + '-' + today.getDay();
     var dayBefore =  new Date(today.setDate(today.getDate()-2)).toISOString().split('T')[0]
@@ -26,6 +31,13 @@ export default function Home () {
     var dayCounter = function(days) {
         return new Date(today.setDate(today.getDate()-days)).toISOString().split('T')[0]
     }
+
+    console.log(session?.user)
+
+    useEffect(() => {
+        dispatch(wallets(session?.id))
+        dispatch(stocks(session?.id))  
+    }, [session])
 
     useEffect(() => {
         async function run() {
@@ -36,7 +48,7 @@ export default function Home () {
                     method: 'POST',
                     'Content-type': 'application/JSON',
                     body: JSON.stringify({
-                        symbols: stocks?.map(stock => stock?.ticker),
+                        symbols: stocksData?.map(stock => stock?.ticker),
                         to: dayBefore,
                         from: dayCounter(350),
                     })
@@ -67,7 +79,7 @@ export default function Home () {
             return list
         }
         
-        if (stocks?.length > 0 && once) {
+        if (stocksData?.length > 0 && once) {
             run()
             .then((data) => original(data))
             .then((data) => complete(data))
@@ -75,12 +87,12 @@ export default function Home () {
             
             setOnce(false)
         }
-    }, [stocks])
+    }, [stocksData])
     
     const original = function (pass) {
         let obj = {}
         let sum = 0
-        stocks.forEach(tick => {
+        stocksData.forEach(tick => {
             sum += (tick.originalPrice * tick.qty)
             obj[tick.ticker]={ qty: tick?.qty, originalPrice: tick?.originalPrice} 
         })  
