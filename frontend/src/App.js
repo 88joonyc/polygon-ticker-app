@@ -1,6 +1,6 @@
 import react, {useState, useEffect} from 'react';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import * as sessionActions from './store/session'
 import { wallets } from './store/wallet';
@@ -14,9 +14,8 @@ import { stocks } from './store/stock';
 
 function App() {
   const dispatch = useDispatch();
-  // const user = useSelector(state => state.session.user)
+  const user = useSelector(state => state.session.user)
   const [ isLoaded, setLoaded ] = useState(false)
-  const [ id, setId ] = useState() 
   // const location = useLocation();
 
 
@@ -25,10 +24,10 @@ function App() {
     .then(() => setLoaded(true))
   }, [dispatch])
   
-  // useEffect(() => {
-  //   dispatch(wallets(id))
-  //   dispatch(stocks(id))  
-  // }, [id])
+  useEffect(() => {
+    dispatch(wallets(user?.id))
+    dispatch(stocks(user?.id))  
+  }, [user?.id])
 
   if (isLoaded === false) {
     <Navigate to="/login" />

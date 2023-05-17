@@ -28,18 +28,19 @@ app.use(helmet({
 }));
 
 // may need to remove due to error from mapping numbers
-// app.use(
-//     csurf({
-//         cookie: {
-//         secure: isProduction,
-//         sameSite: isProduction && "Lax",
-//         httpOnly: false,
-//         },
-//     })
-// );
-app.use(csurf({
-  cookie: true
-}))
+app.use(
+    csurf({
+        cookie: {
+        secure: isProduction,
+        sameSite: isProduction && "Lax",
+        httpOnly: true,
+        },
+    })
+);
+
+// app.use(csurf({
+//   cookie: true
+// }))
 
 
 app.use(routes); 
