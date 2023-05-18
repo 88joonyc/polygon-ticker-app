@@ -10,6 +10,7 @@ import { csrfFetch } from '../store/csrf';
 
 import { wallets } from '../store/wallet'
 import { stocks } from '../store/stock'
+import { SplashPage } from './SpalshPage';
 
 
 export default function Home () {
@@ -32,12 +33,12 @@ export default function Home () {
         return new Date(today.setDate(today.getDate()-days)).toISOString().split('T')[0]
     }
 
-    console.log(session?.user)
+    // console.log(session?.user)
 
-    useEffect(() => {
-        dispatch(wallets(session?.id))
-        dispatch(stocks(session?.id))  
-    }, [session])
+    // useEffect(() => {
+    //     dispatch(wallets(session?.id))
+    //     dispatch(stocks(session?.id))  
+    // }, [session])
 
     useEffect(() => {
         async function run() {
@@ -58,7 +59,7 @@ export default function Home () {
             }
             const data = await response.json()
             setData(data)
-            console.log(data)
+
             return data
         }
 
@@ -103,37 +104,42 @@ export default function Home () {
 
     return (
         <>
-            <div className='max-w-[1440px] mx-auto'> 
-                <div className='grid grid-cols-[3fr,1fr] px-6'>
-                     <div className='mr-4'> {/* // may change */}
-                     <h1 className={`text-4xl `}>
-                        ${(list[0] )?.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                     </h1>
-                     <div className={`text-xl ${list[0] > avg ? 'text-green-500' : 'text-red-500'}`}>
-                        ${(list[0] - avg).toFixed(2)?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                     </div>
-                     <div>
+            {session?.id&&<>
+                <div className='max-w-[1440px] mx-auto'> 
+                    <div className='grid grid-cols-[78%,22%] px-6'>
+                        <div className='mr-8'> {/* // may change */}
+                        <h1 className={`mt-8 text-4xl `}>
+                            ${(list[0] )?.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                        </h1>
+                        <div className={`text-xl ${list[0] > avg ? 'text-green-500' : 'text-red-500'}`}>
+                            ${(list[0] - avg).toFixed(2)?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                        </div>
+                        <div>
 
-                        <VictoryChart padding={{ top: 50, bottom: 50, right: -50, left: -50 }}>
-                            {/* <VictoryArea data={data.AMZN} style={{ data: {fill: "#280137" }}} y="close" /> */}
-                            {/* <VictoryLine data={list}  style={{ data: {stroke: "#280137" }}} y="close" /> */}
-                            {/* <VictoryLine data={data.AAPL}  style={{ data: {stroke: "#280137" }}} y="close" /> */}
-                             <VictoryGroup  data={list}  y="close" x="none"  >
-                                <VictoryLine style={{ data: {stroke: `${list[0] > avg ? "#22c55e" : "#ef4444"}  ` }}}  />
-                                <VictoryAxis  offsetY={150} tickFormat={() => ''} />
-                                {/* <VictoryScatter /> */}
-                            </VictoryGroup>
-                        </VictoryChart>
-                     </div>
-                        <Wallet />
-              
+                            <VictoryChart height={200} padding={{ top: 50, bottom: 50, right: 0, left: 0 }} >
+                                {/* <VictoryArea data={data.AMZN} style={{ data: {fill: "#280137" }}} y="close" /> */}
+                                {/* <VictoryLine data={list}  style={{ data: {stroke: "#280137" }}} y="close" /> */}
+                                {/* <VictoryLine data={data.AAPL}  style={{ data: {stroke: "#280137" }}} y="close" /> */}
+                                <VictoryGroup  data={list}  y="close" x="none"  >
+                                    <VictoryLine style={{ data: {stroke: `${list[0] > avg ? "#22c55e" : "#ef4444"}  `, strokeWidth: 1 }}}  />
+                                    <VictoryAxis  offsetY={100} tickFormat={() => ''} style={{ axis: {stroke: '#ffffff', strokeWidth: 1 }}}  />
+                                    {/* <VictoryScatter /> */}
+                                </VictoryGroup>
+                            </VictoryChart>
+                        </div>
+                            <Wallet />
+                
+                        </div>
+                        <div>
+                            <SidePanel list={list} data={data} />
+                        </div>
+                        
                     </div>
-                    <div>
-                        <SidePanel list={list} data={data} />
-                    </div>
-                    
-                </div>
-            </div>
+                </div>            
+            </>}
+            {!session?.id&&<>
+                <SplashPage />
+            </>}
         </>
     )
 };

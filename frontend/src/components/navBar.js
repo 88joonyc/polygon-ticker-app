@@ -60,17 +60,17 @@ export default function NavBar() {
       };
 
     return (
-        <div className="mx-auto sticky  z-40 bg-white">
+        <div className={`mx-auto sticky z-40 bg-white top-0 left-0  ${!session?.id && 'border'}`}>
             <div className="max-w-[1440px] flex mx-auto items-center px-4">
                 <Link to='/' className="">
                     <img className="w-[120px] h-[20px] object-contain" src={logo} />
                 </Link>
 
-                <div className="mx-auto p-4 relative flex justify-center">
-                    <input className="p-2 pl-8s text-2xl border w-[600px] rounded-md border-grey-100" placeholder="search" onChange={e => setKeyword(e.target.value)}/>
+                <div className="p-2 relative flex justify-center">
+                    <input className={`p-2 pl-8s text-2xl  w-[500px] rounded-md border border-grey-100`} placeholder="search" onChange={e => setKeyword(e.target.value)}/>
                 </div>
 
-                <div className="relative flex justify-center">
+                <div className="relative flex ">
                     {searchQuery&&<div className="absolute ">
                         <div className="top-20 w-[600px] opacity-85 bg-white">
                             {bestMatches.map((matches, idx) => (

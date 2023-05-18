@@ -1,17 +1,36 @@
 import react, { useState } from 'react';
+import { purchase } from '../store/stock';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function ControlPanel ({ticker}) {
+    const dispatch = useDispatch();
+
+    const userId = useSelector(state => state.session.user?.id)
+    const wallet = useSelector(state => state.session.wallet)
 
     const [control, setControl] = useState('buy')
     const [type, setType] = useState('shares')
     const [qty, setQty] = useState('')
+
+    const submitPurchase = async function (e) {
+        e.preventDefault()
+        await dispatch(purchase({
+            userId,
+            ticker,
+            // amount,
+
+
+        }))
+    }
+
+
 
     return (
         <>
             <div className='max-w-[400px] relative '>
                 <div className='flex flex-col border border-gray-200  p-8 sticky top-[120px] shadow-lg'>
                     <div className='text-xl mb-8 font-bold capitalize text-midnightPurple '>{control + ' ' + ticker}</div>
-                    <form className='flex flex-col '>
+                    <form onSubmit={submitPurchase} className='flex flex-col'>
                         <label className='text-[20px] flex justify-between'> Buy in
                             <select className='border bg-white p-2 w-[120px] ' onChange={e => setType(e.target.value)}>
                                 <option value='shares'>Shares</option>

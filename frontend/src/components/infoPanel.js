@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-
 import { useLocation } from 'react-router-dom'
 import { LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
 import { VictoryChart, VictoryArea, VictoryAxis, VictoryLine, VictoryGroup, VictoryScatter } from 'victory';
+import { csrfFetch } from "../store/csrf";
 
 export default function InfoPanel({ticker}) {
     var today = new Date();
@@ -80,13 +80,13 @@ export default function InfoPanel({ticker}) {
         async function findmeta() {
             console.log('thisishuitting')
             await Promise.all([
-                fetch('/api/ticker/search', {
+                csrfFetch('/api/ticker/search', {
                     method:"POST",
                     headers: {"Content-Type": 'application/json'},
                     body: JSON.stringify(payload)
                 }).then(async res => setData(await res.json()))
                   .catch(err => console.log(err)),
-                fetch(`/api/ticker/details/${ticker}`)
+                csrfFetch(`/api/ticker/details/${ticker}`)
                 .then(async res => await res.json())
                 .then(async returndata => {
                     setMeta(returndata);
@@ -98,7 +98,7 @@ export default function InfoPanel({ticker}) {
                     }
                 })
                 .catch(err => console.log(err)),
-                fetch(`/api/ticker/news/${ticker}`)
+                csrfFetch(`/api/ticker/news/${ticker}`)
                 .then(async res => await res.json())
                 .then(data => setNews(data))
                 .catch(err => console.log(err))

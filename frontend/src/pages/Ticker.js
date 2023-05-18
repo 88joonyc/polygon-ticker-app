@@ -22,7 +22,7 @@ export default function Ticker () {
                      </div>
     
 
-                    
+
                 </div>
             </div>
             {/* <LineChart className=" m-5" width={1000} height={800} data={dataPoints}>
