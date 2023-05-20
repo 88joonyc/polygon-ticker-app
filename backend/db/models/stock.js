@@ -37,13 +37,25 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   Stock.purchase = async function ({ ticker, originalPrice, qty, userId }) {
-    const stock = await Stock.create({
-      ticker,
-      originalPrice,
-      qty,
-      userId
-    });
-    return await stock.findByPk(wallet.id)
+
+    const found = await Stock.findOne({
+      where: {
+        userId,
+        ticker
+      }
+    })
+
+    if (found) {
+        Stock.update({  userId, ticker, amount : originalPrice, qty })
+    } else {
+      const stock = await Stock.create({
+        ticker,
+        originalPrice,
+        qty,
+        userId
+      });
+      return await stock.findByPk(wallet.id)
+    }
   };
 
   Stock.update = async function ({ userId, ticker, amount, qty}) {
@@ -52,16 +64,15 @@ module.exports = (sequelize, DataTypes) => {
         userId,
         ticker
       }
-
     })
 
     const data = await Stock.update(
       {'lastPrice': stock.lastPrice - amount },
       {'qty': stock.qty - qty },
-      { where: { id: wallet.id } }
+      { where: { id: stock.id } }
     )
     
-    return await Stock.findByPk(wallet.id)
+    return await Stock.findByPk(stock.id)
 
   }
 

@@ -42,7 +42,7 @@ function LoginPage() {
                 {errors.map((error, idx) => <li key={idx}>{error}</li>)}
             </ul>
             <h1 className='ml-20 mt-[200px] text-2xl mb-10'>Log in to Batman's Hood</h1>
-            <div className='w-[400px]'>
+            <div className='w-[400px] text-xs'>
               <label className='flex flex-col mb-4 ml-20'>
                   Email
                   <input
@@ -64,8 +64,8 @@ function LoginPage() {
                   />
               </label>
             </div>
-            <button className='ml-20 mt-10 rounded-full py-4 px-14 bg-midnightPurple font-bold text-white' type="submit">Log in</button>
-            <div class="relative py-4 w-[400px] ml-20 mt-10">
+            <button className='ml-20 mt-10 rounded-full py-3 px-14 bg-midnightPurple font-bold text-white text-xs' type="submit">Log in</button>
+            <div class="relative py-4 w-[400px] ml-20 mt-8">
             <div class="absolute inset-0 flex items-center">
                 <div class="w-full border-b border-gray-300"></div>
             </div>
@@ -73,8 +73,8 @@ function LoginPage() {
                 <span class="bg-white px-4 text-sm text-gray-500">or</span>
             </div>
             </div>
-            <button onClick={handleDemo} className='ml-20 mt-10 rounded-full py-4 px-14 bg-midnightPurple font-bold text-white' type="submit">Log in with demo</button>
-            <div className='ml-20 mt-10  '>
+            <button onClick={handleDemo} className='ml-20 mt-8 rounded-full py-3 px-14 bg-midnightPurple font-bold text-white text-xs' type="submit">Log in with demo</button>
+            <div className='ml-20 mt-10 text-xs '>
                 Not in Batman's Hood? <Link to='/signup' className='text-midnightPurple underline font-bold underline-offset-4 hover:text-purple-800 '>Create an account</Link>
             </div>
           </form>

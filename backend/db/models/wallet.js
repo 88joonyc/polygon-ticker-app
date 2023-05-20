@@ -60,7 +60,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     });
     
-    const json = await wallet.update(
+    const json = await Wallet.update(
         {'buyingPower': found.buyingPower - parseInt(amount) },
         { where: { "id": wallet.id } }
       );
