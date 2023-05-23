@@ -25,12 +25,31 @@ export default function Wallet () {
 
     const deposit = async function (e) {
         e.preventDefault();
-        const response = await dispatch(create({userId:session.id, accountType, amount}))
-        const data = response.json()
-        if (data.status == "OK") {
-            console.log(data)
+        const existing = wallet.filter(bank => bank.accountType === accountType) 
+        if (!existing.length > 0) {
+            const response = await dispatch(create({userId:session.id, accountType, amount}))
+            const data = await response.json()
+            if (data.status == "OK") {
+                console.log(data)
+                alert('Wallet has been added!')
+                setOpenWallet(false)
+            } else {
+                console.log('error', data)
+            }
         } else {
-            console.log('error', data)
+            const response = await dispatch(update({
+                userId: session.id,
+                accountType,
+                amount: amount
+            }))
+            console.log('checkme------------------------',response)
+            if (response?.wallet?.id) {
+                alert('funds added to wallet!')
+                setOpenWallet(false)
+            } else {
+                // add error content
+                alert('something is wrong')
+            }             
         }
     }
 
@@ -43,7 +62,7 @@ export default function Wallet () {
                             <div className="flex justify-between">
 
                                 <span className='font-bold'>{ wallet ? 'Buying Power' : 'Add Wallet'}</span>
-                                {wallet.length > 0&&<span className='font-medium'>${wallet?.reduce((acc , curr) => acc.buyingPower + curr.buyingPower)?.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>}
+                                {wallet.length > 1&&<span className='font-medium'>${wallet?.reduce((acc , curr) => acc.buyingPower + curr.buyingPower)?.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>}
                             </div>
                         </div>
                     </div>

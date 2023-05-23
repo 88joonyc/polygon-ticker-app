@@ -55,11 +55,11 @@ export default function SidePanel ({data, list}) {
                 <div>
                     {stocks&&data&&stocks?.map(stock => (
                         <>
-                            <Link to={`/ticker/${stock.ticker}`}>
+                            <Link to={`/ticker/${stock?.ticker}`}>
                                 <div className={`px-2 py-1 flex justify-between hover:bg-gray-100 text-black`}>
                                     <div className='flex flex-col justify-center'>
-                                        <span className='font-bold'>{stock.ticker}</span>
-                                        <span className='font-light'>{stock.qty} {stock.qty > 1 ? 'shares' : 'share'}</span>
+                                        <span className='font-bold'>{stock?.ticker}</span>
+                                        <span className='font-light'>{stock?.qty} {stock?.qty > 1 ? 'shares' : 'share'}</span>
                                     </div>
                                     <div className='h-16'>
                         
@@ -68,7 +68,7 @@ export default function SidePanel ({data, list}) {
                                         {/* <VictoryLine data={list}  style={{ data: {stroke: "#280137" }}} y="close" /> */}
                                         {/* <VictoryLine data={data.AAPL}  style={{ data: {stroke: "#280137" }}} y="close" /> */}
                                         <VictoryGroup     >
-                                            <VictoryLine data={data?.[stock?.ticker]}  style={{  data: { stroke:data?.[stock?.ticker]?.[0]?.close > stock.originalPrice  ? "#22c55e" : "#ef4444", strokeWidth: 2} }} y="close"  />
+                                            <VictoryLine data={data?.[stock?.ticker]}  style={{  data: { stroke:data?.[stock?.ticker]?.[0]?.close > stock?.originalPrice  ? "#22c55e" : "#ef4444", strokeWidth: 2} }} y="close"  />
                                             <VictoryAxis  style={{ ticks: {stroke: "grey"} }} invertAxis offsetY={150} tickFormat={() => ''} />
                                             {/* <VictoryScatter /> */}
                                         </VictoryGroup>
@@ -77,7 +77,7 @@ export default function SidePanel ({data, list}) {
                                     </div>
                                     <div className='flex items-center'>
                                         <span>{}</span>
-                                        <span>{((data?.[stock?.ticker]?.[0]?.close - stock.originalPrice)*stock.qty).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+                                        <span>{((data?.[stock?.ticker]?.[0]?.close - stock?.originalPrice)*stock?.qty).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
                                     </div>
                                 </div>
                             </Link>

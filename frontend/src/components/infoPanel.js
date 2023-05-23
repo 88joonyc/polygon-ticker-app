@@ -4,7 +4,7 @@ import { LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
 import { VictoryChart, VictoryArea, VictoryAxis, VictoryLine, VictoryGroup, VictoryScatter } from 'victory';
 import { csrfFetch } from "../store/csrf";
 
-export default function InfoPanel({ticker}) {
+export default function InfoPanel({ticker, data, meta, image, news, findmeta}) {
     var today = new Date();
     var todaysDate = today.getFullYear() + '-' + today.getMonth() + '-' + today.getDay();
     var dayBefore =  new Date(today.setDate(today.getDate()-2)).toISOString().split('T')[0]
@@ -31,21 +31,13 @@ export default function InfoPanel({ticker}) {
 
     const [day, setDay] = useState(2)
 
-    const [data, setData] = useState({});
-    const [meta, setMeta] = useState({});
-    const [image, setImage] = useState('');
-    const [news, setNews] = useState('');
+
     const [disclose, setDisclose] = useState(false);
 
     const [error, setError] = useState([])
     
-    const headerOptions = {
-        method: 'GET',
-        headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Authorization': `Bearer ${process.env.REACT_APP_POLYGONAPISECRETEKEY}`
-        }
-    }
+ 
+
 
     const payload = {
         ticker,
@@ -59,55 +51,55 @@ export default function InfoPanel({ticker}) {
     }
 
     useEffect(() => {
-        async function runme() {
-            let data
-            try {
-                data = await fetch('api/ticker/search', {
-                    method: 'POST',
-                    headers: {"Content-Type": 'application/json'},
-                    body: JSON.stringify(payload)
-                })
-            } catch (err) {
-                console.log(err)
-            }
-            const response = await data.json();
-            if (response.status == 'OK') {
-                console.log('setup error handling;', response)
-                setDataPoints(response.results)
-            }
-        }
+        // async function runme() {
+        //     let data
+        //     try {
+        //         data = await fetch('api/ticker/search', {
+        //             method: 'POST',
+        //             headers: {"Content-Type": 'application/json'},
+        //             body: JSON.stringify(payload)
+        //         })
+        //     } catch (err) {
+        //         console.log(err)
+        //     }
+        //     const response = await data.json();
+        //     if (response.status == 'OK') {
+        //         console.log('setup error handling;', response)
+        //         setDataPoints(response.results)
+        //     }
+        // }
 
-        async function findmeta() {
-            console.log('thisishuitting')
-            await Promise.all([
-                csrfFetch('/api/ticker/search', {
-                    method:"POST",
-                    headers: {"Content-Type": 'application/json'},
-                    body: JSON.stringify(payload)
-                }).then(async res => setData(await res.json()))
-                  .catch(err => console.log(err)),
-                csrfFetch(`/api/ticker/details/${ticker}`)
-                .then(async res => await res.json())
-                .then(async returndata => {
-                    setMeta(returndata);
-                    const imageData = returndata?.results?.branding?.logo_url;
-                    if (imageData) {
-                        return fetch(imageData, headerOptions, {
-                        }).then(async res => setImage(await res.text())).catch(err => console.log(err))
+        // async function findmeta(payload) {
+        //     console.log('thisishuitting')
+        //     await Promise.all([
+        //         csrfFetch('/api/ticker/search', {
+        //             method:"POST",
+        //             headers: {"Content-Type": 'application/json'},
+        //             body: JSON.stringify(payload)
+        //         }).then(async res => setData(await res.json()))
+        //           .catch(err => console.log(err)),
+        //         csrfFetch(`/api/ticker/details/${ticker}`)
+        //         .then(async res => await res.json())
+        //         .then(async returndata => {
+        //             setMeta(returndata);
+        //             const imageData = returndata?.results?.branding?.logo_url;
+        //             if (imageData) {
+        //                 return fetch(imageData, headerOptions, {
+        //                 }).then(async res => setImage(await res.text())).catch(err => console.log(err))
                         
-                    }
-                })
-                .catch(err => console.log(err)),
-                csrfFetch(`/api/ticker/news/${ticker}`)
-                .then(async res => await res.json())
-                .then(data => setNews(data))
-                .catch(err => console.log(err))
-            ]);
-        } 
+        //             }
+        //         })
+        //         .catch(err => console.log(err)),
+        //         csrfFetch(`/api/ticker/news/${ticker}`)
+        //         .then(async res => await res.json())
+        //         .then(data => setNews(data))
+        //         .catch(err => console.log(err))
+        //     ]);
+        // } 
 
         // console.log(start)
         // runme()
-        findmeta()
+        findmeta(payload)
 
     }, [ticker, start])
 

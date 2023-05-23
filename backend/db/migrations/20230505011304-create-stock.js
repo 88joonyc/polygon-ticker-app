@@ -13,11 +13,11 @@ module.exports = {
         allowNull: false
       },
       originalPrice: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.REAL,
         allowNull: false
       },
       lastPrice: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.REAL,
         allowNull: false
       },
       qty: {

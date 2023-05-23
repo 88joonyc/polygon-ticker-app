@@ -13,7 +13,7 @@ import { stocks } from '../store/stock'
 import { SplashPage } from './SpalshPage';
 
 
-export default function Home () {
+export default function Home ({isLoaded}) {
     const dispatch = useDispatch();
     const session = useSelector(state => state?.session?.user)
 
@@ -23,7 +23,8 @@ export default function Home () {
     const [orig, setOrigi] = useState({});
     const [once, setOnce] = useState(true)
     const [avg, setAvg] = useState(0)
-
+    const [current, setCurrent] = useState(0)
+ 
     const stocksData = useSelector(state => state?.stock?.stock)
     const today = new Date();
     var todaysDate = today.getFullYear() + '-' + today.getMonth() + '-' + today.getDay();
@@ -77,13 +78,15 @@ export default function Home () {
                 }
             }
             setList(list.reverse())  
-            return list
+
+            return entries
         }
         
         if (stocksData?.length > 0 && once) {
             run()
             .then((data) => original(data))
             .then((data) => complete(data))
+            .then(entries => currentPrice(entries, orig))
             .catch(err => console.log(err))
             
             setOnce(false)
@@ -95,12 +98,26 @@ export default function Home () {
         let sum = 0
         stocksData.forEach(tick => {
             sum += (tick.originalPrice * tick.qty)
-            obj[tick.ticker]={ qty: tick?.qty, originalPrice: tick?.originalPrice} 
+            obj[tick.ticker]={ qty: tick?.qty, originalPrice: tick?.originalPrice, lastTotal: sum} 
         })  
         setOrigi(obj)
         setAvg(sum)
         return {pass, obj}
     };
+
+    const currentPrice = function ({pass, obj}) {
+        let current = 0
+        for (const [key, val] of Object.entries(pass)) {
+            current += obj[key].lastTotal - (pass[key][0].close  * obj[key].qty)
+        }
+        setCurrent(current)
+    }
+
+    console.log('dat----------------------------------------',data)
+    console.log('obj----------------------------------------',orig)
+
+    if (isLoaded == null) return null
+    if (isLoaded == false) return <SplashPage />
 
     return (
         <>
@@ -109,7 +126,7 @@ export default function Home () {
                     <div className='grid grid-cols-[78%,22%] px-6'>
                         <div className='mr-8'> {/* // may change */}
                         <h1 className={`mt-8 text-4xl `}>
-                            ${(list[0] )?.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                            ${(current)?.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                         </h1>
                         <div className={`text-xl ${list[0] > avg ? 'text-green-500' : 'text-red-500'}`}>
                             ${(list[0] - avg).toFixed(2)?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -137,9 +154,9 @@ export default function Home () {
                     </div>
                 </div>            
             </>}
-            {!session?.id&&<>
+            {/* {!session.id&&<>
                 <SplashPage />
-            </>}
+            </>} */}
         </>
     )
 };

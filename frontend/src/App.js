@@ -20,7 +20,8 @@ function App() {
 
   useEffect(() => {
     dispatch(sessionActions.restoreUser())
-    .then(() => setLoaded(true))
+    .then((user) => user ? setLoaded(true) : setLoaded(false))
+    .catch(() => setLoaded(false))
   }, [dispatch])
   
   useEffect(() => {
@@ -35,7 +36,7 @@ function App() {
     <BrowserRouter>
   
       <Routes>
-        <Route path='/' element={ <MainRoutes /> } />
+        <Route path='/' element={ <MainRoutes isLoaded={isLoaded} /> } />
         <Route path='/signup' element={<SignupPage />} />
         <Route path='/login' element={<LoginPage />} />  
         {/* <Route  path='/' element={<> <Home /></>} /> */}

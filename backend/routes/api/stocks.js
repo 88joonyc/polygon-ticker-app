@@ -18,6 +18,7 @@ router.get('/:id', asyncHandler(async (req, res) => {
 );
 
 router.post('/', asyncHandler(async (req, res) => {
+
 		const { ticker, originalPrice, qty, userId } = req.body
 
 		const response = await Stock.purchase({
@@ -26,15 +27,16 @@ router.post('/', asyncHandler(async (req, res) => {
 				qty,
 				userId
 		});
-
-		return await response.findByPk(response.id)
+		console.log('whatami-----------------------------------', response)
+		return res.json({response})
+		// return await response.findByPk(response.id)
 	})
 );
 
 router.post('/update', asyncHandler(async (req, res) => {
 		const { userId, ticker, amount, qty } = req.body 
 
-		const response = await Stock.update({
+		const response = await Stock.updateStock({
 			userId,
 			ticker,
 			amount,

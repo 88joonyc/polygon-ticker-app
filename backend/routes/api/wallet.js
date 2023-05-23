@@ -26,7 +26,7 @@ router.post('/', asyncHandler(async (req, res) => {
 
 router.post('/update', asyncHandler( async (req, res) => {
         const { userId, accountType, amount } = req.body;
-        const wallet = await Wallet.updateWallet({ userId, accountType, buyingPower: amount });
+        const wallet = await Wallet.updateWallet({ userId, accountType, amount });
 
         return res.json({
             wallet,

@@ -6,11 +6,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     originalPrice: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.REAL,
       allowNull: false,
     },
     lastPrice: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.REAL,
       allowNull: false,
     },
     qty: {
@@ -32,11 +32,13 @@ module.exports = (sequelize, DataTypes) => {
         userId: id
       }
     })
-    
+
     return await stocks
   };
 
   Stock.purchase = async function ({ ticker, originalPrice, qty, userId }) {
+
+    originalPrice = parseFloat(originalPrice).toFixed(2)
 
     const found = await Stock.findOne({
       where: {
@@ -46,33 +48,40 @@ module.exports = (sequelize, DataTypes) => {
     })
 
     if (found) {
-        Stock.update({  userId, ticker, amount : originalPrice, qty })
+      return Stock.updateStock({ userId, ticker, amount: originalPrice, qty })
     } else {
       const stock = await Stock.create({
         ticker,
         originalPrice,
+        lastPrice: originalPrice,
         qty,
         userId
       });
-      return await stock.findByPk(wallet.id)
+
+      return {type:  'purchase', response: await Stock.findByPk(stock.id)}
     }
   };
 
-  Stock.update = async function ({ userId, ticker, amount, qty}) {
+  Stock.updateStock = async function ({ userId, ticker, amount, qty }) {
+
     const stock = await Stock.findOne({
       where: {
         userId,
         ticker
       }
     })
-
-    const data = await Stock.update(
-      {'lastPrice': stock.lastPrice - amount },
-      {'qty': stock.qty - qty },
-      { where: { id: stock.id } }
-    )
     
-    return await Stock.findByPk(stock.id)
+    await Stock.update(
+      { 'lastPrice': amount },
+      { where: { "id": stock.dataValues.id } },
+    )
+      
+    await Stock.update(
+      { 'qty': stock.dataValues.qty + parseInt(qty) },
+      { where: { "id": stock.dataValues.id } }
+    )
+
+    return {type: "update:", response: await Stock.findByPk(stock.dataValues.id)}
 
   }
 

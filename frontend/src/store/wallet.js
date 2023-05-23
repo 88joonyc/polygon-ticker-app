@@ -66,7 +66,10 @@ export const update = (wallet) => async (dispatch) => {
 
     const data = await response.json();
     dispatch(updateWallet(data.wallet));
-    return response
+    
+    // if (data.wallet.status === 200) {
+    // }
+    return data
 
 };
 
@@ -78,15 +81,28 @@ const walletReducer = (state = initialState, action) => {
     let newState;
     switch (action.type) {
         case LOAD: 
+            const walletList = {}
+            action.payload.forEach(wallet => {
+                walletList[wallet.id] = wallet;
+            });
             newState = Object.assign({}, state);
             newState.wallet = [...action.payload];
+            newState.mark = walletList
             return newState;
         case CREATE_WALLET:
+            newState = Object.assign({}, state);
+            newState.wallet = [...state.wallet, action.payload];
+            return newState;
         case UPDATE_WALLET:
-            return {
-                ...state,
-                [action.wallet.id]: action.wallet,
-            }
+            state.mark[action.payload.id] = action.payload
+            let temp = []
+            for (const [key, val] of Object.entries(state.mark)) {
+                temp.push(val);
+            };
+            newState = Object.assign({})
+            newState.wallet = [...temp]
+            newState.mark = state.mark
+            return newState
 
         default:
             return state
