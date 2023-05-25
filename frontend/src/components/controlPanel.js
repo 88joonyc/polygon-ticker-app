@@ -1,7 +1,7 @@
 import react, { useState } from 'react';
 import { purchase } from '../store/stock';
 import { useDispatch, useSelector } from 'react-redux';
-import { update } from '../store/wallet';
+import { directUpdate } from '../store/wallet';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { Redirect } from 'react-router';
 
@@ -23,12 +23,14 @@ export default function ControlPanel ({ticker, data}) {
         console.log(data?.results[data?.results?.length-1]?.c * qty )
 
 
-        const isuserbroke = await dispatch(update({
+        const isuserbroke = await dispatch(directUpdate({
             userId,
             accountType: account,
-            amount: -data?.results[data?.results?.length-1]?.c * qty 
-        })
+            amount: data?.results[data?.results?.length-1]?.c * qty 
+            })
         )
+
+        console.log('checking', isuserbroke)
 
         if (!isuserbroke.wallet.message){
             if (window.confirm(`Are you sure you want to spend ${data?.results[data?.results?.length-1]?.c * qty}?`)) {
@@ -57,7 +59,7 @@ export default function ControlPanel ({ticker, data}) {
 
     return (
         <>
-            <div className='max-w-[400px] relative '>
+            <div className='md:max-w-[400px] relative'>
                 <div className='flex flex-col border border-gray-200  p-8 sticky top-[120px] shadow-lg'>
                     <div className='text-xl mb-8 font-bold capitalize text-midnightPurple '>{control + ' ' + ticker}</div>
                     <form onSubmit={submitPurchase} className='flex flex-col'>
@@ -71,7 +73,7 @@ export default function ControlPanel ({ticker, data}) {
                             <input className='py-2 px-4  border w-[120px]' type="number" min={0} onChange={e => setQty(e.target.value)} />
                         </label>
                         <label className='text-base flex justify-between'> Pay by
-                            <select className='border bg-white p-2 w-[120px] ' onChange={e => setAccount(e.target.value)}>
+                            <select className='border bg-white p-2 w-[120px] ' onChange={e => setAccount(e.target.value)} required>
                             <option className='' value={``}>-- Choose an account type --</option>
                                 {wallet.wallet.map(money => (
                                     <>

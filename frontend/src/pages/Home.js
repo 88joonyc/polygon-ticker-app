@@ -7,6 +7,7 @@ import Ticker from './Ticker';
 import SidePanel from '../components/sidePanel';
 import { useSelector,useDispatch } from 'react-redux';
 import { csrfFetch } from '../store/csrf';
+import Cookies from 'js-cookie';
 
 import { wallets } from '../store/wallet'
 import { stocks } from '../store/stock'
@@ -33,6 +34,8 @@ export default function Home ({isLoaded}) {
     var dayCounter = function(days) {
         return new Date(today.setDate(today.getDate()-days)).toISOString().split('T')[0]
     }
+
+    const unused = []
 
     // console.log(session?.user)
 
@@ -82,7 +85,7 @@ export default function Home ({isLoaded}) {
             return entries
         }
         
-        if (stocksData?.length > 0 && once) {
+        if (stocksData?.length > 0&&once) {
             run()
             .then((data) => original(data))
             .then((data) => complete(data))
@@ -91,7 +94,7 @@ export default function Home ({isLoaded}) {
             
             setOnce(false)
         }
-    }, [stocksData])
+    }, [stocksData, data])
     
     const original = function (pass) {
         let obj = {}
@@ -114,22 +117,26 @@ export default function Home ({isLoaded}) {
     }
 
     console.log('dat----------------------------------------',data)
-    console.log('obj----------------------------------------',orig)
+    console.log('loaded----------------------------------------',isLoaded)
 
-    if (isLoaded == null) return null
-    if (isLoaded == false) return <SplashPage />
+    // if (isLoaded == null) return null
+    // if (isLoaded == false) return <SplashPage />
+
+    const token = Cookies.get('token')
+
+    console.log(token)
 
     return (
         <>
             {session?.id&&<>
                 <div className='max-w-[1440px] mx-auto'> 
-                    <div className='grid grid-cols-[78%,22%] px-6'>
-                        <div className='mr-8'> {/* // may change */}
+                    <div className='grid md:grid-cols-[78%,22%] px-6'>
+                        <div className='md:mr-8'> {/* // may change */}
                         <h1 className={`mt-8 text-4xl `}>
                             ${(current)?.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                         </h1>
                         <div className={`text-xl ${list[0] > avg ? 'text-green-500' : 'text-red-500'}`}>
-                            ${(list[0] - avg).toFixed(2)?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                            ${list[0] - avg > 0 ? (list[0] - avg).toFixed(2)?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
                         </div>
                         <div>
 
@@ -137,7 +144,7 @@ export default function Home ({isLoaded}) {
                                 {/* <VictoryArea data={data.AMZN} style={{ data: {fill: "#280137" }}} y="close" /> */}
                                 {/* <VictoryLine data={list}  style={{ data: {stroke: "#280137" }}} y="close" /> */}
                                 {/* <VictoryLine data={data.AAPL}  style={{ data: {stroke: "#280137" }}} y="close" /> */}
-                                <VictoryGroup  data={list}  y="close" x="none"  >
+                                <VictoryGroup  data={stocksData ? list : unused}  y="close" x="none"  >
                                     <VictoryLine style={{ data: {stroke: `${list[0] > avg ? "#22c55e" : "#ef4444"}  `, strokeWidth: 1 }}}  />
                                     <VictoryAxis  offsetY={100} tickFormat={() => ''} style={{ axis: {stroke: '#ffffff', strokeWidth: 1 }}}  />
                                     {/* <VictoryScatter /> */}
@@ -154,9 +161,9 @@ export default function Home ({isLoaded}) {
                     </div>
                 </div>            
             </>}
-            {/* {!session.id&&<>
+            {!token&&<>
                 <SplashPage />
-            </>} */}
+            </>}
         </>
     )
 };

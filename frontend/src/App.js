@@ -20,15 +20,15 @@ function App() {
 
   useEffect(() => {
     dispatch(sessionActions.restoreUser())
-    .then((user) => user ? setLoaded(true) : setLoaded(false))
-    .catch(() => setLoaded(false))
+    .then(() =>  setLoaded(true))
+    .catch((err) => console.error(err))
   }, [dispatch])
-  
+
   useEffect(() => {
-    if (user?.id > 0) {
+    // if (user?.id > 0) {
       dispatch(wallets(user?.id))
       dispatch(stocks(user?.id))  
-    }
+    // }
   }, [user?.id])
 
   return (

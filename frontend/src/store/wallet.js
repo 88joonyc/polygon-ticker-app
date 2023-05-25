@@ -55,6 +55,27 @@ export const create = (wallet) => async (dispatch) => {
 export const update = (wallet) => async (dispatch) => {
     const { userId, accountType, amount } = wallet;
 
+    const response = await csrfFetch('/api/wallet', {
+        method: 'POST',
+        body: JSON.stringify({
+            userId,
+            accountType,
+            amount
+        }),
+    });
+
+    const data = await response.json();
+    dispatch(updateWallet(data.wallet));
+    
+    // if (data.wallet.status === 200) {
+    // }
+    return data
+
+};
+
+export const directUpdate = (wallet) => async (dispatch) => {
+    const { userId, accountType, amount } = wallet;
+
     const response = await csrfFetch('/api/wallet/update', {
         method: 'POST',
         body: JSON.stringify({
@@ -94,16 +115,17 @@ const walletReducer = (state = initialState, action) => {
             newState.wallet = [...state.wallet, action.payload];
             return newState;
         case UPDATE_WALLET:
-            state.mark[action.payload.id] = action.payload
-            let temp = []
-            for (const [key, val] of Object.entries(state.mark)) {
-                temp.push(val);
-            };
-            newState = Object.assign({})
-            newState.wallet = [...temp]
-            newState.mark = state.mark
-            return newState
-
+            if (action.payload.status === 200) {
+                state.mark[action.payload.id] = action.payload
+                let temp = []
+                for (const [key, val] of Object.entries(state.mark)) {
+                    temp.push(val);
+                };
+                newState = Object.assign({})
+                newState.wallet = [...temp]
+                newState.mark = state.mark
+                return newState
+            }
         default:
             return state
     }

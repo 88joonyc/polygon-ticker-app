@@ -4,8 +4,9 @@ const asyncHandler = require('express-async-handler');
 const { check } = require('express-validator');
 
 const {  Stock } = require('../../db/models');
+const { requireAuth } = require('../../utils/auth');
 
-router.get('/:id', asyncHandler(async (req, res) => {
+router.get('/:id', requireAuth, asyncHandler(async (req, res) => {
 		const { id } = req.params;
 		
 		const stocks = await Stock.all({ id })
