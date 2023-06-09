@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { create, update } from "../store/wallet";
 
@@ -10,7 +10,7 @@ import {
 
 initTE({ Modal, Ripple });
 
-export default function Wallet () {
+export default function Wallet ({openWallet, setOpenWallet}) {
 
     const dispatch = useDispatch(); 
 
@@ -18,7 +18,7 @@ export default function Wallet () {
     const wallet = useSelector(state => state.wallet.wallet)
 
     const [toggle, setToggle] = useState(true);// temporary alwayus open
-    const [openWallet, setOpenWallet] = useState(false); 
+
 
     const [accountType, setAccountType] = useState()
     const [amount, setAmount] = useState()
@@ -78,7 +78,7 @@ export default function Wallet () {
                                             </div>
                                         </>
                                     ))}
-                                    <button onClick={() => setOpenWallet(!openWallet)} className="px-16 py-3 text-sm font-bold text-white bg-midnightPurple w-full rounded-full md:mt-6">Deposit Funds</button>
+                                    <button onClick={() => (setOpenWallet(!openWallet)) } className="px-16 py-3 text-sm font-bold text-white bg-midnightPurple w-full rounded-full md:mt-6">Deposit Funds</button>
                                 </div>
                                 <div className="font-light text-black mx-8 hidden md:block">
                                 Buying power represents the total value of assets you can purchase.

@@ -25,6 +25,7 @@ export default function Home ({isLoaded}) {
     const [once, setOnce] = useState(true)
     const [avg, setAvg] = useState(0)
     const [current, setCurrent] = useState(0)
+    const [openWallet, setOpenWallet] = useState(false); 
  
     const stocksData = useSelector(state => state?.stock?.stock)
     const today = new Date();
@@ -125,7 +126,6 @@ export default function Home ({isLoaded}) {
     const token = Cookies.get('token')
 
     console.log(token)
-
     return (
         <>
             {session?.id&&<>
@@ -151,12 +151,13 @@ export default function Home ({isLoaded}) {
                                 </VictoryGroup>
                             </VictoryChart>
                         </div>
-                            <Wallet />
+                            <Wallet openWallet={openWallet} setOpenWallet={setOpenWallet}/>
                 
                         </div>
-                        <div>
+
+                        {!openWallet&&<div>
                             <SidePanel list={list} data={data} />
-                        </div>
+                        </div>}
                         
                     </div>
                 </div>            
