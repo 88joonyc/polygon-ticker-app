@@ -76,7 +76,7 @@ export default function ControlPanel ({ticker, data}) {
     const getPower = function() {
         if (wallet.wallet) {
             let type = wallet.wallet.filter(power => power.accountType == account)
-            return type[0].buyingPower
+            return type[0]?.buyingPower
         }
     }
 
@@ -103,7 +103,7 @@ export default function ControlPanel ({ticker, data}) {
                                 Market Price
                             </div>
                             <div>
-                                ${data?.results[data?.results?.length-1]?.c}
+                                ${data?.results?.[data?.results?.length-1]?.c ? data?.results[data?.results?.length-1]?.c : 0}
                             </div>
                         </div>
                         <div className='flex pt-4 justify-between font-bold border-t mt-4'>
