@@ -130,7 +130,7 @@ export default function Home ({isLoaded}) {
         <>
             {session?.id&&<>
                 <div className='max-w-[1440px] mx-auto'> 
-                    <div className='grid md:grid-cols-[78%,22%] px-6'>
+                    <div className='grid md:grid-cols-[78%,22%] md:px-6'>
                         <div className='md:mr-8'> {/* // may change */}
                         <h1 className={`mt-8 text-4xl `}>
                             ${(current)?.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
