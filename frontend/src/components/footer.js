@@ -15,7 +15,7 @@ export const Footer = function () {
                 <div className="hidden md:flex text-xl h-28 w-full items-center px-8 border border-black">
                     <a>some weblink</a>
                 </div>
-                <div className=" flex text-xl h-28 w-full items-center px-8 border border-black">
+                <div className="flex text-base md:text-xl h-28 w-full items-center px-8 border border-black">
                     <div>Follow me at</div><a href="https://www.linkedin.com/in/pchang1216/" className="ml-4">{linkedin}</a><a href="https://www.facebook.com/ayoisspc/" className="ml-4">{facebook}</a><a href="https://github.com/88joonyc" className="ml-4">{github}</a><a href="mailto:joonyc88@gmail.com" className="ml-4">{google}</a>
                 </div>
                 <div className="h-full text-xl border border-black p-8 hidden">
@@ -25,7 +25,7 @@ export const Footer = function () {
                       
                     </div>
                 </div>
-                <div className="h-full text-md border border-black p-8">
+                <div className="h-full text-sm md:text-md border border-black p-8">
                     <div>
                     <p>All investing involves risk.
                             <br/><br/>
