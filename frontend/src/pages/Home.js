@@ -25,6 +25,7 @@ export default function Home ({isLoaded}) {
     const [once, setOnce] = useState(true)
     const [avg, setAvg] = useState(0)
     const [current, setCurrent] = useState(0)
+    const [total, setTotal] = useState(0)
     const [openWallet, setOpenWallet] = useState(false); 
  
     const stocksData = useSelector(state => state?.stock?.stock)
@@ -37,13 +38,6 @@ export default function Home ({isLoaded}) {
     }
 
     const unused = []
-
-    // console.log(session?.user)
-
-    // useEffect(() => {
-    //     dispatch(wallets(session?.id))
-    //     dispatch(stocks(session?.id))  
-    // }, [session])
 
     useEffect(() => {
         async function run() {
@@ -102,47 +96,26 @@ export default function Home ({isLoaded}) {
         let sum = 0
         stocksData.forEach(tick => {
             sum += (tick.originalPrice * tick.qty)
-            obj[tick.ticker]={ qty: tick?.qty, originalPrice: tick?.originalPrice, lastTotal: sum} 
+            obj[tick.ticker]={ qty: tick?.qty, originalPrice: tick?.originalPrice} 
         })  
         setOrigi(obj)
         setAvg(sum)
         return {pass, obj}
     };
 
+    console.log(current)
+
     const currentPrice = function ({pass, obj}) {
         let current = 0
+        let total = 0
         for (const [key, val] of Object.entries(pass)) {
-            current += obj[key].lastTotal - (pass[key][0].close  * obj[key].qty)
+            current += (pass[key][0].close  * obj[key].qty) - (obj[key].originalPrice*obj[key].qty)
+            total += (pass[key][0].close  * obj[key].qty)
         }
         setCurrent(current)
+        setTotal(total)
     }
 
-    console.log('dat----------------------------------------',data)
-    console.log('loaded----------------------------------------',isLoaded)
-
-    // if (isLoaded == null) return null
-    // if (isLoaded == false) return <SplashPage />
-
-    const local = localStorage.getItem('token') 
-    console.log(local)
-
-    const token = Cookies.get('token')
-
-    console.log('thisone',isLoaded)
-
-    const loading = function() {
-        if (isLoaded) {
-            return <></>
-        } else {
-            return(
-                <>
-                    {!isLoaded&&<>
-                        <SplashPage />
-                    </>}
-                </>
-            )
-        }
-    }
     return (
         <>
             {session?.id&&<>
@@ -150,19 +123,16 @@ export default function Home ({isLoaded}) {
                     <div className='grid md:grid-cols-[75%,25%] md:px-6'>
                         <div className='md:mr-8'> {/* // may change */}
                         <h1 className={`mt-8 text-2xl md:text-4xl ml-2 md:ml-0`}>
-                            ${(current)?.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                            ${(total)?.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                         </h1>
-                        <div className={`text-xl ml-2 md:ml-0 ${list[0] > avg ? 'text-green-500' : 'text-red-500'}`}>
-                            ${list[0] - avg > 0 ? (list[0] - avg).toFixed(2)?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
+                        <div className={`text-xl ml-2 md:ml-0 ${current > 0? 'text-green-500' : 'text-red-500'}`}>
+                            {current > 0 && '+'}${(current).toFixed(2)?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                         </div>
                         {!openWallet&&<>
                             <div className='hidden md:block'>
                                 <VictoryChart height={200} padding={{ top: 50, bottom: 50, right: 0, left: 0 }} >
-                                    {/* <VictoryArea data={data.AMZN} style={{ data: {fill: "#280137" }}} y="close" /> */}
-                                    {/* <VictoryLine data={list}  style={{ data: {stroke: "#280137" }}} y="close" /> */}
-                                    {/* <VictoryLine data={data.AAPL}  style={{ data: {stroke: "#280137" }}} y="close" /> */}
                                     <VictoryGroup  data={stocksData ? list : unused}  y="close" x="none"  >
-                                        <VictoryLine style={{ data: {stroke: `${list[0] > avg ? "#22c55e" : "#ef4444"}  `, strokeWidth: 1 }}}  />
+                                        <VictoryLine style={{ data: {stroke: `${current > 0 ? "#22c55e" : "#ef4444"}  `, strokeWidth: 1 }}}  />
                                         <VictoryAxis  offsetY={100} tickFormat={() => ''} style={{ axis: {stroke: '#ffffff', strokeWidth: 1 }}}  />
                                         {/* <VictoryScatter /> */}
                                     </VictoryGroup>
@@ -170,13 +140,9 @@ export default function Home ({isLoaded}) {
                             </div>
                             <div className='md:hidden'>
                                 <VictoryChart height={400} padding={{ top: 50, bottom: 50, right: 0, left: 0 }} >
-                                    {/* <VictoryArea data={data.AMZN} style={{ data: {fill: "#280137" }}} y="close" /> */}
-                                    {/* <VictoryLine data={list}  style={{ data: {stroke: "#280137" }}} y="close" /> */}
-                                    {/* <VictoryLine data={data.AAPL}  style={{ data: {stroke: "#280137" }}} y="close" /> */}
                                     <VictoryGroup  data={stocksData ? list : unused}  y="close" x="none"  >
-                                        <VictoryLine style={{ data: {stroke: `${list[0] > avg ? "#22c55e" : "#ef4444"}  `, strokeWidth: 1 }}}  />
+                                        <VictoryLine style={{ data: {stroke: `${current > 0 ? "#22c55e" : "#ef4444"}  `, strokeWidth: 1 }}}  />
                                         <VictoryAxis  offsetY={200} tickFormat={() => ''} style={{ axis: {stroke: '#ffffff', strokeWidth: 1 }}}  />
-                                        {/* <VictoryScatter /> */}
                                     </VictoryGroup>
                                 </VictoryChart>
                             </div>

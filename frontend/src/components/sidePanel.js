@@ -48,7 +48,7 @@ export default function SidePanel ({data, list}) {
 
     return (
         <>
-            <div className='border md:h-[90vh] md:mb-0 overflow-y-scroll no-scrollbar text-xs' >
+            <div className='border md:h-[90vh] md:mb-0 overflow-y-scroll no-scrollbar text-xs md:sticky top-[60px]' >
                 <div className='w-full border-b px-2 py-4 '>
                     <div className='w-full '>Stocks</div>
                 </div>
@@ -75,9 +75,9 @@ export default function SidePanel ({data, list}) {
                                     </VictoryChart>
 
                                     </div>
-                                    <div className='flex items-center'>
-                                        <span>{}</span>
-                                        <span>{((data?.[stock?.ticker]?.[0]?.close - stock?.originalPrice)*stock?.qty).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+                                    <div className='flex flex-col justify-center gap-2 items-center'>
+                                        <div>{data?.[stock?.ticker]?.[0]?.close.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div>
+                                        <div className={data?.[stock?.ticker]?.[0]?.close - stock?.originalPrice > 0 ? 'text-green-500' : 'text-red-500'}>{(data?.[stock?.ticker]?.[0]?.close - stock?.originalPrice)>0&&'+'}{(((data?.[stock?.ticker]?.[0]?.close - stock?.originalPrice))/(stock?.originalPrice)*100).toFixed(2)}%</div>
                                     </div>
                                 </div>
                             </Link>
@@ -88,3 +88,4 @@ export default function SidePanel ({data, list}) {
         </>
     )
 }
+

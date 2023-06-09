@@ -38,20 +38,18 @@ export default function ControlPanel ({ticker, data}) {
 
     const submitPurchase = async function (e) {
         e.preventDefault()
-        console.log(data?.results[data?.results?.length-1]?.c * qty )
 
+        if (window.confirm(`Are you sure you want to spend ${data?.results[data?.results?.length-1]?.c * qty}?`)) {
+            const isuserbroke = await dispatch(directUpdate({
+                userId,
+                accountType: account,
+                amount: data?.results[data?.results?.length-1]?.c * qty 
+                })
+            )
 
-        const isuserbroke = await dispatch(directUpdate({
-            userId,
-            accountType: account,
-            amount: data?.results[data?.results?.length-1]?.c * qty 
-            })
-        )
-
-        console.log('checking', isuserbroke)
-
-        if (!isuserbroke.wallet.message){
-            if (window.confirm(`Are you sure you want to spend ${data?.results[data?.results?.length-1]?.c * qty}?`)) {
+            console.log('checking', isuserbroke)
+        
+            if (!isuserbroke.wallet.message){
                 const response = await dispatch(purchase({
                     ticker,
                     originalPrice: data.results[data?.results?.length-1].c,
@@ -65,12 +63,10 @@ export default function ControlPanel ({ticker, data}) {
                 } 
                 // return (<Redirect to="/" />)
                 // return (<Navigate to="/"/>)
+            } else {
+                alert(isuserbroke.wallet.message)
             }
-        } else {
-            alert(isuserbroke.wallet.message)
         }
-
-
     }
 
     const getPower = function() {
@@ -111,7 +107,7 @@ export default function ControlPanel ({ticker, data}) {
                                 Estimated Cost
                             </div>
                             <div>
-                                ${qty ? (qty*data?.results[data?.results?.length-1]?.c).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
+                                ${qty ? (qty*data?.results?.[data?.results?.length-1]?.c).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
                             </div>
                         </div>
                         <button className='p-4 border rounded-full my-2 mt-10 text-sm text-white font-bold bg-midnightPurple hover:bg-purple-950'>review order</button>
