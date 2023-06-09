@@ -138,8 +138,7 @@ export default function Home ({isLoaded}) {
                         <div className={`text-xl ml-2 md:ml-0 ${list[0] > avg ? 'text-green-500' : 'text-red-500'}`}>
                             ${list[0] - avg > 0 ? (list[0] - avg).toFixed(2)?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
                         </div>
-                        <div>
-
+                        <div className='hidden md:block'>
                             <VictoryChart height={200} padding={{ top: 50, bottom: 50, right: 0, left: 0 }} >
                                 {/* <VictoryArea data={data.AMZN} style={{ data: {fill: "#280137" }}} y="close" /> */}
                                 {/* <VictoryLine data={list}  style={{ data: {stroke: "#280137" }}} y="close" /> */}
@@ -147,6 +146,18 @@ export default function Home ({isLoaded}) {
                                 <VictoryGroup  data={stocksData ? list : unused}  y="close" x="none"  >
                                     <VictoryLine style={{ data: {stroke: `${list[0] > avg ? "#22c55e" : "#ef4444"}  `, strokeWidth: 1 }}}  />
                                     <VictoryAxis  offsetY={100} tickFormat={() => ''} style={{ axis: {stroke: '#ffffff', strokeWidth: 1 }}}  />
+                                    {/* <VictoryScatter /> */}
+                                </VictoryGroup>
+                            </VictoryChart>
+                        </div>
+                        <div className='md:hidden'>
+                            <VictoryChart height={400} padding={{ top: 50, bottom: 50, right: 0, left: 0 }} >
+                                {/* <VictoryArea data={data.AMZN} style={{ data: {fill: "#280137" }}} y="close" /> */}
+                                {/* <VictoryLine data={list}  style={{ data: {stroke: "#280137" }}} y="close" /> */}
+                                {/* <VictoryLine data={data.AAPL}  style={{ data: {stroke: "#280137" }}} y="close" /> */}
+                                <VictoryGroup  data={stocksData ? list : unused}  y="close" x="none"  >
+                                    <VictoryLine style={{ data: {stroke: `${list[0] > avg ? "#22c55e" : "#ef4444"}  `, strokeWidth: 1 }}}  />
+                                    <VictoryAxis  offsetY={200} tickFormat={() => ''} style={{ axis: {stroke: '#ffffff', strokeWidth: 1 }}}  />
                                     {/* <VictoryScatter /> */}
                                 </VictoryGroup>
                             </VictoryChart>
