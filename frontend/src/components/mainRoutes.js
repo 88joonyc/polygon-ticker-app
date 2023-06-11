@@ -7,6 +7,8 @@ import Ticker from '../pages/Ticker';
 import { useSelector } from "react-redux";
 import Home from "../pages/Home";
 
+import NavBarMobile from "./navBar-mobile";
+
 import SignupPage from '../pages/SignupPage'
 import LoginPage from '../pages/LoginPage'
 
@@ -22,6 +24,7 @@ export default function MainRoutes ({isLoaded}) {
             <Route  path='/' element={<> <Home isLoaded={isLoaded} /></>} />
             {/* <Route  path='/ticker/:ticker' element={<Ticker /> } /> */}
         </Routes>
+        <NavBarMobile/>
         </>
 
     )
