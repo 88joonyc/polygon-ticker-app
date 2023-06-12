@@ -1,5 +1,5 @@
 import react from 'react';
-import { FaCircle, FaPowerOff, FaAddressCard, FaLaptop, fan } from "react-icons/fa";
+import { FaCircle, FaPowerOff, FaAddressCard, FaLaptop, FaTimesCircle } from "react-icons/fa";
 
 
 export default function NavBarMobile () {
@@ -7,9 +7,10 @@ export default function NavBarMobile () {
         <>
             <div className=' md:hidden sticky bottom-0 py-10 bg-white'>
                 <div className='flex justify-around'>
-                    <FaPowerOff />
-                    <FaLaptop />
-                    <FaAddressCard />
+                    <FaPowerOff style={{ fontSize: '25px' }} />
+                    <FaLaptop style={{ fontSize: '25px' }} />
+                    <FaAddressCard style={{ fontSize: '25px' }} />
+                    <FaTimesCircle style={{ fontSize: '25px' }} />
                 </div>
             </div>
         </>
