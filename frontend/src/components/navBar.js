@@ -1,4 +1,7 @@
-import React, {useState, useEffect } from "react";
+import React, {useState, useEffect, useRef } from "react";
+import { useIntersection } from 'use-intersection';
+
+
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -9,14 +12,18 @@ import SearchBar from "./searchBar";
 import logo from './batmanlogo.png'
 import * as sessionActions from '../store/session'
 
-export default function NavBar() {
+import { IoChevronBackOutline } from "react-icons/io5";
+
+export default function NavBar({showMenu, setShowMenu, total, investingPriceRef}) {
     const dispatch = useDispatch();
-    const [ showMenu, setShowMenu ] = useState(false);
+
 
     const [ showMobileSearch, toggleMobileSearch ] = useState(false)
 
     const session = useSelector(state => state.session.user)
+    const href = window.location.href
 
+    const investingInView = useIntersection(investingPriceRef, '0px')
   
     const toggleMenu = (e) => {
         e.stopPropagation()
@@ -46,17 +53,26 @@ export default function NavBar() {
     };
 
     return (
-        <div className={`mx-auto sticky z-40 bg-white top-0 left-0  ${!session?.id && 'border'}`}>
-            <div className=" flex mx-auto items-center px-4 justify-between">
+        <div className={` mx-auto sticky z-40 bg-white top-0 left-0  ${!session?.id && 'border'}`}>
+            {!showMobileSearch&&<div className=" flex mx-auto items-center px-4 justify-between">
                 <Link to='/' className="hidden md:block">
+
                     <img className="w-[120px] h-[20px] object-contain" src={logo} />
                 </Link>
-                <SearchBar showMenu={showMenu}/>
+                <div className="hidden md:block">
+                    <SearchBar/>
+                </div>
+                <Link className={`${ href === 'http://localhost:3000/' ? 'hidden' : ''} md:hidden`}   to='/'>
+                    <IoChevronBackOutline style={{ fontSize: '25px' }} />
+                </Link>
                 <div className="flex md:gap-8 text-xs font-medium">
                     {!session&&<>
-                        <Link to='/login' className="hover:text-highlightPurple hover:cursor-pointer">Log In</Link>
+                        <Link to='/login' className="hover:text-highlightPurple hover:cursor-pointer mr-10 md:mr-0">Log In</Link>
                         <Link to='/signup' className="hover:text-highlightPurple hover:cursor-pointer">Sign Up</Link>
                     </>}
+                    {session&&!investingInView&&<div className="md:hidden">
+                        ${(total)?.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}    
+                    </div> }
                     {session&&<div className="hidden md:block">
                         <div className="hover:text-highlightPurple hover:cursor-pointer" onClick={toggleMenu}>Account</div>
                         <div className="relative ">
@@ -73,10 +89,21 @@ export default function NavBar() {
                         </div>
                     </div>}
                 </div>
-                <button className="md:hidden h-14" onClick={toggleSearch}>
+                <button className="md:hidden h-16 float-right" onClick={toggleSearch}>
                     <FaSearch style={{ fontSize: '25px'}}/>
                 </button>
-            </div>
+            </div>}
+            {showMobileSearch&&<>
+                <div className="absolute h-[100vh] w-full bg-white">
+                    <button className="p-4" onClick={toggleSearch}>
+                        <IoChevronBackOutline style={{ fontSize: '25px' }} />
+                    </button>
+                    <div className="">
+                        <SearchBar full />
+
+                    </div>
+                </div>
+            </>}
         </div>
     )
 }
