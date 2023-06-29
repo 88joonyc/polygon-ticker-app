@@ -113,7 +113,7 @@ export default function Home ({isLoaded, openWallet, setOpenWallet, stocksData, 
                         <div ref={investingPriceRef} className={` md:text-xl ml-5 md:ml-0 ${current > 0? 'text-green-500' : 'text-red-500'}`}>
                             {current > 0 && '+'}${(current).toFixed(2)?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                         </div>
-                        {<>
+                        <>
                             <div className='hidden md:block z-1'>
                                 <VictoryChart height={200}  padding={{ top: 50, bottom: 50, right: 0, left: 0 }} >
                                     <VictoryGroup  data={stocksData ? list : unused}  y="close" x="none"  >
@@ -142,7 +142,7 @@ export default function Home ({isLoaded, openWallet, setOpenWallet, stocksData, 
                                     </VictoryGroup>
                                 </VictoryChart>
                             </div>
-                        </>}
+                        </>
                             <Wallet openWallet={openWallet} setOpenWallet={setOpenWallet}/>
                 
                         </div>
