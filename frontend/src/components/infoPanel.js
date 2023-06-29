@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from 'react-router-dom'
 import { LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
-import { VictoryChart, VictoryArea, VictoryAxis, VictoryLine, VictoryGroup, VictoryScatter } from 'victory';
+import { VictoryChart, VictoryArea, VictoryAxis, VictoryLine, VictoryGroup, VictoryScatter, VictoryContainer } from 'victory';
 import { csrfFetch } from "../store/csrf";
 
 export default function InfoPanel({ticker, data, meta, image, news, findmeta}) {
@@ -115,6 +115,8 @@ export default function InfoPanel({ticker, data, meta, image, news, findmeta}) {
         alert(`error due to following: ${data.error}`)
     }
 
+    console.log(news)
+
 
     const handleChange = function (num) {
 
@@ -129,7 +131,7 @@ export default function InfoPanel({ticker, data, meta, image, news, findmeta}) {
     return (
         <div className="">
             <div>
-                <h1 className="text-2xl md:text-4xl mb-0 md:mb-4 mt-8 ml-4">{meta.results?.name}</h1>
+                <h1 className="text-2xl md:text-4xl mb-0 md:mb-4 mt-0 md:mt-8 ml-4">{meta.results?.name}</h1>
                 {data.results&&(
                     <div className="ml-4">
                         <h2 className="text-3xl md:text-5xl">${data.results[data?.results?.length-1].c}</h2> 
@@ -138,7 +140,17 @@ export default function InfoPanel({ticker, data, meta, image, news, findmeta}) {
                 )}
             </div>
             <div className="md:hidden">
-                <VictoryChart height={400} padding={{ top: 50, bottom: 50, right: 0, left: 0 }}>
+                <VictoryChart 
+                    height={400} 
+                    padding={{ top: 50, bottom: 50, right: 0, left: 0 }}   
+                    containerComponent={
+                        <VictoryContainer 
+                            style={{
+                                userSelect:'auto',
+                                touchAction:'auto'
+                            }}
+                        />
+                    }>
                     {/* <VictoryArea data={data.results} style={{ data: {fill: "#280137" }}} y="c" /> */}
                     <VictoryLine data={data.results} style={{ data: {stroke: "#280137" }}} y="c" />
                     <VictoryAxis style={{ axis: {stroke: "transparent"}, ticks: {stroke: "transparent"}, tickLabels: { fill:"transparent"} }}/>
@@ -162,7 +174,7 @@ export default function InfoPanel({ticker, data, meta, image, news, findmeta}) {
 
             <div className="mr-2 md:mr-0">
 
-                <div className="flex text-lg md:text-xl mb-4 md:mb-8 ml-4 justify-between md:justify-normal md:gap-10">
+                <div className="flex text-lg md:text-base mb-4 ml-4 mr-2 justify-between md:justify-normal md:gap-6">
                     <div type="radio" className={`cursor-pointer ${day == 2 ? 'font-bold text-[#280137] border-b-4 border-[#280137] pb-4 ' : 'text-black'} hover:font-bold hover:text-[#280137]`} onClick={() => handleChange(2)} value={2}>1D</div>
                     <div type="radio" className={`cursor-pointer ${day == 8 ? 'font-bold text-[#280137] border-b-4 border-[#280137] pb-4 ' : 'text-black'} hover:font-bold hover:text-[#280137]`} onClick={() => handleChange(8)} value={8}>1W</div>
                     <div type="radio" className={`cursor-pointer ${day == 31 ? 'font-bold text-[#280137] border-b-4 border-[#280137] pb-4 ' : 'text-black'} hover:font-bold hover:text-[#280137]`} onClick={() => handleChange(31)} value={31}>1M</div>
@@ -172,26 +184,26 @@ export default function InfoPanel({ticker, data, meta, image, news, findmeta}) {
                 </div>
 
                 <div>
-                    <h2 className="text-lg md:text-xl border-b pb-2 md:pb-8 font-bold ml-4"> About {ticker}</h2>
-                    <h3 className="py-8  text-sm md:text-xl ml-4">{meta.results?.description}</h3>
-                    <div className="grid grid-cols-2  md:flex justify-between mb-4 md:mb-8 ml-4">
-                        <div className=" text-sm md:text-xl">
+                    <h2 className="text-lg md:text-xl border-b pb-2 md:pb-4 font-bold ml-4"> About {ticker}</h2>
+                    <h3 className="py-4  text-sm md:text-base ml-4">{meta.results?.description}</h3>
+                    <div className="grid grid-cols-2  md:flex justify-between mb-4 md:mb-4 ml-4">
+                        <div className=" text-sm">
                             <h2 className="mb-2 font-bold">Employees</h2>
                             <h3>{meta.results?.total_employees}</h3>
                         </div>
-                        <div className=" text-sm md:text-xl">
+                        <div className=" text-sm">
                             <h2 className="mb-2 font-bold">Headquarters</h2>
                             <h3>{meta.results?.address?.city}, {meta.results?.address?.state}</h3>
                         </div>
-                        <div className=" text-sm md:text-xl mt-2 md:mt-0">
+                        <div className=" text-sm mt-2 md:mt-0">
                             <h2 className="font-bold mb-2">List Date</h2>
                             <h3>{meta.results?.list_date}</h3>
                         </div>
                     </div>
 
                     <div className="">
-                        <h2 className="text-lg md:text-xl border-b pb-2 md:pb-8 font-bold ml-4">Key {ticker} statistics</h2>
-                        <div className="py-8 ml-4 grid grid-cols-2 md:grid-cols-4 gap-y-4 text-sm mb-8">
+                        <h2 className="text-lg md:text-xl border-b pb-2 md:pb-4 font-bold ml-4">Key {ticker} statistics</h2>
+                        <div className="py-4 ml-4 grid grid-cols-2 md:grid-cols-4 gap-y-4 text-sm mb-4">
                             <div>
                                 <h3 className="font-bold">High yesterday</h3>
                                 <div>{keyStats?.h}</div>
@@ -217,18 +229,18 @@ export default function InfoPanel({ticker, data, meta, image, news, findmeta}) {
 
                     {/* news - create separate components*/}
                     <div>
-                        <h2 className="border-b pb-2 md:pb-8 ml-4  mb-4 md:mb-8 flex justify-between align-bottom text-sm md:text-base"><span className="text-lg md:text-xl font-bold">{ticker} News</span><span className="flex items-end md:hover:text-highlightPurple">show more</span></h2>
+                        <h2 className="border-b pb-2 md:pb-4 ml-4  mb-4 md:mb-4 flex justify-between align-bottom text-sm md:text-base"><span className="text-lg md:text-xl font-bold">{ticker} News</span><span className="flex items-end md:hover:text-highlightPurple">show more</span></h2>
                         <div>
                             {news.results?.map((report, idx) => (
                                 <>
                                     {idx < 3 && <>
-                                    <div className="flex justify-between items-center hover:bg-gray-100 hover:cursor-pointer p-4 gap-4">
+                                    <div className="flex justify-between  hover:bg-gray-100 hover:cursor-pointer p-4 gap-8">
                                         <div className="pt-4 pb-4">
-                                            <div className=" text-xs md:text-xl mb-2">{report?.author}</div> 
-                                            <div className=" text-xs md:text-xl font-bold">{report?.title}</div>
-                                            <div className="text-sm md:text-lg text-gray-500">{report?.description != undefined&&report?.description?.substring(0, 60) + '...'}</div>
+                                            <div className=" text-xs md:text-sm mb-2">{report?.author}</div> 
+                                            <div className=" text-xs md:text-sm font-bold">{report?.title}</div>
+                                            <div className="text-sm md:text-base text-gray-500">{report?.description != undefined&&report?.description?.substring(0, 52) + '...'}</div>
                                         </div>
-                                        <img className="object-cover w-10 h-10 md:h-[200px] md:w-[200px] text-center" src={report.image_url} />
+                                        <img className="object-cover w-10 h-10 md:h-[134px] md:w-[196px] text-center" src={report.image_url} />
                                     </div>
                                     </>} 
                                 </>
@@ -237,7 +249,7 @@ export default function InfoPanel({ticker, data, meta, image, news, findmeta}) {
                     </div>
                 </div>
 
-                <div className="ml-4 mt-8 mb-8">
+                <div className="ml-4 mt-8 mb-4">
                     {!disclose&&<div className="mb-4 text-xs md:text-md text-gray-500">
                         All investments involve risks, including the loss of principal. Securities trading offered through Gotham Financial LLC, Member SIPC and a registered broker-dealer. 
                     </div>}
