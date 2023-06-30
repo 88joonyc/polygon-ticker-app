@@ -9,7 +9,8 @@ export default function ControlPanel ({ticker, data}) {
     const dispatch = useDispatch();
 
     const userId = useSelector(state => state.session.user?.id)
-    const wallet = useSelector(state => state.wallet)
+    const wallet = useSelector(state => state?.wallet)
+    const shares = useSelector(state => state?.stock?.stock)
     const naviagte = useNavigate();
 
     const [control, setControl] = useState('buy')
@@ -76,7 +77,7 @@ export default function ControlPanel ({ticker, data}) {
         }
     }
 
-
+    const share = shares.filter(share => share.ticker == ticker)
 
     return (
         <>
@@ -116,7 +117,7 @@ export default function ControlPanel ({ticker, data}) {
                         <button className='p-4 border rounded-full my-2 mt-10 text-sm text-white font-bold bg-midnightPurple hover:bg-purple-950'>review order</button>
                     </form>
                     <div className='w-full flex justify-center p-4 border-t mt-6'>
-                        {control == 'buy' ? `${!getPower() ? 0 : getPower().toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} buying power available` : `Shares Available`}
+                        {control == 'buy' ? `${!getPower() ? 0 : getPower().toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} buying power available` : `${share[0].qty} Shares Available`}
                     </div>
                     <button className='hover:bg-fadedPurple w-full flex justify-center py-4 border-t' onClick={toggleMenu}>
                         <label className='text-base flex justify-between'> {account == 'dollars' ? 'Brokerage' : 'Bitcoin' }
