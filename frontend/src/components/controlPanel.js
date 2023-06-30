@@ -116,7 +116,7 @@ export default function ControlPanel ({ticker, data}) {
                         <button className='p-4 border rounded-full my-2 mt-10 text-sm text-white font-bold bg-midnightPurple hover:bg-purple-950'>review order</button>
                     </form>
                     <div className='w-full flex justify-center p-4 border-t mt-6'>
-                        ${!getPower() ? 0 : getPower().toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} buying power available
+                        {control == 'buy' ? `${!getPower() ? 0 : getPower().toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} buying power available` : `Shares Available`}
                     </div>
                     <button className='hover:bg-fadedPurple w-full flex justify-center py-4 border-t' onClick={toggleMenu}>
                         <label className='text-base flex justify-between'> {account == 'dollars' ? 'Brokerage' : 'Bitcoin' }
