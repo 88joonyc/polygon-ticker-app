@@ -9,7 +9,9 @@ import { FaSearch } from "react-icons/fa";
 
 import SearchBar from "./searchBar";
 
-import logo from './batmanlogo.png'
+// import logo from './data/batman_begins.svg' 
+// import logo from '../data/batmanlogo.png'
+import { LogoSvg } from "../assets/logoSvg";
 import * as sessionActions from '../store/session'
 
 import { IoChevronBackOutline } from "react-icons/io5";
@@ -55,9 +57,10 @@ export default function NavBar({showMenu, setShowMenu, total, investingPriceRef}
     return (
         <div className={` mx-auto sticky z-40 bg-white top-0 left-0  ${!session?.id && 'border'}`}>
             {!showMobileSearch&&<div className=" flex mx-auto items-center px-4 justify-between">
-                <Link to='/' className="hidden md:block">
+                <Link to='/' className="hidden md:block hover:text-white">
 
-                    <img className="w-[120px] h-[20px] object-contain" src={logo} />
+                    {/* <img className="w-[120px] h-[20px] object-contain" src={logo} /> */}
+                    <LogoSvg />
                 </Link>
                 <div className="hidden md:block">
                     <SearchBar/>
