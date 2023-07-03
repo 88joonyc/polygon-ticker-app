@@ -65,7 +65,7 @@ export default function NavBar({showMenu, setShowMenu, total, investingPriceRef}
                 <Link className={`${ href === 'http://localhost:3000/' ? 'hidden' : ''} md:hidden`}   to='/'>
                     <IoChevronBackOutline style={{ fontSize: '25px' }} />
                 </Link>
-                <div className="flex md:gap-8 text-xs font-medium">
+                <div className="flex md:gap-8 text-xs font-bold">
                     {!session&&<>
                         <Link to='/login' className="hover:text-highlightPurple hover:cursor-pointer mr-10 md:mr-0">Log In</Link>
                         <Link to='/signup' className="hover:text-highlightPurple hover:cursor-pointer">Sign Up</Link>
