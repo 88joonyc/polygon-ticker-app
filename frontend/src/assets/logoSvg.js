@@ -1,6 +1,10 @@
 import react, { useEffect, useState } from "react";
 
 export const LogoSvg = () => {
+
+    useEffect(() => {
+        setHover(false)
+    }, [])
     
     const [hover, setHover] = useState('false')
     
