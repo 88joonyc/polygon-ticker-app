@@ -3,6 +3,7 @@ import { csrfFetch } from "./csrf";
 const LOAD = 'stock/load'
 const PURCHASE_STOCK = 'stock/purchaseStock';
 const UPDATE_STOCK = 'stock/updateStock';
+const SELL_STOCK = 'stock/sell'
 
 const load = stocks => ({
     type: LOAD,
@@ -23,6 +24,12 @@ const updateStock = (stock) => {
     }
 };
 
+const sellStock = () => {
+    return {
+        type: SELL_STOCK,
+    }
+};
+
 export const stocks = id => async dispatch => {
     const response = await csrfFetch(`/api/stock/${id}`)
     const data = await response.json();
@@ -30,7 +37,7 @@ export const stocks = id => async dispatch => {
     dispatch(load(data.stocks))
 
     return response
-}
+};
 
 export const purchase = (stock) => async dispatch => {
 
@@ -41,12 +48,16 @@ export const purchase = (stock) => async dispatch => {
 
     
     const data = await response.json();
-    console.log('hi-----------------------',data)
+    // console.log('hi-----------------------',data)
 
     dispatch(purchaseStock(data))
     return data
 
-}
+};
+
+export const sellandgetridofstock = () => async dispatch => {
+
+};
 
 const initialState = { stock: [] };
 
@@ -69,7 +80,7 @@ const stockReducer = (state = initialState, action) => {
 
             return newState
         case PURCHASE_STOCK:
-            console.log('what-----------------------------------',action)
+            // console.log('what-----------------------------------',action)
             if (action.payload.response.response.type === "purchase") {
                 newState = Object.assign({}, ...state.stock);
                 newState.stock = [...state.stock, action.payload.response]
@@ -87,7 +98,7 @@ const stockReducer = (state = initialState, action) => {
                 // temp[action.payload.response.response.id] = action.payload.response.response
                 newState = Object.assign({});
                 
-                console.log('==================================ss',state.mark)
+                // console.log('==================================ss',state.mark)
                 // newState.stock = [...state.stock, action.payload.response]
                 newState.stock = [...temp];
                 newState.mark = state.mark;
