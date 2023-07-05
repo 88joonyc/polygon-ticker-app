@@ -83,11 +83,14 @@ export default function ControlPanel ({ticker, data}) {
         <>
             <div className='md:max-w-[400px] relative'>
                 <div className='flex flex-col border border-gray-200 pt-6  sticky top-[120px] shadow-lg'>
-                    <div className='flex'>
-                        <button onClick={() => setControl('buy')} className={`text-xl mb-8 font-bold capitalize hover:text-highlightPurple px-6 ${control == 'buy' ? 'text-highlightPurple border-b-4 border-highlightPurple' : 'text-midnightPurple' }`}>Buy{' ' + ticker}</button>
-                        <button onClick={() => setControl('sell')} className={`text-xl mb-8 font-bold capitalize hover:text-highlightPurple px-6 ${control != 'buy' ? 'text-highlightPurple border-b-4 border-highlightPurple' : 'text-midnightPurple' }`}>Sell{ ' ' + ticker} </button>
+                    <div className='flex w-full px-6 gap-6 border-b '>
+                        <button onClick={() => setControl('buy')} className={`text-xl font-bold capitalize hover:text-highlightPurple  ${control == 'buy' ? 'text-highlightPurple border-b-4 border-highlightPurple' : 'text-midnightPurple' }`}>Buy{' ' + ticker}</button>
+                        <button onClick={() => setControl('sell')} className={`text-xl font-bold capitalize hover:text-highlightPurple  ${control != 'buy' ? 'text-highlightPurple border-b-4 border-highlightPurple' : 'text-midnightPurple' }`}>Sell{ ' ' + ticker} </button>
                     </div>
-                    <form onSubmit={submitPurchase} className='flex flex-col px-6'>
+                    <form onSubmit={submitPurchase} className='flex flex-col px-6 my-6'>
+                        <div className='pb-4 flex justify-between'>
+                            <span>Order Type</span> <div className='capitalize'><div>{control} Order</div><div className='float-right text-gray-500'>{control == 'buy' ? 'Limit' : 'Market'}</div></div>
+                        </div>
                         <label className='text-base flex justify-between'><span className='capitalize'>{control} in</span>
                             <select className='border bg-white p-2 w-[150px] ' onChange={e => setType(e.target.value)}>
                                 <option value='shares'>Shares</option>
