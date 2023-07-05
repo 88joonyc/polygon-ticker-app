@@ -34,24 +34,26 @@ export default function ControlPanel ({ticker, data}) {
         document.addEventListener('click', closeMenu);
       
         return () => document.removeEventListener("click", closeMenu);
-      }, [showMenu]);
+    }, [showMenu]);
+
+    const currentSharePrice = data?.results?.[data?.results?.length-1]?.c ? data?.results[data?.results?.length-1]?.c : 0;
 
 
     const submitPurchase = async function (e) {
         e.preventDefault()
 
-        if (window.confirm(`Are you sure you want to spend ${data?.results[data?.results?.length-1]?.c * qty}?`)) {
-            const isuserbroke = await dispatch(directUpdate({
+        if (window.confirm(`Are you sure you want to spend ${currentSharePrice * qty}?`)) {
+            const isuserbroke = dispatch(directUpdate({
                 userId,
                 accountType: account,
-                amount: data?.results[data?.results?.length-1]?.c * qty 
+                amount: currentSharePrice * qty 
                 })
             )
 
             console.log('checking', isuserbroke)
         
             if (!isuserbroke.wallet.message){
-                const response = await dispatch(purchase({
+                const response = dispatch(purchase({
                     ticker,
                     originalPrice: data.results[data?.results?.length-1].c,
                     qty,
@@ -79,6 +81,15 @@ export default function ControlPanel ({ticker, data}) {
 
     const share = shares.filter(share => share.ticker == ticker)
 
+
+    const sellStock = async function(e) {
+        e.preventDefault();
+        if (window.confirm(`Are you sure you want to sell ${qty} stocks at ${currentSharePrice} each?`)) {
+            
+        }
+
+    }
+
     return (
         <>
             <div className='md:max-w-[400px] relative'>
@@ -87,7 +98,7 @@ export default function ControlPanel ({ticker, data}) {
                         <button onClick={() => setControl('buy')} className={`text-xl font-bold capitalize hover:text-highlightPurple  ${control == 'buy' ? 'text-highlightPurple border-b-4 border-highlightPurple' : 'text-midnightPurple' }`}>Buy{' ' + ticker}</button>
                         <button onClick={() => setControl('sell')} className={`text-xl font-bold capitalize hover:text-highlightPurple  ${control != 'buy' ? 'text-highlightPurple border-b-4 border-highlightPurple' : 'text-midnightPurple' }`}>Sell{ ' ' + ticker} </button>
                     </div>
-                    <form onSubmit={submitPurchase} className='flex flex-col px-6 my-6'>
+                    <form onSubmit={control == 'buy' ? submitPurchase : sellStock } className='flex flex-col px-6 my-6'>
                         <div className='pb-4 flex justify-between'>
                             <span>Order Type</span> <div className='capitalize'><div>{control} Order</div><div className='float-right text-gray-500'>{control == 'buy' ? 'Limit' : 'Market'}</div></div>
                         </div>
@@ -106,7 +117,7 @@ export default function ControlPanel ({ticker, data}) {
                                 Market Price
                             </div>
                             <div>
-                                ${data?.results?.[data?.results?.length-1]?.c ? data?.results[data?.results?.length-1]?.c : 0}
+                                ${currentSharePrice}
                             </div>
                         </div>
                         <div className='flex pt-4 justify-between font-bold border-t mt-4'>
@@ -114,16 +125,17 @@ export default function ControlPanel ({ticker, data}) {
                                 Estimated {control == 'buy' ? 'Cost' : 'Credit'}
                             </div>
                             <div>
-                                ${qty > 0 ? (qty*data?.results?.[data?.results?.length-1]?.c).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
+                                ${qty > 0 ? (qty*currentSharePrice).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
                             </div>
                         </div>
-                        <button disabled={qty > 0 ? false : true} className='p-4 border rounded-full my-2 mt-10 text-sm text-white font-bold bg-midnightPurple hover:bg-highlightPurple'>review order</button>
+                        <button disabled={qty > 0 ? false : true} className='p-4 border capitalize rounded-full mt-10 text-sm text-white font-medium bg-midnightPurple hover:bg-highlightPurple'>review order</button>
                     </form>
-                    <div className='w-full flex justify-center p-4 border-t mt-6'>
-                        ${control == 'buy' ? `${!getPower() ? 0 : getPower().toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} buying power available` : `${share[0]?.qty ? share[0]?.qty : 0} Shares Available`}
+                    <div className='text-sm w-full flex justify-center p-4 border-t'>
+                        ${control == 'buy' ? `${!getPower() ? 0 : getPower().toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} buying power available` : `${share[0]?.qty ? share[0]?.qty : 0} Shares Available`} 
+                        &nbsp;-&nbsp; <button className='text-highlightPurple font-bold'>Sell All</button>
                     </div>
                     <button className='hover:bg-fadedPurple w-full flex justify-center py-4 border-t' onClick={toggleMenu}>
-                        <label className='text-base flex justify-between cursor-pointer'> {account == 'dollars' ? 'Brokerage' : 'Bitcoin' }
+                        <label className='text-sm flex justify-between cursor-pointer'> {account == 'dollars' ? 'Brokerage' : 'Bitcoin' }
                         </label>
                     </button>
                     {showMenu&&<div>
