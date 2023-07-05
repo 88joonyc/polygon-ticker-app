@@ -1,7 +1,7 @@
 import react, { useState, useEffect } from 'react';
 import { purchase, sellandgetridofstock } from '../store/stock';
 import { useDispatch, useSelector } from 'react-redux';
-import { directUpdate } from '../store/wallet';
+import { directUpdate, update } from '../store/wallet';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { Redirect } from 'react-router';
 
@@ -44,7 +44,7 @@ export default function ControlPanel ({ticker, data}) {
         e.preventDefault()
 
         if (window.confirm(`Are you sure you want to spend ${currentSharePrice * qty}?`)) {
-            const isuserbroke = dispatch(directUpdate({
+            const isuserbroke = await dispatch(directUpdate({
                 userId,
                 accountType: account,
                 amount: currentSharePrice * qty 
@@ -54,7 +54,7 @@ export default function ControlPanel ({ticker, data}) {
             console.log('checking', isuserbroke)
         
             if (!isuserbroke.wallet.message){
-                const response = dispatch(purchase({
+                const response = await dispatch(purchase({
                     ticker,
                     originalPrice: data.results[data?.results?.length-1].c,
                     qty,
@@ -85,9 +85,11 @@ export default function ControlPanel ({ticker, data}) {
 
     const sellStock = async function(e) {
         e.preventDefault();
-        if (window.confirm(`Are you sure you want to sell ${qty} stocks at ${currentSharePrice} each?`)) {
+        const subtot = qty*currentSharePrice;
+        if (window.confirm(`Are you sure you want to sell ${qty} stocks at $${currentSharePrice} each? This will add to your wallet $${subtot}`)) {
             // here
-            dispatch(sellandgetridofstock(share.id))
+           
+            dispatch(update({userId, accountType: account, amount: subtot}))
         }
         
     }
@@ -96,12 +98,12 @@ export default function ControlPanel ({ticker, data}) {
         e.preventDefault();
         const subtot = share[0]?.qty*currentSharePrice
         const id = share[0]?.id
-        if (id&&window.confirm(`Are you sure you want to sell all ${share[0].qty} stocks at ${currentSharePrice} each? This totals to ${subtot}`)) {
+        if (id&&window.confirm(`Are you sure you want to sell all ${share[0].qty} stocks at $${currentSharePrice} each? This totals to $${subtot}`)) {
             // here
-            const sold = dispatch(sellandgetridofstock())
-
+            const sold = dispatch(sellandgetridofstock(id))
+            console.log( sold)
             if (sold) {
-                dispatch(directUpdate(userId, account, subtot))
+                dispatch(update({userId, accountType: account, amount: subtot}))
             }
         }
     }
@@ -126,7 +128,7 @@ export default function ControlPanel ({ticker, data}) {
                         </label>
                         <div></div>
                         <label className='text-base py-2 flex justify-between items-center'> <span className='capitalize'>{type}</span>
-                            <input className='py-2 px-4  border w-[150px] text-right' placeholder='0' type="number" min={0} onChange={e => setQty(e.target.value)} />
+                            <input className='py-2 px-4  border w-[150px] text-right' placeholder='0' type="number" min={0} max={control=='buy'?"":share[0]?.qty} onChange={e => setQty(e.target.value)} />
                         </label>
                         <div className='flex pt-4 justify-between font-bold'>
                             <div className='text-highlightPurple'>
