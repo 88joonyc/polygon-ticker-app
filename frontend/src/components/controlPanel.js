@@ -1,5 +1,5 @@
 import react, { useState, useEffect } from 'react';
-import { purchase } from '../store/stock';
+import { purchase, sellandgetridofstock } from '../store/stock';
 import { useDispatch, useSelector } from 'react-redux';
 import { directUpdate } from '../store/wallet';
 import { Navigate, useNavigate } from 'react-router-dom';
@@ -11,6 +11,7 @@ export default function ControlPanel ({ticker, data}) {
     const userId = useSelector(state => state.session.user?.id)
     const wallet = useSelector(state => state?.wallet)
     const shares = useSelector(state => state?.stock?.stock)
+    const share = shares.filter(share => share.ticker == ticker)
     const naviagte = useNavigate();
 
     const [control, setControl] = useState('buy')
@@ -79,15 +80,30 @@ export default function ControlPanel ({ticker, data}) {
         }
     }
 
-    const share = shares.filter(share => share.ticker == ticker)
+
 
 
     const sellStock = async function(e) {
         e.preventDefault();
         if (window.confirm(`Are you sure you want to sell ${qty} stocks at ${currentSharePrice} each?`)) {
-            
+            // here
+            dispatch(sellandgetridofstock(share.id))
         }
+        
+    }
+    
+    const sellAll = async function(e) {
+        e.preventDefault();
+        const subtot = share[0]?.qty*currentSharePrice
+        const id = share[0]?.id
+        if (id&&window.confirm(`Are you sure you want to sell all ${share[0].qty} stocks at ${currentSharePrice} each? This totals to ${subtot}`)) {
+            // here
+            const sold = dispatch(sellandgetridofstock())
 
+            if (sold) {
+                dispatch(directUpdate(userId, account, subtot))
+            }
+        }
     }
 
     return (
@@ -95,8 +111,8 @@ export default function ControlPanel ({ticker, data}) {
             <div className='md:max-w-[400px] relative'>
                 <div className='flex flex-col border border-gray-200 pt-6  sticky top-[120px] shadow-lg'>
                     <div className='flex w-full px-6 gap-6 border-b '>
-                        <button onClick={() => setControl('buy')} className={`text-xl font-bold capitalize hover:text-highlightPurple  ${control == 'buy' ? 'text-highlightPurple border-b-4 border-highlightPurple' : 'text-midnightPurple' }`}>Buy{' ' + ticker}</button>
-                        <button onClick={() => setControl('sell')} className={`text-xl font-bold capitalize hover:text-highlightPurple  ${control != 'buy' ? 'text-highlightPurple border-b-4 border-highlightPurple' : 'text-midnightPurple' }`}>Sell{ ' ' + ticker} </button>
+                        <button onClick={() => setControl('buy')} className={`text-xl font-bold capitalize hover:text-highlightPurple pb-3 ${control == 'buy' ? 'text-highlightPurple border-b-4 border-highlightPurple' : 'text-midnightPurple' }`}>Buy{' ' + ticker}</button>
+                        <button onClick={() => setControl('sell')} className={`text-xl font-bold capitalize hover:text-highlightPurple pb-3 ${control != 'buy' ? 'text-highlightPurple border-b-4 border-highlightPurple' : 'text-midnightPurple' }`}>Sell{ ' ' + ticker} </button>
                     </div>
                     <form onSubmit={control == 'buy' ? submitPurchase : sellStock } className='flex flex-col px-6 my-6'>
                         <div className='pb-4 flex justify-between'>
@@ -132,7 +148,7 @@ export default function ControlPanel ({ticker, data}) {
                     </form>
                     <div className='text-sm w-full flex justify-center p-4 border-t'>
                         ${control == 'buy' ? `${!getPower() ? 0 : getPower().toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} buying power available` : `${share[0]?.qty ? share[0]?.qty : 0} Shares Available`} 
-                        &nbsp;-&nbsp; <button className='text-highlightPurple font-bold'>Sell All</button>
+                        &nbsp;-&nbsp; <button onClick={sellAll} className='text-highlightPurple font-bold'>Sell All</button>
                     </div>
                     <button className='hover:bg-fadedPurple w-full flex justify-center py-4 border-t' onClick={toggleMenu}>
                         <label className='text-sm flex justify-between cursor-pointer'> {account == 'dollars' ? 'Brokerage' : 'Bitcoin' }
