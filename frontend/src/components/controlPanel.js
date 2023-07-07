@@ -100,12 +100,12 @@ export default function ControlPanel ({ticker, data}) {
         const id = share[0]?.id
         if (id&&window.confirm(`Are you sure you want to sell all ${share[0].qty} stocks at $${currentSharePrice} each? This totals to $${subtot}`)) {
             // here
-            const sold = dispatch(sellandgetridofstock(id))
-            console.log( sold)
+            const sold =  dispatch(sellandgetridofstock(id))
+            console.log( 'thisissold-0-=---------------------------', sold)
             if (sold) {
-                dispatch(update({userId, accountType: account, amount: subtot}))
+                // dispatch(update({userId, accountType: account, amount: subtot}))
             }
-        }
+        } else alert('You do not own any shares.')
     }
 
     return (
@@ -149,8 +149,8 @@ export default function ControlPanel ({ticker, data}) {
                         <button disabled={qty > 0 ? false : true} className='p-4 border capitalize rounded-full mt-10 text-sm text-white font-medium bg-midnightPurple hover:bg-highlightPurple'>review order</button>
                     </form>
                     <div className='text-sm w-full flex justify-center p-4 border-t'>
-                        ${control == 'buy' ? `${!getPower() ? 0 : getPower().toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} buying power available` : `${share[0]?.qty ? share[0]?.qty : 0} Shares Available`} 
-                        &nbsp;-&nbsp; <button onClick={sellAll} className='text-highlightPurple font-bold'>Sell All</button>
+                        {control == 'buy' ? `$${!getPower() ? 0 : getPower().toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} buying power available` : `${share[0]?.qty ? share[0]?.qty : 0} Shares Available`} 
+                        {control!='buy'&&<>&nbsp;-&nbsp; <button onClick={sellAll} className='text-highlightPurple font-bold'>Sell All</button></>}
                     </div>
                     <button className='hover:bg-fadedPurple w-full flex justify-center py-4 border-t' onClick={toggleMenu}>
                         <label className='text-sm flex justify-between cursor-pointer'> {account == 'dollars' ? 'Brokerage' : 'Bitcoin' }
