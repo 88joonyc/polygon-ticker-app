@@ -24,9 +24,10 @@ const updateStock = (stock) => {
     }
 };
 
-const sellStock = () => {
+const sellStock = (id) => {
     return {
         type: SELL_STOCK,
+        id,
     }
 };
 
@@ -55,8 +56,22 @@ export const purchase = (stock) => async dispatch => {
 
 };
 
-export const sellandgetridofstock = () => async dispatch => {
+export const sellandgetridofstock = (id) => async dispatch => {
+    console.log('idisworking', id)
+    const response = await csrfFetch(`/api/stock/${id}`, {
+        method: 'delete'
+    });
+    console.log('amiworiknfgrsjknfwes==============?')
+    console.log('idisworking?', response)
 
+    // if (response.ok) {
+        const stock = await response.json();
+        console.log('thisisowrkd===========================', stock)
+
+        const her = await dispatch(sellStock(stock))
+        console.log('thisisowrkd==her=========================', her)
+        return stock 
+    // };
 };
 
 const initialState = { stock: [] };
@@ -64,7 +79,7 @@ const initialState = { stock: [] };
 const stockReducer = (state = initialState, action) => {
     let newState;
     switch(action.type) {
-        case LOAD:
+        case LOAD:{
             const stockList = {}
             action.payload.forEach(stock => {
                 stockList[stock.id] = stock
@@ -78,8 +93,8 @@ const stockReducer = (state = initialState, action) => {
             newState.mark = stockList
 
 
-            return newState
-        case PURCHASE_STOCK:
+            return newState}
+        case PURCHASE_STOCK:{
             // console.log('what-----------------------------------',action)
             if (action.payload.response.response.type === "purchase") {
                 newState = Object.assign({}, ...state.stock);
@@ -108,11 +123,18 @@ const stockReducer = (state = initialState, action) => {
                 //     ...state.stock,
                 //     [action.payload.response.response.id]: action.payload.response.response,
                 // }
-            }
+            }}
         // case UPDATE_STOCK:
         //     newState = Object.assign({});
         //     newState.stock = [...state.stock, action.payload.response]
         //     return newState
+        case SELL_STOCK: {
+            console.log('helpme--------------------------------', state)
+            const newState = {...state};
+            delete newState[action.id]
+            console.log('helpmeddele------------------------3--------', newState)
+            return newState
+            }
         default:
             return state
     }
