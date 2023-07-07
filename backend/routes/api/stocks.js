@@ -28,7 +28,7 @@ router.post('/', asyncHandler(async (req, res) => {
 				qty,
 				userId
 		});
-		console.log('whatami-----------------------------------', response)
+		// console.log('whatami-----------------------------------', response)
 		return res.json({response})
 		// return await response.findByPk(response.id)
 	})
@@ -49,6 +49,24 @@ router.post('/update', asyncHandler(async (req, res) => {
 		})
 	})
 )
+
+router.delete('/:id', asyncHandler(async (req, res) => {
+		const {id} = req.params;
+
+		console.log('thisismyidsnumas================', id)
+		const stock = await Stock.findByPk(id)
+
+		console.log('thisismyidsnumas=fuck===============', stock)
+		
+		if (stock) {
+			Stock.sell(id)
+			return id
+		} 
+
+		return {message: 'error'}
+	})
+)
+
 
 
 module.exports = router;
