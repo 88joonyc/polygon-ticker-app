@@ -85,8 +85,21 @@ module.exports = (sequelize, DataTypes) => {
 
   }
 
-  Stock.sell = async function ({ }) {
-    // tbc . . .
+  Stock.sell = async function (id) {
+
+    console.log('thisisid==============================', id)
+
+    const sold = await Stock.findByPk(id);
+    console.log('thisisidsold==============================', sold.id)
+    if (!sold.id) throw new Error('Stock does not exist on users account');
+
+    const her = await Stock.destroy({
+      where: {id}
+    })
+
+    console.log('thisisidsoldreturn==============================', her)
+    
+    return sold
   };
 
   return Stock;
