@@ -31,15 +31,15 @@
 *Search uses third-party API to query by keyword and return all Stocks and ETFs.*
 ![Screenshot from 2023-08-28 19-17-44](https://github.com/88joonyc/polygon-ticker-app/assets/79543569/2356b1a1-2ac5-4f98-9bba-f04f48cc78b3)
 
-## purchase stock
+## Purchase stock
 *User can purchase stock on the stock page.*
 ![Screenshot from 2023-08-28 19-18-37](https://github.com/88joonyc/polygon-ticker-app/assets/79543569/bab1e4b3-b0e5-4555-8966-67587967c306)
 
-## add wallet and funds
+## Add wallet and funds
 *User can all a wallet and add funds to a selected wallet.*
 ![Screenshot from 2023-08-28 19-19-06](https://github.com/88joonyc/polygon-ticker-app/assets/79543569/28b97c7d-eebb-48c1-9f1c-228bddae3039)
 
-## mobile-first responsive design
+## Mobile-first responsive design
 *Search will use the input value and search through by event names.*
 ![Screenshot from 2023-08-28 19-22-08](https://github.com/88joonyc/polygon-ticker-app/assets/79543569/ef645df1-7934-47c8-a525-b0adc2502967)
 
@@ -58,6 +58,7 @@ under construction
 - Redux
 - PosgreSQL
 - Railway
+- TailwindCSS
 - Git
 
 # External API's connected
