@@ -1,5 +1,4 @@
-![adventure_time-logo](https://user-images.githubusercontent.com/79543569/132349789-6060506a-813b-4b2a-a8de-0b26e804b13c.png)
-# Batman's Hood
+# Batman's Hood![batmanlogo](https://github.com/88joonyc/polygon-ticker-app/assets/79543569/effd806b-4417-4cd4-a0f6-322ecfa98d68)
 
 *By: Paul Chang. --  [Batman's Hood](https://ticker-app-production.railway.app.com/ "Named link title")*
 
